@@ -16,11 +16,18 @@ class HomeViewModel: ObservableObject {
     var urlString: String {
         return  "\(BASE_URL)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&price_change_percentage=24h"
     }
-    
-    init() {
-        fetchCoinsWithURLSession()
+ 
+    init(useMockData: Bool = false) {
+        if useMockData {
+            // Użyj przykładowych danych podczas projektowania UI
+            self.topMovingCoins = Array(repeating: Coin.sample, count: 10)
+        } else {
+            fetchCoinsWithURLSession()
+        }
     }
+    
 }
+
 
 extension HomeViewModel {
     func fetchCoinsWithURLSession() {
@@ -61,7 +68,7 @@ extension HomeViewModel {
     
     func configureTopMovingCoins() {
         let topMovers = coins.sorted(by: {$0.priceChangePercentage24H > $1.priceChangePercentage24H})
-        self.topMovingCoins = Array(topMovers.prefix(5))
+        self.topMovingCoins = Array(topMovers.prefix(10))
     }
 }
 

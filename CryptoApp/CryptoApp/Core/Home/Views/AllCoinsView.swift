@@ -38,8 +38,8 @@ struct AllCoinsView: View {
     }
 }
 
-//#Preview {
-//    
-//    
-//   return AllCoinsView(viewModel: coin)
-//}
+#Preview {
+    
+    
+    return AllCoinsView(viewModel: HomeViewModel())
+}

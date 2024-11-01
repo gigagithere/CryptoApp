@@ -15,17 +15,21 @@ struct TopMoversView: View {
                 .font(.headline)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(viewModel.topMovingCoins) {coin in
+                LazyHStack {
+                    ForEach(viewModel.topMovingCoins) { coin in
                         TopMoversItemView(coin: coin)
+                            
                     }
                 }
+                .scrollTargetLayout()
+                
             }
+            .scrollTargetBehavior(.viewAligned)
+            .contentMargins(25, for: .scrollContent)
         }
-        .padding()
     }
 }
 
-//#Preview {
-//    TopMoversView()
-//}
+#Preview {
+    TopMoversView(viewModel: HomeViewModel())
+}

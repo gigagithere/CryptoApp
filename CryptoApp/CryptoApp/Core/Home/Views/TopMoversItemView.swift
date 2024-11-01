@@ -35,16 +35,26 @@ struct TopMoversItemView: View {
                 .font(.title2)
                 .foregroundStyle(coin.priceChangePercentage24H > 0 ? .green : .red)
         }
-        .frame(width: 150, height: 150)
+        
+        .frame(height: 150)
+        .containerRelativeFrame(.horizontal, count: 2, spacing: 20)
         .background(.itemBg)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color(.systemGray3), lineWidth: 2)
         )
+        .scrollTransition(.animated, axis: .horizontal) { content, phase in
+            content
+                .opacity(phase.isIdentity ? 1.0 : 0.6)
+                .scaleEffect(phase.isIdentity ? 1.0 : 0.8)
+        }
+        
     }
+    
+        
 }
 
-//#Preview {
-//    TopMoversItemView()
-//}
+#Preview {
+    TopMoversItemView(coin: Coin.sample)
+}
 
