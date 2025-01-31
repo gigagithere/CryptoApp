@@ -39,7 +39,5 @@ struct AllCoinsView: View {
 }
 
 #Preview {
-    
-    
-    return AllCoinsView(viewModel: HomeViewModel())
+    AllCoinsView(viewModel: HomeViewModel())
 }

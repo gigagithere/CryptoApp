@@ -13,6 +13,7 @@ struct TopMoversView: View {
         VStack(alignment: .leading){
             Text("Top Movers")
                 .font(.headline)
+                .padding()
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
@@ -21,12 +22,14 @@ struct TopMoversView: View {
                             
                     }
                 }
+                
                 .scrollTargetLayout()
                 
             }
             .scrollTargetBehavior(.viewAligned)
-            .contentMargins(25, for: .scrollContent)
+            .contentMargins(.horizontal, 35, for: .scrollContent)
         }
+        .padding(.vertical)
     }
 }
 

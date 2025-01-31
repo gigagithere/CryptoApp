@@ -9,7 +9,20 @@ import SwiftUI
 
 struct DividerView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            Divider()
+                .frame(width: 150, height: 1)
+                .overlay(.gray.opacity(0.3))
+            
+            Text("OR")
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding(.horizontal, 8)
+            
+            Divider()
+                .frame(width: 150, height: 1)
+                .overlay(.gray.opacity(0.3))
+        }
     }
 }
 

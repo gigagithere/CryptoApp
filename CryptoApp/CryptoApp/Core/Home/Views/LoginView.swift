@@ -1,99 +1,102 @@
-//
-//  ProfileView.swift
-//  CryptoApp
-//
-//  Created by Bartosz Mrugała on 12/12/2024.
-//
-
 import SwiftUI
+import FirebaseAuth
+import LocalAuthentication
+import KeychainSwift
+
+enum NavigationDestination: Hashable {
+    case profile
+    case registration
+}
 
 struct LoginView: View {
-    @State private var email: String = "" // Pole na email
-    @State private var password: String = "" // Pole na hasło
-    @State private var isLoggedIn: Bool = false // Status logowania
-    @State private var showError: Bool = false // Obsługa błędów logowania
+    @StateObject private var authViewModel = AuthViewModel()
+    @State private var email = ""
+    @State private var password = ""
+    @State private var navigationPath = NavigationPath()
 
     var body: some View {
-        NavigationView {
-            VStack {
-                if isLoggedIn {
-                    // Ekran profilu po zalogowaniu
-                    VStack {
-                        Text("Welcome to your profile!")
-                            .font(.title)
-                            .padding()
-
-                        Button(action: {
-                            isLoggedIn = false // Wylogowanie
-                        }) {
-                            Text("Log Out")
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.red)
-                                .cornerRadius(8)
-                        }
-                    }
-                } else {
-                    // Formularz logowania
-                    VStack(spacing: 20) {
-                        Text("Log In")
-                            .font(.largeTitle)
-                            .bold()
-                            .padding(.bottom, 20)
-                        
-                        TextField("Email", text: $email)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .autocapitalization(.none)
-                            .keyboardType(.emailAddress)
-
-                        SecureField("Password", text: $password)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        
-                        if showError {
-                            Text("Invalid email or password")
-                                .foregroundColor(.red)
-                                .font(.caption)
-                        }
-
-                        Button(action: handleLogin) {
-                            Text("Log In")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.blue)
-                                .cornerRadius(8)
-                        }
-                        
-                        NavigationLink(destination: RegistrationView()) {
-                            Text("Don't have an account? Register here.")
-                                .font(.footnote)
-                                .foregroundColor(.blue)
-                        }
-                    }
-                    .padding()
+        NavigationStack(path: $navigationPath) {
+            VStack(spacing: 20) {
+                Text("Log In")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.bottom, 20)
+                
+                CustomTextField(
+                    icon: "envelope",
+                    placeholder: "Email",
+                    text: $email
+                )
+                              
+                CustomTextField(
+                    icon: "lock",
+                    placeholder: "Password",
+                    text: $password
+                )
+            }
+            .padding(.vertical, 50)
+            .padding(.horizontal, 20)
+            
+            VStack(spacing: 20) {
+                Login_RegisterButton(
+                    text: "Log in",
+                    backgroundColor: .black.opacity(0.8),
+                    foregroundColor: .white,
+                    action: { authViewModel.login(email: email, password: password)
+                    })
+                
+                
+                Login_RegisterButton(
+                    text: "Log in with Face ID",
+                    backgroundColor: .yellow.opacity(0.5),
+                    foregroundColor: .white,
+                    action: { authViewModel.authenticateWithFaceID()
+                    })
+                
+                DividerView()
+            
+                Login_RegisterButton(
+                    text: "Sign Up",
+                    backgroundColor: .white,
+                    foregroundColor: .gray,
+                    action: { navigationPath.append(NavigationDestination.registration)
+                    })
+                
+                if authViewModel.showError {
+                    Text(authViewModel.errorMessage)
+                        .foregroundColor(.red)
+                        .font(.caption)
                 }
             }
             .padding()
-            .navigationTitle("Profile")
+            .navigationDestination(
+                for: NavigationDestination.self
+            ) { destination in
+                switch destination {
+                case .profile:
+                    ProfileView(
+                        authViewModel: authViewModel,
+                        handleLogout: {
+                            Task {
+                                try? await authViewModel.signOut()
+                                navigationPath.removeLast()
+                            }
+                        }
+                    )
+                case .registration:
+                    RegistrationView(authViewModel: authViewModel)
+                }
+            }
         }
-    }
-    
-    // Obsługa logowania (do rozbudowy o Firebase)
-    private func handleLogin() {
-        // Przykładowa logika (do zastąpienia Firebase Auth)
-        if email.lowercased() == "test@test.com" && password == "password" {
-            isLoggedIn = true
-            showError = false
-        } else {
-            showError = true
+        .onChange(of: authViewModel.isAuthenticated) { oldValue, newValue in
+            if newValue {
+                navigationPath.append(NavigationDestination.profile)
+            }
         }
     }
 }
-
-
-    
-
 
 #Preview {
     LoginView()
 }
+

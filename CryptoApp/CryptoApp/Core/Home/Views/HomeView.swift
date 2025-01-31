@@ -18,7 +18,6 @@ struct HomeView: View {
                 Divider()
                 
                 AllCoinsView(viewModel: viewModel)
-                
             }
             .navigationTitle("Live Prices")
         }

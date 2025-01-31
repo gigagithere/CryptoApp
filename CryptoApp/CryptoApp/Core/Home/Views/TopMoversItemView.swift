@@ -13,13 +13,11 @@ struct TopMoversItemView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            // image
             KFImage(URL(string: coin.image))
                 .resizable()
                 .frame(width: 32, height: 32)
                 .foregroundColor(.orange)
             
-            // coin info
             HStack {
                 Text(coin.symbol.uppercased())
                     .font(.caption)
@@ -30,14 +28,13 @@ struct TopMoversItemView: View {
                     .foregroundStyle(Color.gray)
             }
             
-            // coin percent change
             Text(coin.priceChangePercentage24H.toPercentString())
                 .font(.title2)
                 .foregroundStyle(coin.priceChangePercentage24H > 0 ? .green : .red)
         }
         
         .frame(height: 150)
-        .containerRelativeFrame(.horizontal, count: 2, spacing: 20)
+        .containerRelativeFrame(.horizontal, count: 2, spacing: 10)
         .background(.itemBg)
         .overlay(
             RoundedRectangle(cornerRadius: 10)

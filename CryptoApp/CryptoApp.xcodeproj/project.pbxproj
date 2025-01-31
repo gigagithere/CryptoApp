@@ -7,7 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		151C84E02D0B5DB7004033A4 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151C84DF2D0B5DB7004033A4 /* MainTabView.swift */; };
+		151C84E22D0B5F27004033A4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151C84E12D0B5F27004033A4 /* LoginView.swift */; };
+		151C84E62D0B62E4004033A4 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151C84E52D0B62E4004033A4 /* RegistrationView.swift */; };
 		1528F4C42C7C7ACB007C8842 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1528F4C32C7C7ACB007C8842 /* HomeView.swift */; };
+		153E491C2D4B7B65007816B0 /* Login_RegisterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153E491B2D4B7B65007816B0 /* Login_RegisterButton.swift */; };
+		153E491E2D4B7FAF007816B0 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153E491D2D4B7FAF007816B0 /* DividerView.swift */; };
+		153E49202D4B84DC007816B0 /* CustomTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153E491F2D4B84DC007816B0 /* CustomTextFieldStyle.swift */; };
+		1569A7022D48D62E007B1BAB /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569A7012D48D62E007B1BAB /* AuthViewModel.swift */; };
+		15A12B372D452AFF00A0DEFE /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A12B362D452AFF00A0DEFE /* ProfileView.swift */; };
+		15A551F82D0DD72400A2AF67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15A551F72D0DD72400A2AF67 /* GoogleService-Info.plist */; };
+		15A551FB2D0DD82600A2AF67 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 15A551FA2D0DD82600A2AF67 /* FirebaseAuth */; };
+		15A551FD2D0DD82600A2AF67 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 15A551FC2D0DD82600A2AF67 /* FirebaseFirestore */; };
 		15A734672C7C7640009CE641 /* CryptoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A734662C7C7640009CE641 /* CryptoAppApp.swift */; };
 		15A734692C7C7640009CE641 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A734682C7C7640009CE641 /* ContentView.swift */; };
 		15A7346B2C7C7642009CE641 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A7346A2C7C7642009CE641 /* Assets.xcassets */; };
@@ -23,6 +34,7 @@
 		15C9E3642C7C9CBB00AC05B1 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C9E3632C7C9CBB00AC05B1 /* Coin.swift */; };
 		15C9E3672C7CE98700AC05B1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 15C9E3662C7CE98700AC05B1 /* Kingfisher */; };
 		15C9E3692C7CEB7300AC05B1 /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C9E3682C7CEB7300AC05B1 /* Double.swift */; };
+		15EFB2F62D4A0C6700EDEE1B /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 15EFB2F52D4A0C6700EDEE1B /* KeychainSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +55,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		151C84DF2D0B5DB7004033A4 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		151C84E12D0B5F27004033A4 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		151C84E52D0B62E4004033A4 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		1528F4C32C7C7ACB007C8842 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		153E491B2D4B7B65007816B0 /* Login_RegisterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_RegisterButton.swift; sourceTree = "<group>"; };
+		153E491D2D4B7FAF007816B0 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
+		153E491F2D4B84DC007816B0 /* CustomTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldStyle.swift; sourceTree = "<group>"; };
+		1569A7012D48D62E007B1BAB /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		15A12B362D452AFF00A0DEFE /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		15A551F72D0DD72400A2AF67 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		15A734632C7C7640009CE641 /* CryptoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A734662C7C7640009CE641 /* CryptoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAppApp.swift; sourceTree = "<group>"; };
 		15A734682C7C7640009CE641 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,6 +82,7 @@
 		15C9E3612C7C8D1D00AC05B1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		15C9E3632C7C9CBB00AC05B1 /* Coin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
 		15C9E3682C7CEB7300AC05B1 /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		15EFB2F32D4A0B6600EDEE1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +91,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				15C9E3672C7CE98700AC05B1 /* Kingfisher in Frameworks */,
+				15A551FB2D0DD82600A2AF67 /* FirebaseAuth in Frameworks */,
+				15EFB2F62D4A0C6700EDEE1B /* KeychainSwift in Frameworks */,
+				15A551FD2D0DD82600A2AF67 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +137,8 @@
 		15A734652C7C7640009CE641 /* CryptoApp */ = {
 			isa = PBXGroup;
 			children = (
-				15A734962C7C76C9009CE641 /* Utilities */,
+				15EFB2F32D4A0B6600EDEE1B /* Info.plist */,
+				15A551F72D0DD72400A2AF67 /* GoogleService-Info.plist */,
 				15A734952C7C76C8009CE641 /* Extensions */,
 				15A734942C7C76C6009CE641 /* Model */,
 				15A734932C7C76C5009CE641 /* Core */,
@@ -181,13 +207,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		15A734962C7C76C9009CE641 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
 		15A734972C7C76E6009CE641 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +219,7 @@
 		15A734982C7C791E009CE641 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				1569A7012D48D62E007B1BAB /* AuthViewModel.swift */,
 				15C9E3612C7C8D1D00AC05B1 /* HomeViewModel.swift */,
 			);
 			path = ViewModels;
@@ -208,11 +228,18 @@
 		15A7349A2C7C7925009CE641 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				151C84DF2D0B5DB7004033A4 /* MainTabView.swift */,
 				1528F4C32C7C7ACB007C8842 /* HomeView.swift */,
+				151C84E12D0B5F27004033A4 /* LoginView.swift */,
+				153E491F2D4B84DC007816B0 /* CustomTextFieldStyle.swift */,
+				151C84E52D0B62E4004033A4 /* RegistrationView.swift */,
+				153E491D2D4B7FAF007816B0 /* DividerView.swift */,
+				153E491B2D4B7B65007816B0 /* Login_RegisterButton.swift */,
 				15C9E3592C7C7D3F00AC05B1 /* TopMoversView.swift */,
 				15C9E35B2C7C7D5200AC05B1 /* TopMoversItemView.swift */,
 				15C9E35D2C7C81CD00AC05B1 /* AllCoinsView.swift */,
 				15C9E35F2C7C81D200AC05B1 /* CoinRowView.swift */,
+				15A12B362D452AFF00A0DEFE /* ProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -235,6 +262,9 @@
 			name = CryptoApp;
 			packageProductDependencies = (
 				15C9E3662C7CE98700AC05B1 /* Kingfisher */,
+				15A551FA2D0DD82600A2AF67 /* FirebaseAuth */,
+				15A551FC2D0DD82600A2AF67 /* FirebaseFirestore */,
+				15EFB2F52D4A0C6700EDEE1B /* KeychainSwift */,
 			);
 			productName = CryptoApp;
 			productReference = 15A734632C7C7640009CE641 /* CryptoApp.app */;
@@ -310,6 +340,8 @@
 			mainGroup = 15A7345A2C7C7640009CE641;
 			packageReferences = (
 				15C9E3652C7CE91100AC05B1 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				15A551F92D0DD82600A2AF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				15EFB2F42D4A0C6700EDEE1B /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			productRefGroup = 15A734642C7C7640009CE641 /* Products */;
 			projectDirPath = "";
@@ -329,6 +361,7 @@
 			files = (
 				15A7346E2C7C7643009CE641 /* Preview Assets.xcassets in Resources */,
 				15A7346B2C7C7642009CE641 /* Assets.xcassets in Resources */,
+				15A551F82D0DD72400A2AF67 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,15 +386,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				151C84E02D0B5DB7004033A4 /* MainTabView.swift in Sources */,
 				15C9E3642C7C9CBB00AC05B1 /* Coin.swift in Sources */,
 				15C9E35A2C7C7D3F00AC05B1 /* TopMoversView.swift in Sources */,
+				151C84E62D0B62E4004033A4 /* RegistrationView.swift in Sources */,
 				15C9E35E2C7C81CD00AC05B1 /* AllCoinsView.swift in Sources */,
+				151C84E22D0B5F27004033A4 /* LoginView.swift in Sources */,
 				1528F4C42C7C7ACB007C8842 /* HomeView.swift in Sources */,
 				15C9E3622C7C8D1D00AC05B1 /* HomeViewModel.swift in Sources */,
 				15A734692C7C7640009CE641 /* ContentView.swift in Sources */,
+				153E491C2D4B7B65007816B0 /* Login_RegisterButton.swift in Sources */,
+				153E491E2D4B7FAF007816B0 /* DividerView.swift in Sources */,
 				15A734672C7C7640009CE641 /* CryptoAppApp.swift in Sources */,
 				15C9E3602C7C81D200AC05B1 /* CoinRowView.swift in Sources */,
 				15C9E3692C7CEB7300AC05B1 /* Double.swift in Sources */,
+				153E49202D4B84DC007816B0 /* CustomTextFieldStyle.swift in Sources */,
+				1569A7022D48D62E007B1BAB /* AuthViewModel.swift in Sources */,
+				15A12B372D452AFF00A0DEFE /* ProfileView.swift in Sources */,
 				15C9E35C2C7C7D5200AC05B1 /* TopMoversItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,11 +570,14 @@
 				DEVELOPMENT_TEAM = 66XYZXW898;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CryptoApp/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Application need Face ID for logging";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -558,11 +602,14 @@
 				DEVELOPMENT_TEAM = 66XYZXW898;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CryptoApp/Info.plist;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Application need Face ID for logging";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -690,6 +737,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		15A551F92D0DD82600A2AF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
 		15C9E3652C7CE91100AC05B1 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -698,13 +753,36 @@
 				minimumVersion = 7.12.0;
 			};
 		};
+		15EFB2F42D4A0C6700EDEE1B /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		15A551FA2D0DD82600A2AF67 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15A551F92D0DD82600A2AF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		15A551FC2D0DD82600A2AF67 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15A551F92D0DD82600A2AF67 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		15C9E3662C7CE98700AC05B1 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 15C9E3652C7CE91100AC05B1 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		15EFB2F52D4A0C6700EDEE1B /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 15EFB2F42D4A0C6700EDEE1B /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
