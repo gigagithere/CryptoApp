@@ -15,6 +15,10 @@ struct AllCoinsView: View {
             Text("All Coins")
                 .font(.headline)
                 .padding()
+            Button("Refresh Data") {
+                            viewModel.shouldRefresh.toggle() // Wymuś odświeżenie
+                        }
+                        .padding()
             
             HStack {
                 Text("Coin")
@@ -30,7 +34,11 @@ struct AllCoinsView: View {
             ScrollView {
                 VStack {
                     ForEach(viewModel.coins) { coin in
-                        CoinRowView(coin: coin)
+                        NavigationLink(destination: CoinDetailView(coin: coin)){
+                            CoinRowView(coin: coin)
+                        }
+                        .buttonStyle(.plain)
+                        
                     }
                 }
             }

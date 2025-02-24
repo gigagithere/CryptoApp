@@ -8,7 +8,7 @@ struct ProfileView: View {
     let handleLogout: () -> Void
     @State private var isPushNotificationsOn: Bool = true
     @State private var isFaceIdOn: Bool = true
-   @AppStorage("isDarkModeOn") private var isDarkModeOn: Bool = false
+    @AppStorage("isDarkModeOn") private var isDarkModeOn: Bool = false
 
 
     var body: some View {
