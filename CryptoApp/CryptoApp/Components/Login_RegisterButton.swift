@@ -22,13 +22,23 @@ struct Login_RegisterButton: View {
             .padding()
             .frame(maxWidth: .infinity)
             .background(backgroundColor)
+            
             .foregroundColor(foregroundColor)
             .clipShape(.capsule)
-            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+            .overlay(
+                Capsule()
+                    .stroke(Color.black.opacity(0.2), lineWidth: 2)
+            )
         }
     }
 }
 
 #Preview {
-    Login_RegisterButton(text: "Sign up", backgroundColor: Color.black.opacity(0.5), foregroundColor: .white, action: {})
+    Login_RegisterButton(
+        text: "Sign up",
+        backgroundColor: Color.black.opacity(0.5),
+        foregroundColor: .white,
+        action: {
+        }
+    )
 }

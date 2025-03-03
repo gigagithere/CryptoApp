@@ -2,10 +2,9 @@ import SwiftUI
 import FirebaseAuth
 
 struct ProfileView: View {
-    @ObservedObject var authViewModel: AuthViewModel
+    @ObservedObject var authViewModel: AuthService
     @Environment(\.dismiss) private var dismiss
     
-    let handleLogout: () -> Void
     @State private var isPushNotificationsOn: Bool = true
     @State private var isFaceIdOn: Bool = true
     @AppStorage("isDarkModeOn") private var isDarkModeOn: Bool = false
@@ -19,25 +18,23 @@ struct ProfileView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80, height: 80)
-                    .foregroundColor(.black.opacity(0.9))
+                    .foregroundColor(.customDarkBlue.opacity(0.8))
                 
-                Text(authViewModel.userEmail.isEmpty ? "Loading..." : authViewModel.userEmail)
-                .font(.title2)
-                .bold()
-                .padding(.bottom)
+                Text("hrr")
+                    .font(.title2)
+                    .bold()
+                    .padding(.bottom)
                 
-                Button(action: {
-                    print("Edit profile tapped")
-                }) {
-                    Text("Edit profile")
-                        .frame(width: 130, height: 40)
-                        .buttonBorderShape(.capsule)
-                        .background(Color.yellow.opacity(0.6))
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
-                }
+                Login_RegisterButton(
+                    text: "Edit Profile",
+                    backgroundColor: .customDarkBlue.opacity(0.8),
+                    foregroundColor: .white,
+                    action: {})
+                
+                    
+                .padding(.horizontal, 100)
             }
+        
             .padding(20)
             
             // Lista ustawień i przycisk wylogowania
@@ -82,9 +79,7 @@ struct ProfileView: View {
                 }
                 
                 // Przycisk Logout
-                Button(action: {
-                    logoutUser()
-                }) {
+                Button(action: { Task { try await AuthService.shared.signOut()} }) {
                     HStack {
                         Image(systemName: "arrow.uturn.backward")
                             .foregroundColor(.red)
@@ -93,30 +88,13 @@ struct ProfileView: View {
                     }
                 }
             }
-        }
-        .preferredColorScheme(isDarkModeOn ? .dark : .light)
-        .navigationBarBackButtonHidden(true)
-        .alert(isPresented: $authViewModel.showError) {
-            Alert(
-                title: Text("Error"),
-                message: Text(authViewModel.errorMessage),
-                dismissButton: .default(Text("OK"))
-            )
-        }
+            .scrollDisabled(true)
+        }  .preferredColorScheme(isDarkModeOn ? .dark : .light)
+            .tint(.customDarkBlue.opacity(0.8))
     }
-    
-    private func logoutUser() {
-        Task {
-            do {
-                try await authViewModel.signOut()
-                handleLogout() // Powiadomienie nadrzędnego widoku o wylogowaniu
-            } catch {
-                authViewModel.showError = true
-                authViewModel.errorMessage = "Failed to log out: \(error.localizedDescription)"
-            }
-        }
-    }
+      
 }
+    
 #Preview {
-    ProfileView(authViewModel: AuthViewModel(), handleLogout: {})
+    ProfileView(authViewModel: AuthService() )
 }

@@ -15,10 +15,6 @@ struct AllCoinsView: View {
             Text("All Coins")
                 .font(.headline)
                 .padding()
-            Button("Refresh Data") {
-                            viewModel.shouldRefresh.toggle() // Wymuś odświeżenie
-                        }
-                        .padding()
             
             HStack {
                 Text("Coin")
@@ -38,9 +34,14 @@ struct AllCoinsView: View {
                             CoinRowView(coin: coin)
                         }
                         .buttonStyle(.plain)
-                        
+                    }
+                    
                     }
                 }
+            }
+        .onAppear {
+            Task {
+                await viewModel.fetchData() // Pobranie danych po załadowaniu widoku
             }
         }
     }

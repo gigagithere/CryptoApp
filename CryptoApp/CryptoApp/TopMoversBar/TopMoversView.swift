@@ -18,13 +18,13 @@ struct TopMoversView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
                     ForEach(viewModel.topMovingCoins) { coin in
-                        TopMoversItemView(coin: coin)
-                            
+                        NavigationLink(destination: CoinDetailView(coin: coin)){
+                            TopMoversItemView(coin: coin)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
-                
                 .scrollTargetLayout()
-                
             }
             .scrollTargetBehavior(.viewAligned)
             .contentMargins(.horizontal, 35, for: .scrollContent)
