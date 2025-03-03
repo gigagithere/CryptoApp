@@ -89,7 +89,7 @@ struct ProfileView: View {
                 }
             }
             .scrollDisabled(true)
-        }  .preferredColorScheme(isDarkModeOn ? .dark : .light)
+        } 
             .tint(.customDarkBlue.opacity(0.8))
     }
       

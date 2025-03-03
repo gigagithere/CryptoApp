@@ -19,10 +19,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct CryptoAppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @AppStorage("isDarkModeOn") private var isDarkModeOn: Bool = false
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(isDarkModeOn ? .dark : .light)
         }
     }
 }
