@@ -52,7 +52,7 @@ struct CoinRowView: View {
 }
 
 #Preview {
-    return CoinRowView(coin: Coin.sample)
+    CoinRowView(coin: Coin.sample)
 }
 
 

@@ -14,6 +14,8 @@
 		153E491C2D4B7B65007816B0 /* Login_RegisterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153E491B2D4B7B65007816B0 /* Login_RegisterButton.swift */; };
 		153E491E2D4B7FAF007816B0 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153E491D2D4B7FAF007816B0 /* DividerView.swift */; };
 		153E49202D4B84DC007816B0 /* CustomTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153E491F2D4B84DC007816B0 /* CustomTextFieldStyle.swift */; };
+		155E57A72D89B42D00D51CD8 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155E57A62D89B42800D51CD8 /* Date.swift */; };
+		15613A0A2D89A39A003018E4 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15613A092D89A39A003018E4 /* ChartView.swift */; };
 		1569A7022D48D62E007B1BAB /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569A7012D48D62E007B1BAB /* AuthService.swift */; };
 		156F6F012D75E4EC00446CC4 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156F6F002D75E4EC00446CC4 /* ContentViewModel.swift */; };
 		159B65FD2D73A0FC001D66D7 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159B65FC2D73A0FC001D66D7 /* RegistrationViewModel.swift */; };
@@ -65,6 +67,8 @@
 		153E491B2D4B7B65007816B0 /* Login_RegisterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_RegisterButton.swift; sourceTree = "<group>"; };
 		153E491D2D4B7FAF007816B0 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		153E491F2D4B84DC007816B0 /* CustomTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldStyle.swift; sourceTree = "<group>"; };
+		155E57A62D89B42800D51CD8 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		15613A092D89A39A003018E4 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		1569A7012D48D62E007B1BAB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		156F6F002D75E4EC00446CC4 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		159B65FC2D73A0FC001D66D7 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				15CA59372D4CD186004D43EF /* CoinDetailView.swift */,
+				15613A092D89A39A003018E4 /* ChartView.swift */,
 			);
 			path = CoinDetail;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 		15A734952C7C76C8009CE641 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				155E57A62D89B42800D51CD8 /* Date.swift */,
 				15C9E3682C7CEB7300AC05B1 /* Double.swift */,
 			);
 			path = Extensions;
@@ -448,6 +454,7 @@
 				15C9E35A2C7C7D3F00AC05B1 /* TopMoversView.swift in Sources */,
 				151C84E62D0B62E4004033A4 /* RegistrationView.swift in Sources */,
 				15C9E35E2C7C81CD00AC05B1 /* AllCoinsView.swift in Sources */,
+				15613A0A2D89A39A003018E4 /* ChartView.swift in Sources */,
 				151C84E22D0B5F27004033A4 /* LoginView.swift in Sources */,
 				1528F4C42C7C7ACB007C8842 /* HomeView.swift in Sources */,
 				156F6F012D75E4EC00446CC4 /* ContentViewModel.swift in Sources */,
@@ -460,6 +467,7 @@
 				15A734672C7C7640009CE641 /* CryptoAppApp.swift in Sources */,
 				15C9E3602C7C81D200AC05B1 /* CoinRowView.swift in Sources */,
 				15C9E3692C7CEB7300AC05B1 /* Double.swift in Sources */,
+				155E57A72D89B42D00D51CD8 /* Date.swift in Sources */,
 				153E49202D4B84DC007816B0 /* CustomTextFieldStyle.swift in Sources */,
 				1569A7022D48D62E007B1BAB /* AuthService.swift in Sources */,
 				15A12B372D452AFF00A0DEFE /* ProfileView.swift in Sources */,

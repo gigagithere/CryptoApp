@@ -24,6 +24,7 @@ struct Coin: Codable, Identifiable {
     let atl, atlChangePercentage: Double?
     let atlDate: String?
     let lastUpdated: String?
+    let sparklineIn7D: SparklineIn7D?
     
     enum CodingKeys: String, CodingKey {
         case id, symbol, name, image
@@ -48,6 +49,7 @@ struct Coin: Codable, Identifiable {
         case atlChangePercentage = "atl_change_percentage"
         case atlDate = "atl_date"
         case lastUpdated = "last_updated"
+        case sparklineIn7D = "spark_line_in_7d"
     }
 }
 
@@ -77,9 +79,14 @@ struct Coin: Codable, Identifiable {
             atl: 67.81,
             atlChangePercentage: 24570.0,
             atlDate: "2013-07-06T00:00:00.000Z",
-            lastUpdated: "2024-08-26T12:00:00.000Z"
+            lastUpdated: "2024-08-26T12:00:00.000Z",
+            sparklineIn7D: SparklineIn7D(price: [33.4440, 35.555, 34.444, 36.666, 35.555, 34.444, 36.222, 22.444, 25.555, 20.222, 5.222])
         )
     }
+
+struct SparklineIn7D: Codable {
+    let price: [Double]?
+}
 
     
 
