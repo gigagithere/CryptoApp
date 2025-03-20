@@ -8,7 +8,6 @@
 import Foundation
 
 extension Double {
-    
     private var currencyFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.usesGroupingSeparator = true
@@ -28,13 +27,32 @@ extension Double {
     }
     
     func toCurrency() -> String {
-        return currencyFormatter.string(for: self) ?? "$0.00"
+        currencyFormatter.string(for: self) ?? "$0.00"
     }
     
     func toPercentString() -> String {
-        guard let numberAsString = numberFormatter.string(for: self) else { return " "}
-        return numberAsString + "%"
+        (numberFormatter.string(for: self) ?? "") + "%"
     }
     
+    func toAbbreviatedString() -> String {
+        let absValue = abs(self)
+        let sign = self < 0 ? "-" : ""
+        
+        switch absValue {
+        case 1_000_000_000_000...:
+            let fraction = absValue / 1_000_000_000_000
+            return "\(sign)\(numberFormatter.string(for: fraction) ?? "\(fraction)")Tr"
+        case 1_000_000_000...:
+            let fraction = absValue / 1_000_000_000
+            return "\(sign)\(numberFormatter.string(for: fraction) ?? "\(fraction)")B"
+        case 1_000_000...:
+            let fraction = absValue / 1_000_000
+            return "\(sign)\(numberFormatter.string(for: fraction) ?? "\(fraction)")M"
+        case 1_000...:
+            let fraction = absValue / 1_000
+            return "\(sign)\(numberFormatter.string(for: fraction) ?? "\(fraction)")K"
+        default:
+            return "\(sign)\(numberFormatter.string(for: absValue) ?? "\(absValue)")"
+        }
+    }
 }
-

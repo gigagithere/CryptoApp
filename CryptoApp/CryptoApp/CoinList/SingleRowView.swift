@@ -1,7 +1,7 @@
 import SwiftUI
 import Kingfisher
 
-struct CoinRowView: View {
+struct SingleRowView: View {
     let coin: Coin
     
     var body: some View {
@@ -52,7 +52,7 @@ struct CoinRowView: View {
 }
 
 #Preview {
-    CoinRowView(coin: Coin.sample)
+    SingleRowView(coin: Coin.sample)
 }
 
 

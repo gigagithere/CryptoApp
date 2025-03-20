@@ -22,13 +22,8 @@ struct Login_RegisterButton: View {
             .padding()
             .frame(maxWidth: .infinity)
             .background(backgroundColor)
-            
             .foregroundColor(foregroundColor)
             .clipShape(.capsule)
-            .overlay(
-                Capsule()
-                    .stroke(Color.black.opacity(0.2), lineWidth: 2)
-            )
         }
     }
 }

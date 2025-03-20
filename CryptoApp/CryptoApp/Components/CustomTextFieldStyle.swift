@@ -31,6 +31,7 @@ struct CustomTextField: View {
                 .disableAutocorrection(true)
             }
             .padding()
+            .frame(height: 40)
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
@@ -42,4 +43,8 @@ struct CustomTextField: View {
             .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
         }
     }
+}
+
+#Preview {
+    CustomTextField(icon: "magnifyingglass", placeholder: "Search Text", text: .constant("Test"))
 }

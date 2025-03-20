@@ -15,24 +15,25 @@ enum Tab: String, CaseIterable {
 }
 
 struct MainTabView: View {
-
     @State private var selectedTab: Tab = .home
     @StateObject private var authViewModel = AuthService()
+    @StateObject private var homeViewModel = HomeViewModel()
+    @StateObject private var topMoversVM = TopMoversViewModel()
     
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
                 switch selectedTab {
                 case .home:
-                    HomeView()
+                    HomeView(homeVM: homeViewModel, topMoversVM: topMoversVM)
                 case .profile:
                     ProfileView(authViewModel: authViewModel)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            Divider()
             
             VStack {
-                Divider()
                 HStack {
                     ForEach(Tab.allCases, id: \.self) { tab in
                         Button(action: {
@@ -59,10 +60,14 @@ struct MainTabView: View {
                         }
                     }
                 }
-                .padding(.top, 8)
             }
-            .frame(height: 60)
-            .background(Color.white.opacity(0.1))
+            .frame(height: 48)
+            .padding(.top, 8)
+            .background(
+                Color(.gray)
+                    .opacity(0.1)
+                    .ignoresSafeArea(edges: .bottom)
+            )
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }

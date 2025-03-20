@@ -8,23 +8,37 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var homeVM: HomeViewModel
+    @StateObject var topMoversVM: TopMoversViewModel
     
     var body: some View {
-        NavigationView {
-            ScrollView(.vertical) {
-                TopMoversView(viewModel: viewModel)
-                 
-                Divider()
-                
-                AllCoinsView(viewModel: viewModel)
+        NavigationStack {
+            ScrollView {
+                VStack {
+                    TopMoversView(topMoversVM: topMoversVM)
+                        .frame(height: 150)
+                        .padding()
+                    
+                    Divider()
+                    
+                    CustomSearchBar(text: $homeVM.searchText)
+                        .padding(.top, 10)
+                        
+                    
+                    AllCoinsView(homeVM: homeVM)
+                }
             }
             .navigationTitle("Live Prices")
-         
+            .onAppear {
+                Task {
+                    await homeVM.fetchData()
+                    topMoversVM.updateTopMovers(from: homeVM.coins)
+                }
+            }
         }
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(homeVM: HomeViewModel(), topMoversVM: TopMoversViewModel())
 }

@@ -8,31 +8,32 @@
 import SwiftUI
 
 struct TopMoversView: View {
-    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var topMoversVM: TopMoversViewModel
+    
     var body: some View {
         VStack(alignment: .leading){
             Text("Top Movers")
                 .font(.headline)
-                .padding()
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack {
-                    ForEach(viewModel.topMovingCoins) { coin in
+                    ForEach(topMoversVM.topMovingCoins) { coin in
                         NavigationLink(destination: CoinDetailView(coin: coin)){
                             TopMoversItemView(coin: coin)
                         }
                         .buttonStyle(.plain)
                     }
                 }
-                .scrollTargetLayout()
+                
             }
-            .scrollTargetBehavior(.viewAligned)
+            .frame(height: 150)
+            .scrollTargetLayout()
             .contentMargins(.horizontal, 35, for: .scrollContent)
+            .scrollTargetBehavior(.viewAligned)
         }
-        .padding(.vertical)
     }
 }
 
 #Preview {
-    TopMoversView(viewModel: HomeViewModel())
+    TopMoversView(topMoversVM: TopMoversViewModel())
 }
