@@ -80,4 +80,17 @@ struct FormatStyleTests {
         #expect(5_300.0.formatted(style.locale(en)) == "5.3K")
         #expect(999.0.formatted(style.locale(en)) == "999")
     }
+
+    // MARK: - Age ("Updated ... ago")
+
+    @Test func ageUsesOnlyTheLargestUnit() {
+        let style: Date.RelativeFormatStyle = .age
+        let now = Date.now
+
+        #expect(now.addingTimeInterval(-32.2).formatted(style.locale(en)) == "32 seconds ago")
+        #expect(now.addingTimeInterval(-65).formatted(style.locale(en)) == "1 minute ago")
+        #expect(now.addingTimeInterval(-125).formatted(style.locale(en)) == "2 minutes ago")
+        #expect(now.addingTimeInterval(-920).formatted(style.locale(en)) == "15 minutes ago") // 15 min 20 s
+        #expect(now.addingTimeInterval(-3 * 3600 - 700).formatted(style.locale(en)) == "3 hours ago")
+    }
 }

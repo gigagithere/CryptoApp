@@ -41,10 +41,10 @@ struct TopMoversItemView: View {
         .padding(Spacing.l)
         .frame(maxWidth: .infinity, minHeight: 120, alignment: .leading) // grows with the text size
         .containerRelativeFrame(.horizontal, count: 2, spacing: 10)
-        .background(.ultraThinMaterial.opacity(0.9))
+        .card()
         .overlay {
             RoundedRectangle(cornerRadius: Radius.medium)
-                .stroke(Color(.systemGray3), lineWidth: 2)
+                .strokeBorder(.separator)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(coin.symbol.uppercased()), \(coin.currentPrice.formatted(.usd))")

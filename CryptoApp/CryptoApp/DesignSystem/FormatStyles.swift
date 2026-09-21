@@ -62,3 +62,8 @@ nonisolated extension FormatStyle where Self == Decimal.FormatStyle.Percent {
 nonisolated extension FormatStyle where Self == FloatingPointFormatStyle<Double>.Percent {
     static var percentChangeSigned: Self { .percent.precision(.fractionLength(2)).sign(strategy: .always()) }
 }
+
+nonisolated extension FormatStyle where Self == Date.RelativeFormatStyle {
+    /// How long ago something happened, in its largest unit only: "32 seconds ago", "2 minutes ago", "3 hours ago".
+    static var age: Self { .relative(presentation: .numeric, unitsStyle: .wide) }
+}

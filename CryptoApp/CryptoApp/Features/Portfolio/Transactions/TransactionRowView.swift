@@ -14,6 +14,7 @@ struct TransactionRowView: View {
     
     var body: some View {
         let isBuy = transaction.type == .buy
+        let symbol = transaction.coinSymbol.uppercased()
         
         VStack(spacing: 0) {
             Button {
@@ -21,54 +22,36 @@ struct TransactionRowView: View {
                     isExpanded.toggle()
                 }
             } label: {
-                HStack(spacing: Spacing.l) {
-                    // Transaction type indicator
-                    VStack(spacing: 5) {
-                        Image(systemName: isBuy ? "plus.circle.fill" : "minus.circle.fill")
-                            .font(.title2)
-                            .foregroundStyle(isBuy ? .green : .red)
-                            .frame(width: 28, height: 28)
+                HStack(spacing: Spacing.m) {
+                    Image(systemName: isBuy ? "plus.circle.fill" : "minus.circle.fill")
+                        .font(.title2)
+                        .foregroundStyle(isBuy ? .green : .red)
+                    
+                    CoinImage(url: transaction.imageUrl, symbol: transaction.coinSymbol, size: 32)
+                        .clipShape(.circle)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        // The wording says what happened, so the color isn't the only clue
+                        Text(isBuy ? "Bought \(transaction.quantity, format: .quantity) \(symbol)"
+                                   : "Sold \(transaction.quantity, format: .quantity) \(symbol)")
+                            .font(.subheadline)
+                            .lineLimit(1)
                         
-                        Text(transaction.type.rawValue)
+                        Text(transaction.date, format: .dateTime.day().month(.abbreviated).hour().minute())
                             .secondaryText()
+                            .lineLimit(1)
                     }
                     
-                    // Coin image and details
-                    HStack(spacing: 10) {
-                        CoinImage(url: transaction.imageUrl, symbol: transaction.coinSymbol, size: 32)
-                            .clipShape(.circle)
+                    Spacer(minLength: Spacing.s)
+                    
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(transaction.totalValue, format: .usdAmount)
+                            .font(.subheadline)
+                            .lineLimit(1)
                         
-                        VStack(alignment: .leading, spacing: 2) {
-                            HStack(spacing: 6) {
-                                Text(transaction.coinSymbol.uppercased())
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                
-                                Text("• \(transaction.quantity, format: .quantity)")
-                                    .secondaryText()
-                            }
-                            
-                            Text(transaction.date.formatted(date: .abbreviated, time: .shortened))
-                                .secondaryText()
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text(transaction.totalValue, format: .usdAmount)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                                .lineLimit(1)
-                            
-                            HStack(spacing: Spacing.xs) {
-                                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                                
-                                Text("Details")
-                                    .secondaryText()
-                            }
-                        }
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
                     }
                 }
                 .padding(.horizontal, Spacing.l)

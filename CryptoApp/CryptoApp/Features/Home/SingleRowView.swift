@@ -23,14 +23,13 @@ struct SingleRowView: View {
         let layout = isLargeText ? AnyLayout(VStackLayout(alignment: .leading, spacing: Spacing.xs))
                                  : AnyLayout(HStackLayout())
         
-        HStack(spacing: Spacing.s) {
+        HStack(spacing: 0) {
             WatchlistButton(coinID: coin.id, font: .caption)
             
             NavigationLink(value: Route.coin(id: coin.id)) {
                 HStack(spacing: Spacing.m) {
                     Text(coin.marketCapRank, format: .number)
                         .secondaryText()
-                        .fontWeight(.medium)
                         .frame(minWidth: 20, alignment: .leading)
                     
                     CoinImage(url: coin.image, symbol: coin.symbol)
@@ -39,12 +38,10 @@ struct SingleRowView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(coin.name)
                                 .font(.subheadline)
-                                .fontWeight(.medium)
                                 .lineLimit(1)
                             
                             Text(coin.symbol.uppercased())
                                 .font(.caption)
-                                .fontWeight(.medium)
                                 .foregroundStyle(.secondary)
                         }
                         
@@ -55,7 +52,6 @@ struct SingleRowView: View {
                         VStack(alignment: isLargeText ? .leading : .trailing, spacing: 2) {
                             Text(coin.currentPrice, format: .usd)
                                 .font(.subheadline)
-                                .fontWeight(.medium)
                             
                             // The sign backs up the color for people who can't tell green from red
                             HStack(spacing: 3) {
@@ -64,7 +60,6 @@ struct SingleRowView: View {
                                 
                                 Text(abs(coin.priceChangePercentage24H) / 100, format: .percentChange)
                                     .font(.caption)
-                                    .fontWeight(.medium)
                             }
                             .foregroundStyle(isUp ? .green : .red)
                         }
@@ -78,6 +73,9 @@ struct SingleRowView: View {
             .buttonStyle(.plain)
         }
         .padding(.vertical, Spacing.xs)
+        // The star's tap target is 44 pt wide but its icon only about 15 pt and centred in it: pull the row
+        // left so the icon lines up with the screen margin (title, search field) instead of floating inward
+        .padding(.leading, -Spacing.l)
     }
 }
 

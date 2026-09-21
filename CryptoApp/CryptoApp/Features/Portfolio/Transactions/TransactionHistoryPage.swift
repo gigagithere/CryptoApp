@@ -32,15 +32,14 @@ struct TransactionHistoryPage: View {
                         
                         LabeledValue(title: "Latest Activity", alignment: .trailing) {
                             if let latest = transactions.first {
-                                Text(latest.date.formatted(date: .numeric, time: .omitted))
+                                Text(latest.date, format: .dateTime.day().month(.abbreviated).year())
                                     .font(.subheadline)
-                                    .fontWeight(.medium)
                             }
                         }
                     }
                     .padding()
                     .card()
-                    .padding(.horizontal, Spacing.xl)
+                    .padding(.horizontal, Spacing.l)
                     .padding(.top, Spacing.s)
                     
                     ScrollView {
@@ -52,7 +51,7 @@ struct TransactionHistoryPage: View {
                                 )
                             }
                         }
-                        .padding(.horizontal, Spacing.xl)
+                        .padding(.horizontal, Spacing.l)
                         .safeAreaPadding(.bottom)
                     }
                 }

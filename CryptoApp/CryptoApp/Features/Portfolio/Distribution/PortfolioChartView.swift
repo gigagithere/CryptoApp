@@ -25,7 +25,6 @@ struct PortfolioChartView: View {
                 HStack {
                     Text("Portfolio Distribution")
                         .font(.headline)
-                        .fontWeight(.semibold)
                     
                     Spacer()
                     
@@ -61,7 +60,6 @@ struct PortfolioChartView: View {
                             if chartData.count > 3 {
                                 Text("Additional Holdings")
                                     .font(.subheadline)
-                                    .fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 
                                 ChartLegend(data: Array(chartData.dropFirst(3)), maxItems: chartData.count)
@@ -79,7 +77,6 @@ struct PortfolioChartView: View {
                                 LabeledValue(title: "Portfolio Summary") {
                                     Text("Total: \(total, format: .usdAmount)")
                                         .font(.subheadline)
-                                        .fontWeight(.medium)
                                 }
                                 
                                 Spacer()
@@ -87,7 +84,6 @@ struct PortfolioChartView: View {
                                 LabeledValue(title: "Diversification", alignment: .trailing) {
                                     Text("\(chartData.count) different coins")
                                         .font(.subheadline)
-                                        .fontWeight(.medium)
                                 }
                             }
                             .padding(.top, Spacing.s)

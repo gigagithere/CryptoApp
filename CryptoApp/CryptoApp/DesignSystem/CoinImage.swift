@@ -27,7 +27,6 @@ struct CoinImage: View {
                     .overlay {
                         Text(symbol.prefix(1).uppercased())
                             .font(.caption)
-                            .fontWeight(.medium)
                     }
             }
             .retry(maxCount: 3, interval: .seconds(2))

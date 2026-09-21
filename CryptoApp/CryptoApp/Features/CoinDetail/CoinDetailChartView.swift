@@ -77,12 +77,26 @@ struct CoinDetailChartView: View {
                 RuleMark(x: .value("Date", selectedPoint.date))
                     .foregroundStyle(.gray)
                     .lineStyle(StrokeStyle(lineWidth: 1))
-                    .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
-                        Text(selectedPoint.price, format: .usd)
-                            .font(.caption)
-                            .padding(5)
-                            .background(.regularMaterial, in: .rect(cornerRadius: 5))
+                    // Negative spacing pulls the label down into the top of the plot, so it doesn't cover the screen title above
+                    .annotation(position: .top, spacing: -44, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
+                        // A solid fill on purpose: a material has nothing to blur in a chart annotation and shows up black
+                        VStack(spacing: 2) {
+                            Text(selectedPoint.price, format: .usd)
+                                .bold()
+                            // The sparkline has no timestamps, so the time is approximate (one price per hour)
+                            Text(selectedPoint.date, format: .dateTime.day().month(.abbreviated).hour().minute())
+                                .foregroundStyle(.secondary)
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.primary)
+                        .padding(.horizontal, Spacing.s)
+                        .padding(.vertical, Spacing.xs)
+                        .background(.background.secondary, in: .rect(cornerRadius: Radius.small))
+                        .shadow(color: .black.opacity(0.15), radius: 3, y: 1)
                     }
+
+                PointMark(x: .value("Date", selectedPoint.date), y: .value("Price", selectedPoint.price))
+                    .foregroundStyle(lineColor)
             }
         }
         .chartYScale(domain: yDomain)

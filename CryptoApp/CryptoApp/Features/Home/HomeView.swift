@@ -23,7 +23,7 @@ struct HomeView: View {
                         }
                         
                         TopMoversView()
-                            .padding()
+                            .padding(.vertical)
                         
                         Divider()
                         

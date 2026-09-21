@@ -31,7 +31,6 @@ struct PortfolioSummaryView: View {
                         .font(.caption)
                     Text("\(profitLoss, format: .usdChange) (\(profitLossPercentage / 100, format: .percentChangeSigned))")
                         .font(.headline)
-                        .fontWeight(.semibold)
                 }
                 .foregroundStyle(profitLoss >= 0 ? .green : .red)
                 

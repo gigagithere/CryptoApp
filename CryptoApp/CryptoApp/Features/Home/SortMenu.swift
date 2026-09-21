@@ -38,12 +38,13 @@ struct SortMenu: View {
             HStack(spacing: 6) {
                 Image(systemName: option.iconName)
                 Text("Sort")
-                    .fontWeight(.medium)
                 Image(systemName: "chevron.down")
                     .font(.caption2)
             }
             .font(.subheadline)
             .foregroundStyle(.secondary)
+            .frame(minHeight: 44)
+            .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .sensoryFeedback(.selection, trigger: option)

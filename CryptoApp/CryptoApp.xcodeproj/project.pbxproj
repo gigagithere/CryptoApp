@@ -59,6 +59,7 @@
 		82631E5538C96A8EF64FC66A /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BE6EFFA02EE758534D6868 /* DividerView.swift */; };
 		8327156145716800A8EF969B /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2313250F0473FC23300E4993 /* AppTheme.swift */; };
 		8598F9D779487DE818FBB8FA /* LabeledValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBE64DB9395C9962D295A84 /* LabeledValue.swift */; };
+		85A05AD44B282F7DD16F978B /* QuantityChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B7E17CA0B027CB0D286E47 /* QuantityChip.swift */; };
 		88722BDC9B31A2D80F0D093E /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31AB4F5BE7E9615E4D4A5538 /* AuthButton.swift */; };
 		889D211251F2A1980B7A764C /* TransactionType+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48ACC2A85E8AEDDBA4F6389F /* TransactionType+Display.swift */; };
 		8B51ACB95616A4E02A25EF84 /* Watchlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 992CEC6E93A79BF7D6E6B0BF /* Watchlist.swift */; };
@@ -105,6 +106,7 @@
 		F293A1AE2138EAF124878D9E /* MockCoinRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC6D9C91F8A71AAC31211FD /* MockCoinRepository.swift */; };
 		F86F2E4A41DF61944D7332EA /* FormatStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B6F2C936DE25C9086F4694 /* FormatStyleTests.swift */; };
 		F8EE65380E5154B0A443788E /* Decimal+Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DC22A0016360BA57925DC7 /* Decimal+Price.swift */; };
+		FAE3C89C9A820414A7B0279D /* PriceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5032CDA827DEDD7E4E1104C9 /* PriceHeaderView.swift */; };
 		FAEDD2B274D90D8CB6D9D56D /* MockPortfolioFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231FDB8B917F384413C19400 /* MockPortfolioFirestoreService.swift */; };
 		FFCFFDFB78C9C377A00FB90A /* DecimalPriceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE27CDFFEA94C7016CF14800 /* DecimalPriceTests.swift */; };
 /* End PBXBuildFile section */
@@ -171,6 +173,7 @@
 		2F68E08A003EEE15FF4C6B4D /* TradeInfoCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeInfoCard.swift; sourceTree = "<group>"; };
 		31AB4F5BE7E9615E4D4A5538 /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		35DC22A0016360BA57925DC7 /* Decimal+Price.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Price.swift"; sourceTree = "<group>"; };
+		38B7E17CA0B027CB0D286E47 /* QuantityChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantityChip.swift; sourceTree = "<group>"; };
 		3F5734C2A651D2A172BF36DE /* SingleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleRowView.swift; sourceTree = "<group>"; };
 		401D9CCEA6D779B052860BFA /* TransactionHistoryPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHistoryPage.swift; sourceTree = "<group>"; };
 		4167DAB8551A93D965460820 /* TradeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeViewModel.swift; sourceTree = "<group>"; };
@@ -178,6 +181,7 @@
 		4AE3097D54D820FB47D6C2DC /* QuickActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionsView.swift; sourceTree = "<group>"; };
 		4B6D96BDE12BBFD7D157C9FB /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		4CF5AF5F02E866C292DF174B /* WatchlistButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchlistButton.swift; sourceTree = "<group>"; };
+		5032CDA827DEDD7E4E1104C9 /* PriceHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceHeaderView.swift; sourceTree = "<group>"; };
 		51290F1E0F5E9E2BA6B62610 /* SortOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOrder.swift; sourceTree = "<group>"; };
 		590213D746A6C9A1C95E9019 /* CoinServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinServiceTests.swift; sourceTree = "<group>"; };
 		67FAB5B308CA0880E0C4A02F /* CoinDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDecodingTests.swift; sourceTree = "<group>"; };
@@ -459,6 +463,7 @@
 				F59381E25805FC882861F43F /* InfoItem.swift */,
 				2864A37CA1FEF79C1797B41E /* InfoSectionView.swift */,
 				4AE3097D54D820FB47D6C2DC /* QuickActionsView.swift */,
+				5032CDA827DEDD7E4E1104C9 /* PriceHeaderView.swift */,
 			);
 			path = CoinDetail;
 			sourceTree = "<group>";
@@ -521,6 +526,7 @@
 			children = (
 				81CCCB6647BE317313C9E2AA /* TradingModalView.swift */,
 				2F68E08A003EEE15FF4C6B4D /* TradeInfoCard.swift */,
+				38B7E17CA0B027CB0D286E47 /* QuantityChip.swift */,
 			);
 			path = Trading;
 			sourceTree = "<group>";
@@ -749,6 +755,8 @@
 				D967F4E2185D811E7B5C9336 /* StatusBanner.swift in Sources */,
 				8327156145716800A8EF969B /* AppTheme.swift in Sources */,
 				0D44EFF45156AF096D13352A /* SampleData.swift in Sources */,
+				FAE3C89C9A820414A7B0279D /* PriceHeaderView.swift in Sources */,
+				85A05AD44B282F7DD16F978B /* QuantityChip.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

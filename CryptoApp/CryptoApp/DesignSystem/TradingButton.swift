@@ -15,32 +15,20 @@ struct TradingButton: View {
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: Spacing.s) {
-                Image(systemName: type.systemImage)
-                    .font(.headline)
-                Text(type.title)
-                    .font(.headline)
-                    .fontWeight(.semibold)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(type.color)
-            .foregroundStyle(.white)
-            .clipShape(.rect(cornerRadius: Radius.medium))
+            Label(type.title, systemImage: type.systemImage)
+                .frame(maxWidth: .infinity)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.borderedProminent)
+        .buttonBorderShape(.roundedRectangle(radius: Radius.medium))
+        .controlSize(.large)
+        .tint(type.color)
     }
 }
 
 #Preview {
-    VStack(spacing: Spacing.l) {
-        TradingButton(type: .buy) {
-            // Buy action
-        }
-        
-        TradingButton(type: .sell) {
-            // Sell action
-        }
+    HStack(spacing: 16) {
+        TradingButton(type: .buy) { }
+        TradingButton(type: .sell) { }
     }
     .padding()
 }

@@ -19,9 +19,15 @@ struct InfoSectionView: View {
 
             Divider()
 
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: 15), GridItem(.flexible())], spacing: 15) {
-                ForEach(items) { item in
-                    InfoItemView(title: item.title, value: item.value, footnote: item.footnote)
+            // Two tiles per row; both tiles in a row are as tall as the taller one
+            let rows = stride(from: 0, to: items.count, by: 2).map { Array(items[$0..<min($0 + 2, items.count)]) }
+            Grid(horizontalSpacing: 15, verticalSpacing: 15) {
+                ForEach(rows.indices, id: \.self) { index in
+                    GridRow {
+                        ForEach(rows[index]) { item in
+                            InfoItemView(title: item.title, value: item.value, footnote: item.footnote)
+                        }
+                    }
                 }
             }
             .padding(.horizontal, 15)

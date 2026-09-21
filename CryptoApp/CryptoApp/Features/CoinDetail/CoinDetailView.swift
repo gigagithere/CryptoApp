@@ -11,6 +11,7 @@ struct CoinDetailView: View {
     let coinID: String
     
     @Environment(CoinService.self) private var coinService
+    @Environment(PortfolioViewModel.self) private var portfolio
     @State private var tradeType: TransactionType?
     
     var body: some View {
@@ -25,15 +26,21 @@ struct CoinDetailView: View {
     private func content(for coin: Coin) -> some View {
         ScrollView {
             VStack {
+                PriceHeaderView(coin: coin)
                 CoinDetailChartView(coin: coin)
                     .padding(.vertical)
                 InfoSectionView(title: "Overview", items: coin.overviewItems)
                 InfoSectionView(title: "Additional Details", items: coin.additionalItems)
                 InfoSectionView(title: "Market Statistics", items: coin.marketStatisticItems)
-                QuickActionsView { tradeType = $0 }
-                    .sensoryFeedback(.impact(weight: .medium), trigger: tradeType) { _, new in new != nil }
             }
+            .padding(.bottom, Spacing.xl)
         }
+        // Buy and Sell stay in reach while scrolling, so the tab bar makes room for them on this screen
+        .safeAreaInset(edge: .bottom) {
+            QuickActionsView { tradeType = $0 }
+                .sensoryFeedback(.impact(weight: .medium), trigger: tradeType) { _, new in new != nil }
+        }
+        .toolbarVisibility(.hidden, for: .tabBar)
         .refreshable {
             try? await coinService.forceRefresh()
         }
@@ -50,7 +57,8 @@ struct CoinDetailView: View {
             }
         }
         .sheet(item: $tradeType) { type in
-            TradingModalView(coinID: coin.id, type: type)
+            TradingModalView(coinID: coin.id, type: type,
+                             maxQuantity: type == .sell ? portfolio.getTotalHolding(for: coin.id) : nil)
         }
     }
 }

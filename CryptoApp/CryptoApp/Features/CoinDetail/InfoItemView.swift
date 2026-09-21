@@ -19,7 +19,6 @@ struct InfoItemView: View {
             
             Text(value)
                 .font(.headline)
-                .fontWeight(.semibold)
                 .foregroundStyle(.primary)
                 .lineLimit(1)
             
@@ -28,7 +27,8 @@ struct InfoItemView: View {
                     .secondaryText()
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        // Stretch before the card is drawn, so tiles in one grid row end up equally tall
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(.vertical, Spacing.s)
         .padding(.horizontal, Spacing.m)
         .card(radius: Radius.small)

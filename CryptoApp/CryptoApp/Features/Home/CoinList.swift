@@ -39,7 +39,7 @@ struct CoinList: View {
                     MarketStatusView()
                 }
             }
-            .padding(.horizontal, Spacing.xl)
+            .padding(.horizontal, Spacing.l)
             .padding(.top, Spacing.s)
             .padding(.bottom, Spacing.xl)
             
@@ -56,7 +56,7 @@ struct CoinList: View {
                         SingleRowView(coin: coin)
                     }
                 }
-                .padding(.horizontal, 14)
+                .padding(.horizontal, Spacing.l)
                 .safeAreaPadding(.bottom)
             }
         }

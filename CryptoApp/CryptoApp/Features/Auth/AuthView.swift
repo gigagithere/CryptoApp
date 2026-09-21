@@ -11,6 +11,11 @@ struct AuthView: View {
     @Environment(AuthService.self) private var authService
     @State private var model = AuthFormModel()
     
+    private enum Field {
+        case email, password
+    }
+    @FocusState private var focusedField: Field?
+    
     var body: some View {
         VStack(spacing: Spacing.xl) {
             VStack(alignment: .leading) {
@@ -38,15 +43,20 @@ struct AuthView: View {
                         icon: "envelope",
                         placeholder: "Email",
                         text: $model.email,
+                        focus: $focusedField,
+                        field: .email,
                         keyboardType: .emailAddress,
                         contentType: .emailAddress
                     )
                     .submitLabel(.next)
+                    .onSubmit { focusedField = .password }
                     
                     CustomTextField(
                         icon: "lock",
                         placeholder: "Password",
                         text: $model.password,
+                        focus: $focusedField,
+                        field: .password,
                         isSecure: true,
                         contentType: model.isLogin ? .password : .newPassword
                     )
@@ -64,8 +74,7 @@ struct AuthView: View {
                 VStack(spacing: Spacing.xl) {
                     AuthButton(
                         text: model.isLogin ? "Log in" : "Sign Up",
-                        backgroundColor: .customDarkBlue,
-                        foregroundColor: .white,
+                        tint: .customDarkBlue,
                         action: submit
                     )
                     .accessibilityInputLabels(["Log in", "Sign up", "Submit"])
@@ -82,8 +91,7 @@ struct AuthView: View {
                     
                     AuthButton(
                         text: model.isLogin ? "Sign Up" : "Back to login",
-                        backgroundColor: .customDarkBlue.opacity(0.8),
-                        foregroundColor: .white,
+                        tint: .customDarkBlue.opacity(0.8),
                         action: toggleAuthMode
                     )
                 }

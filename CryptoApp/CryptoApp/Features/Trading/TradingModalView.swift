@@ -23,9 +23,13 @@ struct TradingModalView: View {
     @Environment(CoinService.self) private var coinService
     @Environment(PortfolioViewModel.self) private var portfolio
     
-    init(coinID: String, type: TransactionType) {
+    /// - Parameters:
+    ///   - initialQuantity: what the quantity field starts with
+    ///   - maxQuantity: the most that can be traded (what you own, when selling); nil for no limit
+    init(coinID: String, type: TransactionType, initialQuantity: Decimal = 1, maxQuantity: Decimal? = nil) {
         self.coinID = coinID
-        _trade = State(initialValue: TradeViewModel(coinID: coinID, type: type))
+        _trade = State(initialValue: TradeViewModel(coinID: coinID, type: type,
+                                                    quantity: initialQuantity, maxQuantity: maxQuantity))
     }
     
     var body: some View {
@@ -44,29 +48,21 @@ struct TradingModalView: View {
         
         return NavigationStack {
             ScrollView {
-                VStack(spacing: 24) {
-                    VStack(spacing: Spacing.m) {
-                        HStack(spacing: Spacing.m) {
-                            CoinImage(url: coin.image, symbol: coin.symbol, size: 40)
-                                .clipShape(.circle)
-                            
-                            VStack(alignment: .leading, spacing: Spacing.xs) {
-                                Label("\(trade.type.title) \(coin.name)", systemImage: trade.type.systemImage)
-                                    .font(.title2)
-                                    .bold()
-                                    .foregroundStyle(trade.type.color)
-                                
-                                Text(symbol)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            }
-                            
-                            Spacer()
-                        }
+                VStack(alignment: .leading, spacing: 24) {
+                    HStack(spacing: Spacing.m) {
+                        CoinImage(url: coin.image, symbol: coin.symbol, size: 40)
+                            .clipShape(.circle)
                         
-                        Text("Current Price: \(price, format: .usd)")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: Spacing.xs) {
+                            Label("\(trade.type.title) \(coin.name)", systemImage: trade.type.systemImage)
+                                .font(.title2)
+                                .bold()
+                                .foregroundStyle(trade.type.color)
+                            
+                            Text(symbol)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     
                     TradeInfoCard(title: "Price per \(symbol)") {
@@ -104,27 +100,23 @@ struct TradingModalView: View {
                             Text(symbol)
                                 .headlineText()
                                 .foregroundStyle(.secondary)
-                                .padding(.trailing, Spacing.s)
                         }
                         
                         HStack(spacing: Spacing.m) {
                             ForEach(TradeViewModel.presets, id: \.self) { preset in
-                                Button {
-                                    trade.quantity = preset
-                                } label: {
-                                    Text(preset, format: .quantity)
-                                        .font(.footnote)
-                                        .padding(.horizontal, Spacing.m)
-                                        .padding(.vertical, 6)
-                                        .background(.gray.opacity(0.2), in: .rect(cornerRadius: Radius.small))
-                                        .frame(minHeight: 44) // tap target bigger than the chip you see
-                                        .contentShape(.rect)
-                                }
-                                .buttonStyle(.plain)
+                                QuantityChip(quantity: preset) { trade.quantity = preset }
                             }
-                            Spacer()
+                            if let maxQuantity = trade.maxQuantity {
+                                QuantityChip(title: "Max") { trade.quantity = maxQuantity }
+                            }
                         }
                         .sensoryFeedback(.selection, trigger: trade.quantity)
+                        
+                        if trade.exceedsMax {
+                            Label("You only own \(holding.formatted(.quantity)) \(symbol)", systemImage: "exclamationmark.triangle.fill")
+                                .font(.subheadline)
+                                .foregroundStyle(.red)
+                        }
                     }
                     
                     TradeInfoCard(title: "Total Value") {
@@ -132,29 +124,31 @@ struct TradingModalView: View {
                             .font(.title)
                             .bold()
                     }
-                    
-                    Button {
-                        execute()
-                    } label: {
-                        Group {
-                            if trade.isProcessing {
-                                ProgressView()
-                                    .tint(.white)
-                            } else {
-                                Text("\(trade.type.title) \(symbol)")
-                                    .headlineText()
-                            }
-                        }
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(trade.canSubmit ? trade.type.color : .gray, in: .rect(cornerRadius: Radius.large))
-                    }
-                    .disabled(!trade.canSubmit)
-                    .accessibilityInputLabels([trade.type.title, "Confirm"])
-                    .padding(.bottom, 40) // Extra bottom padding for keyboard safety
                 }
                 .padding()
+            }
+            .scrollDismissesKeyboard(.interactively)
+            // The confirm button stays above the keyboard and the bottom edge
+            .safeAreaInset(edge: .bottom) {
+                Button(action: execute) {
+                    Group {
+                        if trade.isProcessing {
+                            ProgressView()
+                        } else {
+                            Text("\(trade.type.title) \(symbol)")
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.roundedRectangle(radius: Radius.large))
+                .controlSize(.large)
+                .tint(trade.type.color)
+                .disabled(!trade.canSubmit)
+                .accessibilityInputLabels([trade.type.title, "Confirm"])
+                .padding(.horizontal)
+                .padding(.vertical, Spacing.s)
+                .background(.bar)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -167,6 +161,8 @@ struct TradingModalView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
         }
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
         .alert("Trade Executed", isPresented: $showConfirmation) {
             Button("OK") { dismiss() }
         } message: {

@@ -10,32 +10,23 @@ import SwiftUI
 // MARK: - Button used on the login / registration screen
 
 struct AuthButton: View {
-    let text: String
-    let backgroundColor: Color
-    let foregroundColor: Color
+    let text: LocalizedStringKey
+    let tint: Color
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            HStack {
-                Text(text)
-                    .font(.headline)
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(backgroundColor)
-            .foregroundStyle(foregroundColor)
-            .clipShape(.capsule)
+            Text(text)
+                .frame(maxWidth: .infinity)
         }
+        .buttonStyle(.borderedProminent)
+        .buttonBorderShape(.capsule)
+        .controlSize(.large)
+        .tint(tint)
     }
 }
 
 #Preview {
-    AuthButton(
-        text: "Sign up",
-        backgroundColor: Color.black.opacity(0.5),
-        foregroundColor: .white,
-        action: {
-        }
-    )
+    AuthButton(text: "Sign up", tint: .customDarkBlue) { }
+        .padding()
 }

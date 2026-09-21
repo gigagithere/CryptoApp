@@ -26,8 +26,11 @@ struct MarketStatusView: View {
                         .foregroundStyle(.orange)
                 } else if let lastUpdated = coinService.lastUpdated {
                     StatusDotGlowView()
-                    Text("Updated \(lastUpdated, style: .relative) ago")
-                        .foregroundStyle(.green)
+                    // "32 seconds ago", then "1 minute ago", "2 minutes ago": only the largest unit, refreshed every second
+                    TimelineView(.periodic(from: .now, by: 1)) { _ in
+                        Text("Updated \(lastUpdated.formatted(.age))")
+                    }
+                    .foregroundStyle(.green)
                 } else {
                     StatusDotGlowView(color: .gray, pulsing: false)
                     Text("Updating…")

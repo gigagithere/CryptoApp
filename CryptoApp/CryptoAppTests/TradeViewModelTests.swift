@@ -94,4 +94,45 @@ struct TradeViewModelTests {
 
         #expect(firestore.commits.isEmpty)
     }
+
+    // MARK: - Selling no more than you own
+
+    @Test func startsWithTheGivenQuantity() {
+        let trade = TradeViewModel(coinID: "bitcoin", type: .sell, quantity: 0.25, maxQuantity: 0.25)
+
+        #expect(trade.quantity == 0.25)
+        #expect(trade.canSubmit)
+    }
+
+    @Test func sellingMoreThanYouOwnCannotBeSubmitted() {
+        let trade = TradeViewModel(coinID: "bitcoin", type: .sell, quantity: 3, maxQuantity: 2)
+
+        #expect(trade.exceedsMax)
+        #expect(!trade.canSubmit)
+    }
+
+    @Test func sellingExactlyWhatYouOwnIsAllowed() {
+        let trade = TradeViewModel(coinID: "bitcoin", type: .sell, quantity: 2, maxQuantity: 2)
+
+        #expect(!trade.exceedsMax)
+        #expect(trade.canSubmit)
+    }
+
+    @Test func aBuyHasNoLimit() {
+        let trade = TradeViewModel(coinID: "bitcoin", type: .buy, quantity: 1_000_000)
+
+        #expect(!trade.exceedsMax)
+        #expect(trade.canSubmit)
+    }
+
+    @Test func anAmountOverTheLimitIsRefusedWithoutTouchingTheServer() async throws {
+        try await coinService.forceRefresh()
+        let trade = TradeViewModel(coinID: "bitcoin", type: .sell, quantity: 5, maxQuantity: 2)
+
+        await #expect(throws: PortfolioError.insufficientHoldings) {
+            try await trade.execute(using: portfolio)
+        }
+
+        #expect(firestore.commits.isEmpty)
+    }
 }

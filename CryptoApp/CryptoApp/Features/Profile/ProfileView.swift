@@ -8,14 +8,15 @@ import SwiftUI
 struct ProfileView: View {
     @Environment(AuthService.self) private var authService
     @AppStorage("appTheme") private var theme: AppTheme = .system
-    @ScaledMetric(relativeTo: .largeTitle) private var avatarSize: CGFloat = 110
+    @ScaledMetric(relativeTo: .largeTitle) private var avatarSize: CGFloat = 96
+    @State private var showLogoutConfirmation = false
     @State private var signOutError = ""
     @State private var showSignOutError = false
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                VStack(spacing: Spacing.l) {
+        List {
+            Section {
+                VStack(spacing: Spacing.m) {
                     Image(systemName: "person.circle.fill")
                         .font(.system(size: avatarSize * 0.55)) // scales with the avatar, which scales with Dynamic Type
                         .foregroundStyle(.white)
@@ -28,64 +29,50 @@ struct ProfileView: View {
                             )
                         )
                         .clipShape(.circle)
-                        .shadow(color: .purple.opacity(0.35), radius: 10, x: 0, y: 5)
                         .accessibilityHidden(true)
-                    
+
                     Text(authService.accountName)
                         .font(.title2)
                         .bold()
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, Spacing.s)
+                .listRowBackground(Color.clear)
+            }
 
-                VStack(spacing: Spacing.l) {
-                    HStack {
-                        Text("SETTINGS")
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.secondary)
-                        Spacer()
+            Section("Appearance") {
+                Picker("Appearance", selection: $theme) {
+                    ForEach(AppTheme.allCases) { theme in
+                        Text(theme.title).tag(theme)
                     }
-
-                    VStack(alignment: .leading, spacing: Spacing.m) {
-                        Label("Appearance", systemImage: "moon.stars")
-                        
-                        Picker("Appearance", selection: $theme) {
-                            ForEach(AppTheme.allCases) { theme in
-                                Text(theme.title).tag(theme)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                    }
-                    .padding(Spacing.m)
-                    .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: Radius.medium))
                 }
+                .pickerStyle(.segmented)
+            }
 
-                Button {
-                    do {
-                        try authService.signOut()
-                    } catch {
-                        signOutError = error.localizedDescription
-                        showSignOutError = true
-                    }
-                } label: {
-                    Label("Logout", systemImage: "arrow.uturn.backward")
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.red)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.red.opacity(0.08), in: .rect(cornerRadius: Radius.medium))
+            Section {
+                Button("Log Out", systemImage: "arrow.uturn.backward", role: .destructive) {
+                    showLogoutConfirmation = true
+                }
+                .foregroundStyle(.red)
+                // Attached to the button that triggers it, so the dialog animates out of the right place
+                .confirmationDialog("Log out of CryptoApp?", isPresented: $showLogoutConfirmation, titleVisibility: .visible) {
+                    Button("Log Out", role: .destructive, action: logOut)
                 }
             }
-            .padding(Spacing.xl)
         }
-        .background(Color(.systemBackground))
         .navigationTitle("Profile")
-        .navigationBarTitleDisplayMode(.automatic)
-        .alert("Couldn't log out", isPresented: $showSignOutError) {
-            Button("OK") { }
-        } message: {
+        .alert("Couldn't log out", isPresented: $showSignOutError) { } message: {
             Text(signOutError)
         }
-        .tint(.customDarkBlue.opacity(0.8))
+    }
+
+    private func logOut() {
+        do {
+            try authService.signOut()
+        } catch {
+            signOutError = error.localizedDescription
+            showSignOutError = true
+        }
     }
 }
 

@@ -23,7 +23,6 @@ struct ChartLegend: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(item.coinSymbol)
                                 .font(.subheadline)
-                                .fontWeight(.medium)
 
                             Text(item.percentage / 100, format: .percentChange)
                                 .font(.caption)
@@ -34,7 +33,6 @@ struct ChartLegend: View {
 
                         Text(item.value, format: .usdAmount)
                             .font(.subheadline)
-                            .fontWeight(.medium)
                     }
 
                     ProgressView(value: item.percentage, total: 100)

@@ -10,17 +10,15 @@ import Foundation
 extension Coin {
     var overviewItems: [InfoItem] {
         [
-            InfoItem(title: "Current Price",
-                     value: currentPrice.formatted(.usd),
-                     footnote: (priceChangePercentage24H / 100).formatted(.percentChangeSigned)),
             InfoItem(title: "Market Capitalization",
                      value: (marketCap ?? 0).formatted(.compact),
                      footnote: ((marketCapChangePercentage24H ?? 0) / 100).formatted(.percentChangeSigned)),
             InfoItem(title: "Rank",
                      value: marketCapRank.formatted()),
             InfoItem(title: "Volume",
-                     value: (totalVolume ?? 0).formatted(.compact),
-                     footnote: "data not available")
+                     value: (totalVolume ?? 0).formatted(.compact)),
+            InfoItem(title: "Fully Diluted Valuation",
+                     value: fullyDilutedValuation?.formatted(.compact) ?? "—")
         ]
     }
 

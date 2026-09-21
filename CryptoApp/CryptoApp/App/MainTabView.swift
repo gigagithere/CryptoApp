@@ -33,7 +33,7 @@ struct MainTabView: View {
                 }
             }
         }
-        .tint(.customDarkBlue)
+        .tabBarMinimizeBehavior(.onScrollDown) // the floating tab bar shrinks while a list scrolls
         // Keeps prices fresh while the app is on screen. The task is cancelled when the app leaves the
         // foreground and starts again (with an immediate refresh) when it comes back.
         .task(id: scenePhase) {

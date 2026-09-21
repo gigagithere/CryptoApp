@@ -38,7 +38,7 @@ struct CurrentHoldingsPage: View {
                     .padding(.horizontal, Spacing.xl)
                     .padding(.vertical, Spacing.l)
                     .card()
-                    .padding(.horizontal, Spacing.xl)
+                    .padding(.horizontal, Spacing.l)
                     .padding(.top, Spacing.s)
                     
                     ScrollView {
@@ -50,7 +50,7 @@ struct CurrentHoldingsPage: View {
                                 )
                             }
                         }
-                        .padding(.horizontal, Spacing.xl)
+                        .padding(.horizontal, Spacing.l)
                         .safeAreaPadding(.bottom)
                     }
                 }
