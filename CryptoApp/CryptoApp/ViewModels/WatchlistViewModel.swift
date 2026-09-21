@@ -8,7 +8,6 @@
 import Foundation
 import Observation
 
-@MainActor
 @Observable
 final class WatchlistViewModel {
     // STATE - What the UI displays
@@ -28,7 +27,7 @@ final class WatchlistViewModel {
 
     convenience init(authService: AuthService) {
         self.init(firestoreService: WatchlistFirestoreService(),
-                  currentUserID: { authService.userSession?.uid })
+                  currentUserID: { authService.userID })
     }
 
     // LOAD WATCHLIST - Get user's favorite coins from Firestore

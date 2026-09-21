@@ -7,7 +7,9 @@ import Foundation
 @testable import CryptoApp
 
 /// A repository whose answers and timing are controlled by the test.
-final class MockCoinRepository: CoinRepositoryProtocol {
+///
+/// `@unchecked Sendable`: a test double whose properties are only touched from the test's own (main actor) code.
+final class MockCoinRepository: CoinRepositoryProtocol, @unchecked Sendable {
     var topResult: Result<MarketSnapshot, Error> = .success(MarketSnapshot(coins: [], isFromCache: false))
     var idsResult: Result<[Coin], Error> = .success([])
     /// Makes `fetchTopCoins` take this long, so tests can overlap requests.

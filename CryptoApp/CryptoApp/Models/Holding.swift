@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Holding: Codable, Identifiable {
+nonisolated struct Holding: Codable, Identifiable {
     let id: UUID
     let coinId: String
     let coinSymbol: String

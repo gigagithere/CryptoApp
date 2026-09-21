@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Transaction: Codable, Identifiable {
+nonisolated struct Transaction: Codable, Identifiable {
     let id: UUID
     let coinId: String
     let coinSymbol: String

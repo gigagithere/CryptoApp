@@ -6,7 +6,7 @@
 import Foundation
 import FirebaseAuth
 
-enum AuthError: Error, LocalizedError {
+nonisolated enum AuthError: Error, LocalizedError {
     case invalidCredentials
     case invalidEmail
     case tooManyRequests

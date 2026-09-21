@@ -7,14 +7,16 @@
 
 import Foundation
 
-protocol CoinRepositoryProtocol {
+nonisolated protocol CoinRepositoryProtocol: Sendable {
     /// The top coins by market cap (with 7-day sparklines).
     func fetchTopCoins() async throws -> MarketSnapshot
     /// Specific coins by CoinGecko id, e.g. holdings that dropped out of the top list.
     func fetchCoins(ids: [String]) async throws -> [Coin]
 }
 
-final class CoinRepository: CoinRepositoryProtocol {
+/// `@unchecked Sendable`: the only state is two immutable references (`URLSession` and `UserDefaults`),
+/// and both are documented as safe to use from any thread.
+nonisolated final class CoinRepository: CoinRepositoryProtocol, @unchecked Sendable {
     private let session: URLSession
     private let userDefaults: UserDefaults
     private let cacheKey = "cached_coins_data"
@@ -24,6 +26,7 @@ final class CoinRepository: CoinRepositoryProtocol {
         self.userDefaults = userDefaults
     }
 
+    @concurrent
     func fetchTopCoins() async throws -> MarketSnapshot {
         let url = try marketsURL(extraItems: [
             URLQueryItem(name: "order", value: "market_cap_desc"),
@@ -52,6 +55,7 @@ final class CoinRepository: CoinRepositoryProtocol {
         }
     }
 
+    @concurrent
     func fetchCoins(ids: [String]) async throws -> [Coin] {
         guard !ids.isEmpty else { return [] }
         let url = try marketsURL(extraItems: [
@@ -90,7 +94,7 @@ final class CoinRepository: CoinRepositoryProtocol {
     }
 }
 
-private struct LossyCoin: Decodable {
+private nonisolated struct LossyCoin: Decodable {
     let coin: Coin?
 
     init(from decoder: Decoder) throws {

@@ -7,6 +7,7 @@ import SwiftUI
 import Testing
 @testable import CryptoApp
 
+@MainActor
 struct AppThemeTests {
     @Test func systemFollowsTheDevice() {
         #expect(AppTheme.system.colorScheme == nil)

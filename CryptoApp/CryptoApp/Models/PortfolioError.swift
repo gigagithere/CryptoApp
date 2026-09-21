@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum PortfolioError: Error, LocalizedError, Equatable {
+nonisolated enum PortfolioError: Error, LocalizedError, Equatable {
     case userNotAuthenticated
     case invalidQuantity
     case insufficientHoldings

@@ -6,12 +6,14 @@
 //
 
 import Foundation
-import FirebaseFirestore
+@preconcurrency import FirebaseFirestore // Firestore is thread-safe but not yet annotated Sendable
 import os
 
 // PROTOCOL - Defines what portfolio storage operations are available
-protocol PortfolioFirestoreServiceProtocol {
+nonisolated protocol PortfolioFirestoreServiceProtocol: Sendable {
+    @concurrent
     func loadHoldings(userId: String) async throws -> [Holding]
+    @concurrent
     func loadTransactions(userId: String) async throws -> [Transaction]
     /// Records a trade and updates the holding in ONE atomic write.
     /// A holding with zero quantity is deleted (that's how selling everything works).
@@ -19,7 +21,7 @@ protocol PortfolioFirestoreServiceProtocol {
 }
 
 // PORTFOLIO FIRESTORE SERVICE - Handles all portfolio data operations with Firestore
-final class PortfolioFirestoreService: PortfolioFirestoreServiceProtocol {
+nonisolated final class PortfolioFirestoreService: PortfolioFirestoreServiceProtocol {
     private let db = Firestore.firestore()
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "CryptoApp", category: "PortfolioFirestore")
 
@@ -43,6 +45,7 @@ final class PortfolioFirestoreService: PortfolioFirestoreServiceProtocol {
     }
 
     // COMMIT TRADE - Save the transaction and the resulting holding atomically
+    @concurrent
     func commitTrade(userId: String, transaction: Transaction, holding: Holding) async throws {
         let user = userDocument(userId)
         let batch = db.batch()

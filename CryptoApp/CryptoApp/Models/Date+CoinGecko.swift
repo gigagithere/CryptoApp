@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Date {
+nonisolated extension Date {
     /// Parses CoinGecko timestamps such as `2025-11-02T14:03:21.123Z` (fractional seconds are optional).
     static func fromCoinGecko(_ string: String) -> Date? {
         (try? Date(string, strategy: Date.ISO8601FormatStyle(includingFractionalSeconds: true)))

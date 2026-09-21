@@ -7,7 +7,9 @@ import Foundation
 @testable import CryptoApp
 
 /// Records what would be written to Firestore, and can be told to fail.
-final class MockPortfolioFirestoreService: PortfolioFirestoreServiceProtocol {
+///
+/// `@unchecked Sendable`: a test double whose properties are only touched from the test's own (main actor) code.
+final class MockPortfolioFirestoreService: PortfolioFirestoreServiceProtocol, @unchecked Sendable {
     struct Commit {
         let userId: String
         let transaction: CryptoApp.Transaction

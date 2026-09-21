@@ -5,6 +5,6 @@
 
 import Foundation
 
-struct SparklineIn7D: Codable, Equatable {
+nonisolated struct SparklineIn7D: Codable, Equatable {
     let price: [Double]?
 }

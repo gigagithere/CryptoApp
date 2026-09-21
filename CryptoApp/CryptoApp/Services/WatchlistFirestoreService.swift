@@ -6,18 +6,19 @@
 //
 
 import Foundation
-import FirebaseFirestore
+@preconcurrency import FirebaseFirestore // Firestore is thread-safe but not yet annotated Sendable
 import os
 
 // PROTOCOL
-protocol WatchlistFirestoreServiceProtocol {
+nonisolated protocol WatchlistFirestoreServiceProtocol: Sendable {
+    @concurrent
     func loadWatchedCoins(userId: String) async throws -> Set<String>
     func addToWatchlist(userId: String, coinId: String) async throws
     func removeFromWatchlist(userId: String, coinId: String) async throws
 }
 
 // WATCHLIST FIRESTORE SERVICE - Handles all watchlist/favorites data operations
-final class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
+nonisolated final class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
     private let db = Firestore.firestore()
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "CryptoApp", category: "WatchlistFirestore")
     
@@ -41,6 +42,7 @@ final class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
     }
     
     // ADD TO WATCHLIST - Add a coin to user's favorites
+    @concurrent
     func addToWatchlist(userId: String, coinId: String) async throws {
         let watchlist = Watchlist(coinId: coinId)
         
@@ -53,6 +55,7 @@ final class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
     }
     
     // REMOVE FROM WATCHLIST - Remove a coin from user's favorites
+    @concurrent
     func removeFromWatchlist(userId: String, coinId: String) async throws {
         try await db.collection("users")
             .document(userId)

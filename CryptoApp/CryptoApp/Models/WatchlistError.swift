@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum WatchlistError: Error, LocalizedError {
+nonisolated enum WatchlistError: Error, LocalizedError {
     case userNotAuthenticated
     case coinAlreadyWatched
     case coinNotInWatchlist

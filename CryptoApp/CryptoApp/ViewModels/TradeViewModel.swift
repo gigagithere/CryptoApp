@@ -8,7 +8,6 @@
 import Foundation
 import Observation
 
-@MainActor
 @Observable
 final class TradeViewModel {
     /// Quick-pick amounts under the quantity field

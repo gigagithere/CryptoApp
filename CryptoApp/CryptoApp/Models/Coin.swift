@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Coin: Codable, Identifiable, Equatable {
+nonisolated struct Coin: Codable, Identifiable, Equatable {
     let id, symbol, name: String
     let image: String
     let currentPrice: Double
@@ -62,7 +62,7 @@ struct Coin: Codable, Identifiable, Equatable {
 // Defined in an extension so the memberwise initializer stays available.
 // CoinGecko occasionally returns null for these fields (e.g. brand-new listings),
 // which would otherwise make decoding of the whole coin list fail.
-extension Coin {
+nonisolated extension Coin {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         id = try c.decode(String.self, forKey: .id)
@@ -94,8 +94,8 @@ extension Coin {
     }
 }
 
-extension Coin {
-    static var sample = Coin(
+nonisolated extension Coin {
+    static let sample = Coin(
         id: "bitcoin",
         symbol: "BTC",
         name: "Bitcoin",

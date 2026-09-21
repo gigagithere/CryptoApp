@@ -12,17 +12,6 @@ struct ProfileView: View {
     @State private var signOutError = ""
     @State private var showSignOutError = false
 
-    private var displayName: String {
-        if let user = authService.userSession {
-            if let name = user.displayName, !name.isEmpty {
-                return name
-            } else if let email = user.email {
-                return email
-            }
-        }
-        return "User"
-    }
-
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
@@ -42,7 +31,7 @@ struct ProfileView: View {
                         .shadow(color: .purple.opacity(0.35), radius: 10, x: 0, y: 5)
                         .accessibilityHidden(true)
                     
-                    Text(displayName)
+                    Text(authService.accountName)
                         .font(.title2)
                         .bold()
                 }

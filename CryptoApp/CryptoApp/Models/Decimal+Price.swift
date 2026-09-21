@@ -5,7 +5,7 @@
 
 import Foundation
 
-extension Decimal {
+nonisolated extension Decimal {
     /// Converts an API `Double` to `Decimal` through its shortest decimal representation.
     ///
     /// `Decimal(0.1)` carries the binary noise of the `Double` (0.1000000000000000055…),

@@ -8,7 +8,6 @@
 import Foundation
 import os
 
-@MainActor
 @Observable
 final class PortfolioViewModel {
     // STATE - What the UI displays
@@ -45,7 +44,7 @@ final class PortfolioViewModel {
                      coinService: CoinService) {
         self.init(firestoreService: firestoreService,
                   coinService: coinService,
-                  currentUserID: { authService.userSession?.uid })
+                  currentUserID: { authService.userID })
     }
 
     // LOAD DATA - Get user's portfolio from Firestore

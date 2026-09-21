@@ -9,7 +9,6 @@ import Foundation
 import Observation
 import os
 
-@MainActor
 @Observable
 final class CoinService {
     private(set) var coins: [Coin] = [] {

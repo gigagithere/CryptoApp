@@ -16,20 +16,20 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if authService.userSession != nil {
+            if authService.userID != nil {
                 MainTabView()
             } else {
                 AuthView()
             }
         }
         // Runs again whenever the signed-in user changes: loads on sign-in, clears on sign-out
-        .task(id: authService.userSession?.uid) {
+        .task(id: authService.userID) {
             await syncData()
         }
     }
 
     private func syncData() async {
-        guard authService.userSession != nil else {
+        guard authService.userID != nil else {
             portfolio.clearLocalData()
             watchlist.clearLocalData()
             return

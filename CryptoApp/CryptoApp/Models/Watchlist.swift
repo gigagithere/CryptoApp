@@ -6,7 +6,7 @@
 import Foundation
 
 /// One favorite coin, stored as a document in the user's `watchlist` collection.
-struct Watchlist: Codable, Identifiable {
+nonisolated struct Watchlist: Codable, Identifiable {
     let id: String // coinId
     let coinId: String
     let dateAdded: Date
