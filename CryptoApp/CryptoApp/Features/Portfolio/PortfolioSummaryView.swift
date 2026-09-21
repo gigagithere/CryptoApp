@@ -14,37 +14,36 @@ struct PortfolioSummaryView: View {
     let profitLossPercentage: Decimal
     
     var body: some View {
-        VStack(spacing: 16) {
-            VStack(spacing: 4) {
+        VStack(spacing: Spacing.l) {
+            VStack(spacing: Spacing.xs) {
                 Text("Total Portfolio Value")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                 
-                Text(totalValue, format: .usd)
+                Text(totalValue, format: .usdAmount)
                     .font(.largeTitle)
                     .bold()
             }
             
-            VStack(spacing: 4) {
-                HStack(spacing: 8) {
+            VStack(spacing: Spacing.xs) {
+                HStack(spacing: Spacing.s) {
                     Image(systemName: profitLoss >= 0 ? "arrow.up" : "arrow.down")
                         .font(.caption)
-                    Text("\(profitLoss, format: .usd) (\(profitLossPercentage / 100, format: .percentChange))")
+                    Text("\(profitLoss, format: .usdChange) (\(profitLossPercentage / 100, format: .percentChangeSigned))")
                         .font(.headline)
                         .fontWeight(.semibold)
                 }
                 .foregroundStyle(profitLoss >= 0 ? .green : .red)
                 
-                Text("Total Invested: \(totalInvestment, format: .usd)")
+                Text("Total Invested: \(totalInvestment, format: .usdAmount)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(.ultraThinMaterial)
-        .clipShape(.rect(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .card(radius: Radius.large, elevated: true)
+        .accessibilityElement(children: .combine)
     }
 }
 

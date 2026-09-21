@@ -10,19 +10,19 @@ struct QuickActionsView: View {
     let onSelect: (TransactionType) -> Void
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: Spacing.xl) {
             Text("Quick Actions")
                 .headerText()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
 
-            HStack(spacing: 16) {
+            HStack(spacing: Spacing.l) {
                 TradingButton(type: .buy) { onSelect(.buy) }
                 TradingButton(type: .sell) { onSelect(.sell) }
             }
             .padding(.horizontal)
         }
-        .padding(.top, 20)
+        .padding(.top, Spacing.xl)
         .padding(.bottom, 30)
     }
 }

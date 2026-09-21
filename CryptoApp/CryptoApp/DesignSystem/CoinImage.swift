@@ -7,10 +7,17 @@ import SwiftUI
 import Kingfisher
 
 /// A coin logo loaded from its URL; shows the first letter of the symbol until it arrives.
+/// The size grows with the user's text size.
 struct CoinImage: View {
     let url: String
     let symbol: String
-    var size: CGFloat = 28
+    @ScaledMetric private var size: CGFloat
+
+    init(url: String, symbol: String, size: CGFloat = 28) {
+        self.url = url
+        self.symbol = symbol
+        _size = ScaledMetric(wrappedValue: size, relativeTo: .body)
+    }
 
     var body: some View {
         KFImage(URL(string: url))

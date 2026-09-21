@@ -14,12 +14,12 @@ struct TransactionDetailsView: View {
         let profitLoss = transaction.profitLoss(currentPrice: currentPrice)
         let profitLossPercentage = transaction.profitLossPercentage(currentPrice: currentPrice)
 
-        VStack(spacing: 8) {
+        VStack(spacing: Spacing.s) {
             Divider()
 
             Text("Transaction Details")
                 .secondaryText()
-                .padding(.bottom, 4)
+                .padding(.bottom, Spacing.xs)
 
             HStack {
                 LabeledValue(title: "Transaction ID") {
@@ -44,14 +44,14 @@ struct TransactionDetailsView: View {
                 Spacer()
 
                 LabeledValue(title: "P&L", alignment: .trailing) {
-                    Text("\(profitLoss, format: .usd) (\(profitLossPercentage / 100, format: .percentChange))")
+                    Text("\(profitLoss, format: .usdChange) (\(profitLossPercentage / 100, format: .percentChangeSigned))")
                         .font(.caption.weight(.medium))
                         .foregroundStyle(profitLoss >= 0 ? .green : .red)
                 }
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 12)
+        .padding(.horizontal, Spacing.l)
+        .padding(.bottom, Spacing.m)
     }
 }
 

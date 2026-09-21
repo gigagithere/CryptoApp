@@ -12,10 +12,10 @@ extension Coin {
         [
             InfoItem(title: "Current Price",
                      value: currentPrice.formatted(.usd),
-                     footnote: (priceChangePercentage24H / 100).formatted(.percentChange)),
+                     footnote: (priceChangePercentage24H / 100).formatted(.percentChangeSigned)),
             InfoItem(title: "Market Capitalization",
                      value: (marketCap ?? 0).formatted(.compact),
-                     footnote: ((marketCapChangePercentage24H ?? 0) / 100).formatted(.percentChange)),
+                     footnote: ((marketCapChangePercentage24H ?? 0) / 100).formatted(.percentChangeSigned)),
             InfoItem(title: "Rank",
                      value: marketCapRank.formatted()),
             InfoItem(title: "Volume",
@@ -50,11 +50,11 @@ extension Coin {
                      value: (low24H ?? 0).formatted(.usd),
                      footnote: "Daily Low"),
             InfoItem(title: "Price Change",
-                     value: priceChange24H.formatted(.usd),
-                     footnote: (priceChangePercentage24H / 100).formatted(.percentChange)),
+                     value: priceChange24H.formatted(.usdChange),
+                     footnote: (priceChangePercentage24H / 100).formatted(.percentChangeSigned)),
             InfoItem(title: "Market Cap Change",
                      value: (marketCapChange24H ?? 0).formatted(.compact),
-                     footnote: ((marketCapChangePercentage24H ?? 0) / 100).formatted(.percentChange))
+                     footnote: ((marketCapChangePercentage24H ?? 0) / 100).formatted(.percentChangeSigned))
         ]
     }
 

@@ -45,12 +45,12 @@ struct TradingModalView: View {
         return NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    VStack(spacing: 12) {
-                        HStack(spacing: 12) {
+                    VStack(spacing: Spacing.m) {
+                        HStack(spacing: Spacing.m) {
                             CoinImage(url: coin.image, symbol: coin.symbol, size: 40)
                                 .clipShape(.circle)
                             
-                            VStack(alignment: .leading, spacing: 4) {
+                            VStack(alignment: .leading, spacing: Spacing.xs) {
                                 Label("\(trade.type.title) \(coin.name)", systemImage: trade.type.systemImage)
                                     .font(.title2)
                                     .bold()
@@ -90,7 +90,7 @@ struct TradingModalView: View {
                         }
                     }
                     
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: Spacing.m) {
                         Text("Quantity")
                             .headlineText()
                         
@@ -104,20 +104,21 @@ struct TradingModalView: View {
                             Text(symbol)
                                 .headlineText()
                                 .foregroundStyle(.secondary)
-                                .padding(.trailing, 8)
+                                .padding(.trailing, Spacing.s)
                         }
                         
-                        HStack(spacing: 12) {
+                        HStack(spacing: Spacing.m) {
                             ForEach(TradeViewModel.presets, id: \.self) { preset in
                                 Button {
                                     trade.quantity = preset
                                 } label: {
                                     Text(preset, format: .quantity)
                                         .font(.footnote)
-                                        .padding(.horizontal, 12)
+                                        .padding(.horizontal, Spacing.m)
                                         .padding(.vertical, 6)
-                                        .background(.gray.opacity(0.2))
-                                        .clipShape(.rect(cornerRadius: 8))
+                                        .background(.gray.opacity(0.2), in: .rect(cornerRadius: Radius.small))
+                                        .frame(minHeight: 44) // tap target bigger than the chip you see
+                                        .contentShape(.rect)
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -127,7 +128,7 @@ struct TradingModalView: View {
                     }
                     
                     TradeInfoCard(title: "Total Value") {
-                        Text(trade.total(at: price), format: .usd)
+                        Text(trade.total(at: price), format: .usdAmount)
                             .font(.title)
                             .bold()
                     }
@@ -147,10 +148,10 @@ struct TradingModalView: View {
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 56)
-                        .background(trade.canSubmit ? trade.type.color : .gray)
-                        .clipShape(.rect(cornerRadius: 16))
+                        .background(trade.canSubmit ? trade.type.color : .gray, in: .rect(cornerRadius: Radius.large))
                     }
                     .disabled(!trade.canSubmit)
+                    .accessibilityInputLabels([trade.type.title, "Confirm"])
                     .padding(.bottom, 40) // Extra bottom padding for keyboard safety
                 }
                 .padding()
@@ -169,7 +170,7 @@ struct TradingModalView: View {
         .alert("Trade Executed", isPresented: $showConfirmation) {
             Button("OK") { dismiss() }
         } message: {
-            Text("Successfully \(trade.type.title.lowercased()) \(trade.quantityValue, format: .quantity) \(symbol) for \(trade.total(at: price), format: .usd)")
+            Text("Successfully \(trade.type.title.lowercased()) \(trade.quantityValue, format: .quantity) \(symbol) for \(trade.total(at: price), format: .usdAmount)")
         }
         .alert("Error", isPresented: $showError) {
             Button("OK") { }

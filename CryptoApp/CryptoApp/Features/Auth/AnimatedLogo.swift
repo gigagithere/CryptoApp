@@ -7,12 +7,13 @@ import SwiftUI
 
 /// The app logo: floats gently, and spins when tapped.
 struct AnimatedLogo: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var floatOffset: CGFloat = 0
     @State private var rotationAngle: CGFloat = 0
 
     var body: some View {
         Button {
-            withAnimation(.easeInOut(duration: 0.7)) {
+            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.7)) {
                 rotationAngle += 360
             }
         } label: {
@@ -26,7 +27,9 @@ struct AnimatedLogo: View {
         .buttonStyle(.plain)
         .offset(y: floatOffset)
         .rotationEffect(.degrees(rotationAngle))
+        .accessibilityLabel("App logo")
         .onAppear {
+            guard !reduceMotion else { return } // no endless floating for people who turned motion down
             withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
                 floatOffset = -10
             }

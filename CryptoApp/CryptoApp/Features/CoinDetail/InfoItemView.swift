@@ -13,7 +13,7 @@ struct InfoItemView: View {
     let footnote: String?
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
             Text(title)
                 .secondaryText()
             
@@ -29,15 +29,15 @@ struct InfoItemView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 8)
-        .padding(.horizontal, 12)
-        .background(.ultraThinMaterial)
-        .clipShape(.rect(cornerRadius: 8))
+        .padding(.vertical, Spacing.s)
+        .padding(.horizontal, Spacing.m)
+        .card(radius: Radius.small)
+        .accessibilityElement(children: .combine)
     }
 }
 
 #Preview {
-    VStack(spacing: 16) {
+    VStack(spacing: Spacing.l) {
         InfoItemView(
             title: "Current Price",
             value: "$42,150.00",

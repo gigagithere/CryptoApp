@@ -21,7 +21,7 @@ struct TransactionRowView: View {
                     isExpanded.toggle()
                 }
             } label: {
-                HStack(spacing: 16) {
+                HStack(spacing: Spacing.l) {
                     // Transaction type indicator
                     VStack(spacing: 5) {
                         Image(systemName: isBuy ? "plus.circle.fill" : "minus.circle.fill")
@@ -55,12 +55,12 @@ struct TransactionRowView: View {
                         Spacer()
                         
                         VStack(alignment: .trailing, spacing: 2) {
-                            Text(transaction.totalValue, format: .usd)
+                            Text(transaction.totalValue, format: .usdAmount)
                                 .font(.subheadline)
                                 .fontWeight(.medium)
                                 .lineLimit(1)
                             
-                            HStack(spacing: 4) {
+                            HStack(spacing: Spacing.xs) {
                                 Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
@@ -71,17 +71,18 @@ struct TransactionRowView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
+                .padding(.horizontal, Spacing.l)
+                .padding(.vertical, Spacing.m)
             }
             .buttonStyle(.plain)
+            .accessibilityHint(isExpanded ? "Hides details" : "Shows details")
             
             if isExpanded {
                 TransactionDetailsView(transaction: transaction, currentPrice: currentPrice)
             }
         }
         .transition(.slide)
-        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        .card(elevated: true)
     }
 }
 

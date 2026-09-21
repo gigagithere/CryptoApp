@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PortfolioChartView: View {
     @Environment(PortfolioViewModel.self) private var portfolio
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var isExpanded = false
     
     var body: some View {
@@ -20,7 +21,7 @@ struct PortfolioChartView: View {
                 isExpanded.toggle()
             }
         } label: {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: Spacing.l) {
                 HStack {
                     Text("Portfolio Distribution")
                         .font(.headline)
@@ -31,10 +32,9 @@ struct PortfolioChartView: View {
                     Text("\(chartData.count) coins")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(.ultraThinMaterial)
-                        .clipShape(.rect(cornerRadius: 8))
+                        .padding(.horizontal, Spacing.s)
+                        .padding(.vertical, Spacing.xs)
+                        .background(.ultraThinMaterial, in: .rect(cornerRadius: Radius.small))
                     
                     Image(systemName: "chevron.down")
                         .font(.caption2)
@@ -46,13 +46,16 @@ struct PortfolioChartView: View {
                     ContentUnavailableView("No data to display", systemImage: "chart.pie")
                         .frame(height: 200)
                 } else {
-                    HStack(spacing: 20) {
+                    // Side by side normally; stacked when large text would squeeze the legend
+                    let layout = dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: Spacing.xl))
+                                                                     : AnyLayout(HStackLayout(spacing: Spacing.xl))
+                    layout {
                         PieChart(data: chartData, size: 100)
                         ChartLegend(data: chartData, maxItems: 3)
                     }
                     
                     if isExpanded {
-                        VStack(spacing: 12) {
+                        VStack(spacing: Spacing.m) {
                             Divider()
                             
                             if chartData.count > 3 {
@@ -67,14 +70,14 @@ struct PortfolioChartView: View {
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                     .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 8)
+                                    .padding(.vertical, Spacing.s)
                             }
                             
                             Divider()
                             
                             HStack {
                                 LabeledValue(title: "Portfolio Summary") {
-                                    Text("Total: \(total, format: .usd)")
+                                    Text("Total: \(total, format: .usdAmount)")
                                         .font(.subheadline)
                                         .fontWeight(.medium)
                                 }
@@ -87,23 +90,22 @@ struct PortfolioChartView: View {
                                         .fontWeight(.medium)
                                 }
                             }
-                            .padding(.top, 8)
+                            .padding(.top, Spacing.s)
                         }
                         .transition(.slide)
                     } else if chartData.count > 3 {
                         Text("+\(chartData.count - 3) more coins")
-                            .font(.caption2)
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
             }
-            .padding(16)
-            .background(.ultraThinMaterial)
-            .clipShape(.rect(cornerRadius: 16))
-            .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
+            .padding(Spacing.l)
+            .card(radius: Radius.large, elevated: true)
         }
         .buttonStyle(.plain)
+        .accessibilityHint(isExpanded ? "Shows fewer coins" : "Shows all coins")
     }
 }
 

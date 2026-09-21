@@ -12,7 +12,7 @@ struct AuthView: View {
     @State private var model = AuthFormModel()
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: Spacing.xl) {
             VStack(alignment: .leading) {
                 Text(model.isLogin ? "Log In" : "Register")
                     .font(.largeTitle)
@@ -22,10 +22,10 @@ struct AuthView: View {
                     .headlineText()
                     .foregroundStyle(.gray)
             }
-            .padding(.vertical, 20)
+            .padding(.vertical, Spacing.xl)
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            VStack(alignment: .center, spacing: 20) {
+            VStack(alignment: .center, spacing: Spacing.xl) {
                 AnimatedLogo()
                 
                 Text(model.isLogin ? "Please log in to continue" : "Create your account")
@@ -33,7 +33,7 @@ struct AuthView: View {
                     .foregroundStyle(.gray)
                     .padding(.top, 10)
                 
-                VStack(spacing: 20) {
+                VStack(spacing: Spacing.xl) {
                     CustomTextField(
                         icon: "envelope",
                         placeholder: "Email",
@@ -61,13 +61,14 @@ struct AuthView: View {
                     }
                 }
                 
-                VStack(spacing: 20) {
+                VStack(spacing: Spacing.xl) {
                     AuthButton(
                         text: model.isLogin ? "Log in" : "Sign Up",
                         backgroundColor: .customDarkBlue,
                         foregroundColor: .white,
                         action: submit
                     )
+                    .accessibilityInputLabels(["Log in", "Sign up", "Submit"])
                     .disabled(!model.canSubmit)
                     .opacity(model.canSubmit || model.isSubmitting ? 1 : 0.5)
                     .overlay {

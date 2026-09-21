@@ -14,7 +14,7 @@ struct PortfolioLinkRow: View {
     var body: some View {
         NavigationLink(value: route) {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: Spacing.xs) {
                     Text(title)
                         .headlineText()
                         .foregroundStyle(.primary)
@@ -27,8 +27,8 @@ struct PortfolioLinkRow: View {
                 Image(systemName: "chevron.right")
                     .secondaryText()
             }
-            .cardStyle()
-            .clipShape(.rect(cornerRadius: 12))
+            .padding()
+            .card()
         }
         .buttonStyle(.plain)
     }

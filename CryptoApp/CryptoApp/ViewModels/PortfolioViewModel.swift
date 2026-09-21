@@ -15,18 +15,14 @@ final class PortfolioViewModel {
     private(set) var holdings: [Holding] = []
     private(set) var transactions: [Transaction] = []
     private(set) var isLoading = false
+    /// True once the first load has finished, successfully or not. Until then the screen shows a spinner, not "empty".
+    private(set) var hasLoaded = false
     /// Error from loading portfolio data. Trades report their errors by throwing instead.
     private(set) var lastError: PortfolioError?
 
-    // Helpers for UI error display
+    // Helper for UI error display
     var errorMessage: String? {
         lastError?.localizedDescription
-    }
-
-    /// Two-way flag for `.alert(isPresented:)`: true while there is an error, dismissing clears it.
-    var showsError: Bool {
-        get { lastError != nil }
-        set { if !newValue { lastError = nil } }
     }
 
     // DEPENDENCIES - Services this ViewModel needs
@@ -60,7 +56,10 @@ final class PortfolioViewModel {
         }
 
         isLoading = true
-        defer { isLoading = false }
+        defer {
+            isLoading = false
+            hasLoaded = true
+        }
 
         do {
             // Load both holdings and transactions concurrently
@@ -85,6 +84,7 @@ final class PortfolioViewModel {
         holdings = []
         transactions = []
         lastError = nil
+        hasLoaded = false
     }
 
     /// Get current price for a specific coin

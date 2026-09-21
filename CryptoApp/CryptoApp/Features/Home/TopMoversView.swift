@@ -32,7 +32,6 @@ struct TopMoversView: View {
                 .scrollTargetLayout()
             }
             .scrollIndicators(.hidden)
-            .frame(height: 150)
             .contentMargins(.horizontal, 35, for: .scrollContent)
             .scrollTargetBehavior(.viewAligned)
         }

@@ -10,11 +10,17 @@ import SwiftUI
 struct TopMoversItemView: View {
     let coin: Coin
     
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    
     var body: some View {
+        // Symbol and price sit side by side normally, stacked at accessibility text sizes
+        let layout = dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading))
+                                                         : AnyLayout(HStackLayout())
+        
         VStack(alignment: .leading) {
             CoinImage(url: coin.image, symbol: coin.symbol, size: 32)
             
-            HStack {
+            layout {
                 Text(coin.symbol.uppercased())
                     .font(.caption)
                     .bold()
@@ -22,19 +28,27 @@ struct TopMoversItemView: View {
                 Text(coin.currentPrice, format: .usd)
                     .font(.caption)
                     .foregroundStyle(.gray)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
             }
             
-            Text(coin.priceChangePercentage24H / 100, format: .percentChange)
+            Text(coin.priceChangePercentage24H / 100, format: .percentChangeSigned)
                 .font(.title2)
                 .foregroundStyle(coin.priceChangePercentage24H > 0 ? .green : .red)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
         }
-        .frame(height: 120)
+        .padding(Spacing.l)
+        .frame(maxWidth: .infinity, minHeight: 120, alignment: .leading) // grows with the text size
         .containerRelativeFrame(.horizontal, count: 2, spacing: 10)
         .background(.ultraThinMaterial.opacity(0.9))
         .overlay {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: Radius.medium)
                 .stroke(Color(.systemGray3), lineWidth: 2)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(coin.symbol.uppercased()), \(coin.currentPrice.formatted(.usd))")
+        .accessibilityValue((coin.priceChangePercentage24H / 100).formatted(.percentChangeSigned))
         .scrollTransition(.animated, axis: .horizontal) { content, phase in
             content
                 .opacity(phase.isIdentity ? 1.0 : 0.6)

@@ -11,15 +11,16 @@ struct TradeInfoCard<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Spacing.s) {
             Text(title)
                 .headlineText()
                 .foregroundStyle(.secondary)
             content
         }
         .frame(maxWidth: .infinity)
-        .cardStyle()
-        .clipShape(.rect(cornerRadius: 16))
+        .padding()
+        .card(radius: Radius.large)
+        .accessibilityElement(children: .combine)
     }
 }
 

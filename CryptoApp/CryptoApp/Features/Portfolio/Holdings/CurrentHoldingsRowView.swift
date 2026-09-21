@@ -21,11 +21,11 @@ struct CurrentHoldingsRowView: View {
         let profitLoss = holding.profitLoss(currentPrice: currentPrice)
         let profitLossPercentage = holding.profitLossPercentage(currentPrice: currentPrice)
         
-        VStack(spacing: 12) {
+        VStack(spacing: Spacing.m) {
             HStack {
                 // Opens the live coin; disabled while there is no market price for it
                 NavigationLink(value: Route.coin(id: holding.coinId)) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: Spacing.m) {
                         CoinImage(url: holding.imageUrl, symbol: holding.coinSymbol)
                         Text(holding.coinSymbol.uppercased())
                             .font(.headline)
@@ -43,13 +43,16 @@ struct CurrentHoldingsRowView: View {
                     Label("Sell", systemImage: "minus.circle")
                         .font(.caption)
                         .fontWeight(.medium)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(.red.opacity(0.1))
+                        .padding(.horizontal, Spacing.s)
+                        .padding(.vertical, Spacing.xs)
+                        .background(.red.opacity(0.1), in: .rect(cornerRadius: Radius.small))
                         .foregroundStyle(.red)
-                        .clipShape(.rect(cornerRadius: 6))
+                        .frame(minHeight: 44) // tap target bigger than the chip you see
+                        .contentShape(.rect)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Sell \(holding.coinSymbol.uppercased())")
+                .accessibilityInputLabels(["Sell", "Sell \(holding.coinSymbol.uppercased())"])
             }
             
             HStack {
@@ -61,7 +64,7 @@ struct CurrentHoldingsRowView: View {
                 Spacer()
                 
                 LabeledValue(title: "Current Value", alignment: .trailing) {
-                    Text(currentValue, format: .usd)
+                    Text(currentValue, format: .usdAmount)
                         .font(.subheadline.weight(.medium))
                 }
             }
@@ -75,28 +78,26 @@ struct CurrentHoldingsRowView: View {
                 Spacer()
                 
                 LabeledValue(title: "P&L", alignment: .trailing) {
-                    HStack(spacing: 4) {
+                    HStack(spacing: Spacing.xs) {
                         Image(systemName: profitLoss >= 0 ? "arrow.up" : "arrow.down")
                             .font(.caption)
-                        Text("\(profitLoss, format: .usd) (\(profitLossPercentage / 100, format: .percentChange))")
+                        Text("\(profitLoss, format: .usdChange) (\(profitLossPercentage / 100, format: .percentChangeSigned))")
                             .font(.subheadline.weight(.medium))
                     }
                     .foregroundStyle(profitLoss >= 0 ? .green : .red)
                 }
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(.ultraThinMaterial)
-        .clipShape(.rect(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        .padding(.horizontal, Spacing.l)
+        .padding(.vertical, Spacing.m)
+        .card(elevated: true)
         .alert("Sell \(holding.coinSymbol.uppercased())?", isPresented: $showSellConfirmation) {
             Button("Cancel", role: .cancel) { }
             Button("Sell All", role: .destructive) {
                 Task { await sellAll() }
             }
         } message: {
-            Text("This will sell all \(holding.quantity, format: .quantity) \(holding.coinSymbol.uppercased()) from your portfolio for \(currentValue, format: .usd).")
+            Text("This will sell all \(holding.quantity, format: .quantity) \(holding.coinSymbol.uppercased()) from your portfolio for \(currentValue, format: .usdAmount).")
         }
         .alert("Couldn't sell", isPresented: $showSellError) {
             Button("OK") { }

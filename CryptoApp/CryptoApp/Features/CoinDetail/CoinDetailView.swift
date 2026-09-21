@@ -11,8 +11,6 @@ struct CoinDetailView: View {
     let coinID: String
     
     @Environment(CoinService.self) private var coinService
-    @Environment(PortfolioViewModel.self) private var portfolio
-    @Environment(WatchlistViewModel.self) private var watchlist
     @State private var tradeType: TransactionType?
     
     var body: some View {
@@ -42,7 +40,7 @@ struct CoinDetailView: View {
         .navigationTitle(coin.name)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 8) {
+                HStack(spacing: Spacing.s) {
                     WatchlistButton(coinID: coin.id, font: .title3)
                     Text(coin.symbol.uppercased())
                         .headlineText()
@@ -53,11 +51,6 @@ struct CoinDetailView: View {
         }
         .sheet(item: $tradeType) { type in
             TradingModalView(coinID: coin.id, type: type)
-        }
-        .task {
-            // LOAD DATA - Ensure both ViewModels have loaded data
-            await portfolio.loadPortfolioData()
-            await watchlist.loadWatchlist()
         }
     }
 }

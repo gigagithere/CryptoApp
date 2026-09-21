@@ -12,18 +12,36 @@ struct PortfolioView: View {
     @Environment(PortfolioViewModel.self) private var portfolio
     
     var body: some View {
-        @Bindable var portfolio = portfolio
-        
         Group {
-            if portfolio.holdings.isEmpty {
-                ContentUnavailableView(
-                    "Start Your Crypto Journey!",
-                    systemImage: "bitcoinsign.circle",
-                    description: Text("Buy some cryptocurrency to start building your portfolio and watch your investments grow")
-                )
+            if !portfolio.hasLoaded && portfolio.errorMessage == nil {
+                ProgressView("Loading portfolio…")
+                    .controlSize(.large)
+            } else if portfolio.holdings.isEmpty {
+                if let message = portfolio.errorMessage {
+                    ContentUnavailableView {
+                        Label("Couldn't Load Portfolio", systemImage: "wifi.slash")
+                    } description: {
+                        Text(message)
+                    } actions: {
+                        Button("Try Again") {
+                            Task { await portfolio.loadPortfolioData() }
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                } else {
+                    ContentUnavailableView(
+                        "Start Your Crypto Journey!",
+                        systemImage: "bitcoinsign.circle",
+                        description: Text("Buy some cryptocurrency to start building your portfolio and watch your investments grow")
+                    )
+                }
             } else {
                 ScrollView {
-                    VStack(spacing: 20) {
+                    VStack(spacing: Spacing.xl) {
+                        if let message = portfolio.errorMessage {
+                            StatusBanner(systemImage: "exclamationmark.triangle", tint: .orange, message: Text(verbatim: message))
+                        }
+                        
                         PortfolioSummaryView(
                             totalValue: portfolio.totalPortfolioValue(),
                             totalInvestment: portfolio.totalInvestment(),
@@ -33,7 +51,7 @@ struct PortfolioView: View {
                         
                         PortfolioChartView()
                         
-                        VStack(spacing: 16) {
+                        VStack(spacing: Spacing.l) {
                             PortfolioLinkRow(title: "Current Holdings",
                                              subtitle: "\(portfolio.holdings.count) holdings",
                                              route: .holdings)
@@ -44,7 +62,7 @@ struct PortfolioView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, Spacing.xl)
                 }
                 .refreshable {
                     // REFRESH - Load both coin prices and portfolio data
@@ -54,11 +72,6 @@ struct PortfolioView: View {
             }
         }
         .navigationTitle("Portfolio")
-        .alert("Error", isPresented: $portfolio.showsError) {
-            Button("OK") { }
-        } message: {
-            Text(portfolio.errorMessage ?? "")
-        }
     }
 }
 

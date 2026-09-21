@@ -38,13 +38,13 @@ struct TransactionHistoryPage: View {
                             }
                         }
                     }
-                    .cardStyle()
-                    .clipShape(.rect(cornerRadius: 12))
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
+                    .padding()
+                    .card()
+                    .padding(.horizontal, Spacing.xl)
+                    .padding(.top, Spacing.s)
                     
                     ScrollView {
-                        LazyVStack(spacing: 8) {
+                        LazyVStack(spacing: Spacing.s) {
                             ForEach(transactions) { transaction in
                                 TransactionRowView(
                                     transaction: transaction,
@@ -52,7 +52,7 @@ struct TransactionHistoryPage: View {
                                 )
                             }
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, Spacing.xl)
                         .safeAreaPadding(.bottom)
                     }
                 }

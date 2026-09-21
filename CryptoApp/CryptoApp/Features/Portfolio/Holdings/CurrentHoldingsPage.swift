@@ -30,20 +30,19 @@ struct CurrentHoldingsPage: View {
                         Spacer()
                         
                         LabeledValue(title: "Portfolio Value", alignment: .trailing) {
-                            Text(portfolio.totalPortfolioValue(), format: .usd)
+                            Text(portfolio.totalPortfolioValue(), format: .usdAmount)
                                 .font(.title2)
                                 .bold()
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 16)
-                    .background(.ultraThinMaterial)
-                    .clipShape(.rect(cornerRadius: 12))
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
+                    .padding(.horizontal, Spacing.xl)
+                    .padding(.vertical, Spacing.l)
+                    .card()
+                    .padding(.horizontal, Spacing.xl)
+                    .padding(.top, Spacing.s)
                     
                     ScrollView {
-                        LazyVStack(spacing: 12) {
+                        LazyVStack(spacing: Spacing.m) {
                             ForEach(portfolio.holdings) { holding in
                                 CurrentHoldingsRowView(
                                     holding: holding,
@@ -51,7 +50,7 @@ struct CurrentHoldingsPage: View {
                                 )
                             }
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, Spacing.xl)
                         .safeAreaPadding(.bottom)
                     }
                 }

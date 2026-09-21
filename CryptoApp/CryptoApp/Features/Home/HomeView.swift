@@ -12,32 +12,44 @@ struct HomeView: View {
     @State private var searchText = ""
     
     var body: some View {
-        ScrollView {
-            VStack {
-                TopMoversView()
-                    .frame(height: 150)
-                    .padding()
-                
-                Divider()
-                
-                if coinService.coins.isEmpty, coinService.lastError != nil {
-                    VStack(spacing: 12) {
-                        Text("Couldn't load coins")
-                            .font(.headline)
-                        Button("Try again") {
-                            Task { try? await coinService.forceRefresh() }
+        Group {
+            if !coinService.coins.isEmpty {
+                ScrollView {
+                    VStack {
+                        if coinService.isShowingCachedData {
+                            StatusBanner(systemImage: "icloud.slash", tint: .orange,
+                                         message: Text("Showing saved prices. Pull down to refresh."))
+                                .padding(.horizontal)
                         }
+                        
+                        TopMoversView()
+                            .padding()
+                        
+                        Divider()
+                        
+                        CoinList(searchText: searchText)
                     }
-                    .padding()
                 }
-
-                CoinList(searchText: searchText)
+                .refreshable {
+                    try? await coinService.forceRefresh() // an error is shown by MarketStatusView
+                }
+            } else if let error = coinService.lastError {
+                ContentUnavailableView {
+                    Label("Couldn't Load Prices", systemImage: "wifi.slash")
+                } description: {
+                    Text(error.localizedDescription)
+                } actions: {
+                    Button("Try Again") {
+                        Task { try? await coinService.forceRefresh() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+            } else {
+                ProgressView("Loading prices…")
+                    .controlSize(.large)
             }
         }
         .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search Coins")
-        .refreshable {
-            try? await coinService.forceRefresh() // an error is already stored in coinService.lastError
-        }
         .navigationTitle("Live Prices")
     }
 }
@@ -45,6 +57,7 @@ struct HomeView: View {
 #Preview {
     NavigationStack {
         HomeView()
+            .routeDestinations()
     }
     .previewEnvironment()
 }

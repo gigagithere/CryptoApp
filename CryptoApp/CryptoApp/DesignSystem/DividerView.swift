@@ -19,7 +19,7 @@ struct DividerView: View {
             Text("OR")
                 .font(.caption)
                 .foregroundStyle(.gray)
-                .padding(.horizontal, 8)
+                .padding(.horizontal, Spacing.s)
             
             Divider()
                 .frame(width: 150, height: 1)

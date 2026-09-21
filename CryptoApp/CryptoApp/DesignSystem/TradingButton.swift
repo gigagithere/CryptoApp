@@ -15,7 +15,7 @@ struct TradingButton: View {
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 8) {
+            HStack(spacing: Spacing.s) {
                 Image(systemName: type.systemImage)
                     .font(.headline)
                 Text(type.title)
@@ -26,14 +26,14 @@ struct TradingButton: View {
             .frame(height: 50)
             .background(type.color)
             .foregroundStyle(.white)
-            .clipShape(.rect(cornerRadius: 12))
+            .clipShape(.rect(cornerRadius: Radius.medium))
         }
         .buttonStyle(.plain)
     }
 }
 
 #Preview {
-    VStack(spacing: 16) {
+    VStack(spacing: Spacing.l) {
         TradingButton(type: .buy) {
             // Buy action
         }

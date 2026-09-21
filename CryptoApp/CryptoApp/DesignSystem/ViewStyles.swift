@@ -8,9 +8,11 @@
 import SwiftUI
 
 extension View {
-    func cardStyle() -> some View {
-        padding()
-            .background(.ultraThinMaterial)
+    /// A frosted card: material background, rounded corners and, optionally, a soft shadow.
+    /// Add your own padding first.
+    func card(radius: CGFloat = Radius.medium, elevated: Bool = false) -> some View {
+        background(.ultraThinMaterial, in: .rect(cornerRadius: radius))
+            .shadow(color: elevated ? .black.opacity(0.1) : .clear, radius: 4, y: 2)
     }
 
     func secondaryText() -> some View {

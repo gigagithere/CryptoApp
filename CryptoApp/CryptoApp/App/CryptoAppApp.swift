@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 @main
 struct CryptoAppApp: App {
-    @AppStorage("isDarkModeOn") private var isDarkModeOn: Bool = false
+    @AppStorage("appTheme") private var theme: AppTheme = .system
 
     // The four objects the whole app shares. Views read them with @Environment.
     @State private var authService: AuthService
@@ -20,6 +20,12 @@ struct CryptoAppApp: App {
     @State private var watchlist: WatchlistViewModel
 
     init() {
+        // The old Dark Mode switch became a System / Light / Dark choice
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: "appTheme") == nil, defaults.bool(forKey: "isDarkModeOn") {
+            defaults.set(AppTheme.dark.rawValue, forKey: "appTheme")
+        }
+
         // Firebase has to be configured before anything touches Auth or Firestore,
         // which is why the objects are created here and not in property initializers.
         FirebaseApp.configure()
@@ -44,7 +50,7 @@ struct CryptoAppApp: App {
                 .environment(coinService)
                 .environment(portfolio)
                 .environment(watchlist)
-                .preferredColorScheme(isDarkModeOn ? .dark : .light)
+                .preferredColorScheme(theme.colorScheme)
         }
     }
 }

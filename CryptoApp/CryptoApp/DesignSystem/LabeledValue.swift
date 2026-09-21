@@ -12,11 +12,12 @@ struct LabeledValue<Value: View>: View {
     @ViewBuilder let value: Value
 
     var body: some View {
-        VStack(alignment: alignment, spacing: 4) {
+        VStack(alignment: alignment, spacing: Spacing.xs) {
             Text(title)
                 .secondaryText()
             value
         }
+        .accessibilityElement(children: .combine)
     }
 }
 

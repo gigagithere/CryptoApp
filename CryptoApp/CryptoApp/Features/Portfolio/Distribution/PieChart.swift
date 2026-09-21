@@ -18,6 +18,7 @@ struct PieChart: View {
                 .opacity(0.8)
         }
         .chartLegend(.hidden)
+        .accessibilityHidden(true) // the legend next to it says the same in words
         .frame(width: size, height: size)
     }
 }

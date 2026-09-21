@@ -15,7 +15,7 @@ struct ChartLegend: View {
         VStack(alignment: .leading, spacing: 14) {
             ForEach(data.prefix(maxItems), id: \.coinSymbol) { item in
                 VStack(spacing: 6) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: Spacing.m) {
                         Circle()
                             .fill(Color.coin(item.coinSymbol))
                             .frame(width: 14, height: 14)
@@ -32,7 +32,7 @@ struct ChartLegend: View {
 
                         Spacer()
 
-                        Text(item.value, format: .usd)
+                        Text(item.value, format: .usdAmount)
                             .font(.subheadline)
                             .fontWeight(.medium)
                     }

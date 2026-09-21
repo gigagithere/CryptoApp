@@ -45,10 +45,10 @@ struct CustomTextField: View {
             .padding()
             .frame(minHeight: 40)
             .background(
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: Radius.medium)
                     .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                     .background(
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: Radius.medium)
                             .fill(Color(.secondarySystemBackground))
                     )
             )

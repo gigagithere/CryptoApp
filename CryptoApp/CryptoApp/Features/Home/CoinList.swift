@@ -28,7 +28,7 @@ struct CoinList: View {
         let coins = visibleCoins
         
         VStack(alignment: .leading, spacing: 0) {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: Spacing.l) {
                 Text("Cryptocurrencies")
                     .font(.title2)
                     .bold()
@@ -39,9 +39,9 @@ struct CoinList: View {
                     MarketStatusView()
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .padding(.bottom, 20)
+            .padding(.horizontal, Spacing.xl)
+            .padding(.top, Spacing.s)
+            .padding(.bottom, Spacing.xl)
             
             if coins.isEmpty {
                 ContentUnavailableView {
@@ -51,12 +51,9 @@ struct CoinList: View {
                 }
                 .padding(.top, 50)
             } else {
-                LazyVStack(spacing: 4) {
+                LazyVStack(spacing: Spacing.xs) {
                     ForEach(coins) { coin in
-                        NavigationLink(value: Route.coin(id: coin.id)) {
-                            SingleRowView(coin: coin)
-                        }
-                        .buttonStyle(.plain)
+                        SingleRowView(coin: coin)
                     }
                 }
                 .padding(.horizontal, 14)
