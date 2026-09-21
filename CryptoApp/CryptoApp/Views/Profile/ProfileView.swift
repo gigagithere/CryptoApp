@@ -118,6 +118,8 @@ struct ProfileView: View {
     @State private var isFaceIdOn: Bool = true
     @AppStorage("isDarkModeOn") private var isDarkModeOn: Bool = false
     @State private var profileImage: UIImage? = nil
+    @State private var signOutError = ""
+    @State private var showSignOutError = false
 
     private var displayName: String {
         if let user = authService.userSession {
@@ -188,10 +190,11 @@ struct ProfileView: View {
                 // Logout
                 VStack(spacing: 8) {
                     Button {
-                        Task {
-                            do {
-                                try await authService.signOut()
-                            } catch { }
+                        do {
+                            try authService.signOut()
+                        } catch {
+                            signOutError = error.localizedDescription
+                            showSignOutError = true
                         }
                     } label: {
                         HStack {
@@ -213,6 +216,11 @@ struct ProfileView: View {
         .background(Color(.systemBackground))
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.automatic)
+        .alert("Couldn't log out", isPresented: $showSignOutError) {
+            Button("OK") { }
+        } message: {
+            Text(signOutError)
+        }
         .tint(.customDarkBlue.opacity(0.8))
     }
 }

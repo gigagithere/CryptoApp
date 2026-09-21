@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import os
 
 // Model
 struct Watchlist: Codable, Identifiable {
@@ -14,7 +15,7 @@ struct Watchlist: Codable, Identifiable {
     let coinId: String
     let dateAdded: Date
     
-    init(coinId: String, dateAdded: Date = Date()) {
+    init(coinId: String, dateAdded: Date = Date.now) {
         self.id = coinId
         self.coinId = coinId
         self.dateAdded = dateAdded
@@ -31,8 +32,9 @@ protocol WatchlistFirestoreServiceProtocol {
 }
 
 // WATCHLIST FIRESTORE SERVICE - Handles all watchlist/favorites data operations
-class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
+final class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
     private let db = Firestore.firestore()
+    private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "CryptoApp", category: "WatchlistFirestore")
     
     // LOAD WATCHED COINS - Get user's favorite coins list
     func loadWatchedCoins(userId: String) async throws -> Set<String> {
@@ -41,9 +43,14 @@ class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
             .collection("watchlist")
             .getDocuments()
         
-        let coinIds = snapshot.documents.compactMap { document in
-            try? document.data(as: Watchlist.self)
-        }.map { $0.coinId }
+        let coinIds = snapshot.documents.compactMap { document -> String? in
+            do {
+                return try document.data(as: Watchlist.self).coinId
+            } catch {
+                Self.logger.error("Skipping undecodable watchlist document \(document.documentID, privacy: .public): \(error.localizedDescription, privacy: .public)")
+                return nil
+            }
+        }
         
         return Set(coinIds)
     }
@@ -57,7 +64,7 @@ class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
             .collection("watchlist")
             .document(coinId)
         
-        try await docRef.setData(from: watchlist)
+        try docRef.setData(from: watchlist)
     }
     
     // REMOVE FROM WATCHLIST - Remove a coin from user's favorites

@@ -45,8 +45,13 @@ struct TradingModalView: View {
         return Decimal(string: normalizedQuantity) ?? 0
     }
     
+    /// Live market price - the same one the trade is executed at
+    private var currentPrice: Decimal {
+        portfolioViewModel.getCurrentPrice(for: coin.id) ?? Decimal(price: coin.currentPrice)
+    }
+    
     private var calculatedTotal: Decimal {
-        quantityValue * Decimal(coin.currentPrice)
+        quantityValue * currentPrice
     }
     
     private var currentHolding: Decimal {
@@ -85,7 +90,7 @@ struct TradingModalView: View {
                             Spacer()
                         }
                         
-                        Text("Current Price: \(Decimal(coin.currentPrice).asCurrencyString())")
+                        Text("Current Price: \(currentPrice.asCurrencyString())")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -98,7 +103,7 @@ struct TradingModalView: View {
                                 .headlineText()
                                 .foregroundColor(.secondary)
                             
-                            Text(Decimal(coin.currentPrice).asCurrencyString())
+                            Text(currentPrice.asCurrencyString())
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(tradeType.color)
@@ -265,71 +270,22 @@ struct TradingModalView: View {
     private func performTrade() async {
         HapticFeedback.impact(.heavy)
         
-        if tradeType == .buy {
-            // BUY - Add to portfolio using async method
-            await portfolioViewModel.addToPortfolio(
-                coinId: coin.id,
-                coinSymbol: coin.symbol,
-                quantity: quantityValue,
-                purchasePrice: Decimal(coin.currentPrice),
-                imageUrl: coin.image
-            )
-            
-            // Check for errors from ViewModel
-            if portfolioViewModel.errorMessage != nil {
-                errorMessage = portfolioViewModel.errorMessage ?? "Unable to complete buy order."
-                isProcessing = false
-                showError = true
-                
-                let errorFeedback = UINotificationFeedbackGenerator()
-                errorFeedback.notificationOccurred(.error)
-                return
+        do {
+            switch tradeType {
+            case .buy:
+                try await portfolioViewModel.buy(coinId: coin.id, quantity: quantityValue)
+            case .sell:
+                try await portfolioViewModel.sell(coinId: coin.id, quantity: quantityValue)
             }
             
-            // Success state
             isProcessing = false
             showConfirmation = true
-            
-            // Add haptic feedback for success
-            let successFeedback = UINotificationFeedbackGenerator()
-            successFeedback.notificationOccurred(.success)
-            
-        } else {
-            // SELL - Validate holdings first
-            if quantityValue > currentHolding {
-                if currentHolding == 0 {
-                    errorMessage = "You don't own any \(coin.symbol.uppercased()) to sell."
-                } else {
-                    errorMessage = "Insufficient funds! You only have \(currentHolding.asQuantityString()) \(coin.symbol.uppercased()) available to sell."
-                }
-                
-                isProcessing = false
-                showError = true
-                
-                let errorFeedback = UINotificationFeedbackGenerator()
-                errorFeedback.notificationOccurred(.error)
-                return
-            }
-            
-            // SELL - Execute sell order using async method
-            let success = await portfolioViewModel.sellFromPortfolio(coinId: coin.id, quantityToSell: quantityValue)
-            
-            if success && portfolioViewModel.errorMessage == nil {
-                // Success state
-                isProcessing = false
-                showConfirmation = true
-                
-                let successFeedback = UINotificationFeedbackGenerator()
-                successFeedback.notificationOccurred(.success)
-            } else {
-                errorMessage = portfolioViewModel.errorMessage ?? "Unable to complete sell order. Please try again."
-                
-                isProcessing = false
-                showError = true
-                
-                let errorFeedback = UINotificationFeedbackGenerator()
-                errorFeedback.notificationOccurred(.error)
-            }
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        } catch {
+            errorMessage = error.localizedDescription
+            isProcessing = false
+            showError = true
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
         }
     }
 }

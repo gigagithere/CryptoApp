@@ -55,9 +55,6 @@ struct PortfolioView: View {
             }
         }
         .navigationTitle("Portfolio")
-        .onChange(of: coinService.coins) { _, _ in
-            // Trigger UI refresh when coin prices update
-        }
         .alert("Error", isPresented: .constant(portfolioViewModel.errorMessage != nil)) {
             Button("OK") { 
                 portfolioViewModel.clearError()

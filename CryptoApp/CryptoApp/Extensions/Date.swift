@@ -8,19 +8,17 @@
 import Foundation
 
 extension Date {
+    /// Parses CoinGecko timestamps such as `2025-11-02T14:03:21.123Z` (fractional seconds are optional).
+    static func fromCoinGecko(_ string: String) -> Date? {
+        (try? Date(string, strategy: Date.ISO8601FormatStyle(includingFractionalSeconds: true)))
+            ?? (try? Date(string, strategy: Date.ISO8601FormatStyle()))
+    }
     
     init(coinGeckoString: String) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:SSSZ"
-        let date = formatter.date(from: coinGeckoString) ?? Date()
-        self.init(timeInterval: 0, since: date)
+        self = Date.fromCoinGecko(coinGeckoString) ?? .now
     }
-    private var shortFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter
-    }
+    
     func asShortDateString() -> String {
-        return shortFormatter.string(from: self)
+        formatted(date: .numeric, time: .omitted)
     }
 }

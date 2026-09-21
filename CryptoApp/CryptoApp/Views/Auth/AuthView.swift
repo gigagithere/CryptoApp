@@ -9,25 +9,15 @@ import SwiftUI
 import FirebaseAuth
 
 struct AuthView: View {
-    @State private var isLogin = true
-    @State private var loginViewModel = LoginViewModel()
-    @State private var registrationViewModel = RegistrationViewModel()
+    @State private var model = AuthFormModel()
     @State private var floatOffset: CGFloat = 0
     @State private var rotationAngle: CGFloat = 0
-    
-    private var currentEmail: Binding<String> {
-        isLogin ? $loginViewModel.email : $registrationViewModel.email
-    }
-    
-    private var currentPassword: Binding<String> {
-        isLogin ? $loginViewModel.password : $registrationViewModel.password
-    }
     
     var body: some View {
         VStack(spacing: 20) {
             // Header Section
             VStack(alignment: .leading) {
-                Text(isLogin ? "Log In" : "Register")
+                Text(model.isLogin ? "Log In" : "Register")
                     .font(.largeTitle)
                     .bold()
                 
@@ -43,7 +33,7 @@ struct AuthView: View {
                 // Animated Logo
                 animatedLogo
                 
-                Text(isLogin ? "Please log in to continue" : "Create your account")
+                Text(model.isLogin ? "Please log in to continue" : "Create your account")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .padding(.top, 10)
@@ -53,7 +43,7 @@ struct AuthView: View {
             }
         }
         .padding()
-        .animation(.easeInOut(duration: 0.3), value: isLogin)
+        .animation(.easeInOut(duration: 0.3), value: model.mode)
     }
     
     // MARK: - Components
@@ -87,14 +77,28 @@ struct AuthView: View {
             CustomTextField(
                 icon: "envelope",
                 placeholder: "Email",
-                text: currentEmail
+                text: $model.email,
+                keyboardType: .emailAddress,
+                contentType: .emailAddress
             )
+            .submitLabel(.next)
             
             CustomTextField(
                 icon: "lock",
                 placeholder: "Password",
-                text: currentPassword
+                text: $model.password,
+                isSecure: true,
+                contentType: model.isLogin ? .password : .newPassword
             )
+            .submitLabel(.go)
+            .onSubmit(submit)
+            
+            if let message = model.errorMessage {
+                Text(message)
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+            }
         }
     }
     
@@ -102,17 +106,25 @@ struct AuthView: View {
         VStack(spacing: 20) {
             // Primary Action Button
             Login_RegisterButton(
-                text: isLogin ? "Log in" : "Sign Up",
+                text: model.isLogin ? "Log in" : "Sign Up",
                 backgroundColor: .customDarkBlue,
                 foregroundColor: .white,
-                action: primaryAction
+                action: submit
             )
+            .disabled(!model.canSubmit)
+            .opacity(model.canSubmit || model.isSubmitting ? 1 : 0.5)
+            .overlay {
+                if model.isSubmitting {
+                    ProgressView()
+                        .tint(.white)
+                }
+            }
             
             DividerView()
             
             // Secondary Action Button
             Login_RegisterButton(
-                text: isLogin ? "Sign Up" : "Back to login",
+                text: model.isLogin ? "Sign Up" : "Back to login",
                 backgroundColor: .customDarkBlue.opacity(0.8),
                 foregroundColor: .white,
                 action: toggleAuthMode
@@ -122,19 +134,13 @@ struct AuthView: View {
     
     // MARK: - Actions
     
-    private func primaryAction() {
-        Task {
-            if isLogin {
-                try await loginViewModel.loginUser()
-            } else {
-                try? await registrationViewModel.registerUser()
-            }
-        }
+    private func submit() {
+        Task { await model.submit() }
     }
     
     private func toggleAuthMode() {
         withAnimation(.easeInOut(duration: 0.3)) {
-            isLogin.toggle()
+            model.toggleMode()
         }
     }
 }

@@ -93,7 +93,7 @@ struct PortfolioChartView: View {
                 ChartLegend(
                     data: chartData,
                     maxItems: 3,
-                    colorForCoin: colorForCoin
+                    colorForCoin: Color.coin
                 )
             }
             
@@ -124,7 +124,7 @@ struct PortfolioChartView: View {
                 ChartLegend(
                     data: Array(chartData.dropFirst(3)),
                     maxItems: chartData.count,
-                    colorForCoin: colorForCoin
+                    colorForCoin: Color.coin
                 )
             } else {
                 Text("All holdings are shown above")
@@ -164,24 +164,6 @@ struct PortfolioChartView: View {
             }
         }
         .padding(.top, 8)
-    }
-    
-    private func colorForCoin(_ symbol: String) -> Color {
-        let colors: [Color] = [
-            .blue, .green, .orange, .purple, .pink, .red, .yellow, .cyan, 
-            .mint, .indigo, .teal, .brown, Color(red: 0.8, green: 0.2, blue: 0.6),
-            Color(red: 0.2, green: 0.8, blue: 0.4), Color(red: 0.9, green: 0.6, blue: 0.1),
-            Color(red: 0.3, green: 0.7, blue: 0.9), Color(red: 0.7, green: 0.3, blue: 0.8),
-            Color(red: 0.1, green: 0.5, blue: 0.8), Color(red: 0.8, green: 0.4, blue: 0.2),
-            Color(red: 0.5, green: 0.8, blue: 0.3)
-        ]
-        
-        var hasher = Hasher()
-        hasher.combine(symbol.uppercased())
-        let hash = hasher.finalize()
-        let index = abs(hash) % colors.count
-        
-        return colors[index]
     }
 }
 

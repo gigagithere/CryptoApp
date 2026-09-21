@@ -8,16 +8,9 @@
 import Foundation
 
 extension String {
+    /// A CoinGecko timestamp shown as a short local date; falls back to the raw string if it can't be parsed.
     var asFormattedDate: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        
-        guard let date = dateFormatter.date(from: self) else { return self }
-        
-        let shortFormatter = DateFormatter()
-        shortFormatter.dateStyle = .short
-        return shortFormatter.string(from: date)
+        guard let date = Date.fromCoinGecko(self) else { return self }
+        return date.asShortDateString()
     }
 }

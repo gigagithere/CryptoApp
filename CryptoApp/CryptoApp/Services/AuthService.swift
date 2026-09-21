@@ -10,16 +10,26 @@ import FirebaseAuth
 
 @MainActor
 @Observable
-class AuthService {
-    
-    var userSession: FirebaseAuth.User?
-    
+final class AuthService {
+
+    private(set) var userSession: FirebaseAuth.User?
+
     static let shared = AuthService()
+
+    @ObservationIgnored private var authStateHandle: AuthStateDidChangeListenerHandle?
 
     init() {
         self.userSession = Auth.auth().currentUser
+
+        // Keeps the UI in sync with Firebase: sign-in on another screen, an expired
+        // session or a deleted account all end up here, not only our own login/logout calls.
+        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            Task { @MainActor in
+                self?.userSession = user
+            }
+        }
     }
-    
+
     // LOGIN - Authenticate user and update state
     func login(email: String, password: String) async throws {
         do {
@@ -42,8 +52,8 @@ class AuthService {
         }
     }
 
-    // LOGOUT - Sign out user and clear all cached data
-    func signOut() async throws {
+    // LOGOUT - Sign out user
+    func signOut() throws {
         do {
             try Auth.auth().signOut()
             self.userSession = nil

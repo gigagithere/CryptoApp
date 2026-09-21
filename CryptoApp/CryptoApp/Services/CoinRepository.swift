@@ -8,51 +8,85 @@
 import Foundation
 
 protocol CoinRepositoryProtocol {
-    func fetchCoins() async throws -> [Coin]
+    /// The top coins by market cap (with 7-day sparklines).
+    func fetchTopCoins() async throws -> MarketSnapshot
+    /// Specific coins by CoinGecko id, e.g. holdings that dropped out of the top list.
+    func fetchCoins(ids: [String]) async throws -> [Coin]
 }
 
 final class CoinRepository: CoinRepositoryProtocol {
-    private let baseUrl = "https://api.coingecko.com/api/v3/coins/"
-    private var marketURL: URL? {
-        URL(string: "\(baseUrl)markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=24h")
-    }
-    private let userDefaults = UserDefaults.standard
+    private let session: URLSession
+    private let userDefaults: UserDefaults
     private let cacheKey = "cached_coins_data"
 
-    init() {}
+    init(session: URLSession = .shared, userDefaults: UserDefaults = .standard) {
+        self.session = session
+        self.userDefaults = userDefaults
+    }
 
-    func fetchCoins() async throws -> [Coin] {
-        guard let url = marketURL else { throw URLError(.badURL) }
+    func fetchTopCoins() async throws -> MarketSnapshot {
+        let url = try marketsURL(extraItems: [
+            URLQueryItem(name: "order", value: "market_cap_desc"),
+            URLQueryItem(name: "per_page", value: "50"),
+            URLQueryItem(name: "page", value: "1"),
+            URLQueryItem(name: "sparkline", value: "true")
+        ])
 
         do {
-            // Try API first
-            let (data, response) = try await URLSession.shared.data(from: url)
-
-            // Non-200 (e.g. 429 rate limit) returns an error body, not coins
-            if let http = response as? HTTPURLResponse, http.statusCode != 200 {
-                throw URLError(.badServerResponse)
-            }
-
+            let data = try await download(url)
             let coins = try Self.decodeCoins(from: data)
+            guard !coins.isEmpty else { throw URLError(.cannotParseResponse) }
 
-            // Success! Save to UserDefaults as offline backup
+            // Success: keep the raw response as an offline backup
             userDefaults.set(data, forKey: cacheKey)
-
-            return coins
-
+            return MarketSnapshot(coins: coins, isFromCache: false)
         } catch {
-            // API failed - try UserDefaults as fallback
+            // A cancelled request is not a failure to paper over with old data
+            if error is CancellationError || (error as? URLError)?.code == .cancelled {
+                throw error
+            }
             guard let data = userDefaults.data(forKey: cacheKey),
-                  let cached = try? Self.decodeCoins(from: data) else { throw error }
-            return cached
+                  let cached = try? Self.decodeCoins(from: data),
+                  !cached.isEmpty else { throw error }
+            return MarketSnapshot(coins: cached, isFromCache: true)
         }
     }
 
+    func fetchCoins(ids: [String]) async throws -> [Coin] {
+        guard !ids.isEmpty else { return [] }
+        let url = try marketsURL(extraItems: [
+            URLQueryItem(name: "ids", value: ids.joined(separator: ",")),
+            URLQueryItem(name: "sparkline", value: "false")
+        ])
+        return try Self.decodeCoins(from: try await download(url))
+    }
+
     /// Decodes coins one by one so a single malformed entry doesn't drop the whole list.
-    private static func decodeCoins(from data: Data) throws -> [Coin] {
-        let coins = try JSONDecoder().decode([LossyCoin].self, from: data).compactMap(\.coin)
-        guard !coins.isEmpty else { throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "No valid coins in response")) }
-        return coins
+    /// Throws if the payload isn't a JSON array at all (e.g. an error object from a rate limit).
+    static func decodeCoins(from data: Data) throws -> [Coin] {
+        try JSONDecoder().decode([LossyCoin].self, from: data).compactMap(\.coin)
+    }
+
+    private func marketsURL(extraItems: [URLQueryItem]) throws -> URL {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.coingecko.com"
+        components.path = "/api/v3/coins/markets"
+        components.queryItems = [
+            URLQueryItem(name: "vs_currency", value: "usd"),
+            URLQueryItem(name: "price_change_percentage", value: "24h")
+        ] + extraItems
+        guard let url = components.url else { throw URLError(.badURL) }
+        return url
+    }
+
+    private func download(_ url: URL) async throws -> Data {
+        let (data, response) = try await session.data(from: url)
+        // Non-2xx (e.g. 429 rate limit) returns an error body, not coins
+        if let http = response as? HTTPURLResponse, !(200..<300).contains(http.statusCode) {
+            throw URLError(.badServerResponse)
+        }
+        return data
     }
 }
 

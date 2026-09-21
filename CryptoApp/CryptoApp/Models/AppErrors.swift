@@ -6,10 +6,13 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 // MARK: - Authentication Errors
 enum AuthError: Error, LocalizedError {
     case invalidCredentials
+    case invalidEmail
+    case tooManyRequests
     case userNotFound
     case emailAlreadyInUse
     case weakPassword
@@ -22,6 +25,10 @@ enum AuthError: Error, LocalizedError {
         switch self {
         case .invalidCredentials:
             return "Invalid email or password"
+        case .invalidEmail:
+            return "Please enter a valid email address"
+        case .tooManyRequests:
+            return "Too many attempts. Please try again later"
         case .userNotFound:
             return "No account found with this email"
         case .emailAlreadyInUse:
@@ -41,7 +48,7 @@ enum AuthError: Error, LocalizedError {
 }
 
 // MARK: - Portfolio Errors
-enum PortfolioError: Error, LocalizedError {
+enum PortfolioError: Error, LocalizedError, Equatable {
     case userNotAuthenticated
     case invalidQuantity
     case insufficientHoldings
@@ -52,6 +59,7 @@ enum PortfolioError: Error, LocalizedError {
     case networkError
     case holdingNotFound
     case transactionFailed
+    case priceUnavailable
     case unknown(String)
     
     var errorDescription: String? {
@@ -76,6 +84,8 @@ enum PortfolioError: Error, LocalizedError {
             return "Holding not found in portfolio"
         case .transactionFailed:
             return "Transaction failed. Please try again"
+        case .priceUnavailable:
+            return "The current price isn't available. Pull to refresh and try again"
         case .unknown(let message):
             return "Portfolio error: \(message)"
         }
@@ -118,18 +128,27 @@ enum WatchlistError: Error, LocalizedError {
 // MARK: - Error Conversion Helpers
 extension AuthError {
     static func from(firebaseError: Error) -> AuthError {
-        let errorCode = (firebaseError as NSError).code
-        switch errorCode {
-        case 17008, 17009: // Invalid email or wrong password
+        let nsError = firebaseError as NSError
+        guard nsError.domain == AuthErrors.domain,
+              let code = AuthErrorCode(rawValue: nsError.code) else {
+            return .unknown(firebaseError.localizedDescription)
+        }
+        
+        switch code {
+        case .invalidCredential, .wrongPassword: // Firebase reports a wrong password as invalidCredential
             return .invalidCredentials
-        case 17011: // User not found
+        case .invalidEmail:
+            return .invalidEmail
+        case .userNotFound:
             return .userNotFound
-        case 17007: // Email already in use
+        case .emailAlreadyInUse:
             return .emailAlreadyInUse
-        case 17026: // Weak password
+        case .weakPassword:
             return .weakPassword
-        case 17020: // Network error
+        case .networkError:
             return .networkError
+        case .tooManyRequests:
+            return .tooManyRequests
         default:
             return .unknown(firebaseError.localizedDescription)
         }

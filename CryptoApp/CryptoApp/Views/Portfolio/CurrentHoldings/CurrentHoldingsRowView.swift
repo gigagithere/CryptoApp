@@ -16,6 +16,8 @@ struct CurrentHoldingsRowView: View {
     private let coinService: CoinServiceProtocol
     private var watchlistViewModel: any WatchlistViewModelProtocol
     @State private var showSellConfirmation = false
+    @State private var showSellError = false
+    @State private var sellErrorMessage = ""
     
     init(holding: Holding, currentPrice: Decimal, portfolioViewModel: any PortfolioViewModelProtocol, coinService: CoinServiceProtocol, watchlistViewModel: any WatchlistViewModelProtocol) {
         self.holding = holding
@@ -38,67 +40,53 @@ struct CurrentHoldingsRowView: View {
         return (profitLoss / holding.totalInvested) * 100
     }
     
-    private var coin: Coin {
-        Coin(
-            id: holding.coinId,
-            symbol: holding.coinSymbol,
-            name: holding.coinSymbol.uppercased(),
-            image: holding.imageUrl,
-            currentPrice: currentPrice.doubleValue,
-            marketCap: nil,
-            marketCapRank: 0,
-            fullyDilutedValuation: nil,
-            totalVolume: nil,
-            high24H: nil,
-            low24H: nil,
-            priceChange24H: 0,
-            priceChangePercentage24H: 0,
-            marketCapChange24H: nil,
-            marketCapChangePercentage24H: nil,
-            circulatingSupply: nil,
-            totalSupply: nil,
-            maxSupply: nil,
-            ath: nil,
-            athChangePercentage: 0,
-            athDate: nil,
-            atl: nil,
-            atlChangePercentage: nil,
-            atlDate: nil,
-            lastUpdated: nil,
-            sparklineIn7D: nil
-        )
+    private var coinLabel: some View {
+        HStack(spacing: 12) {
+            KFImage(URL(string: holding.imageUrl))
+                .placeholder {
+                    Circle()
+                        .fill(.gray.opacity(0.3))
+                        .frame(width: 28, height: 28)
+                        .overlay {
+                            Text(holding.coinSymbol.prefix(1).uppercased())
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .foregroundColor(.primary)
+                        }
+                }
+                .retry(maxCount: 3, interval: .seconds(1))
+                .fade(duration: 0.25)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 28, height: 28)
+            
+            Text(holding.coinSymbol.uppercased())
+                .font(.headline)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
+        }
+    }
+    
+    private func sellAll() async {
+        do {
+            try await portfolioViewModel.sell(coinId: holding.coinId, quantity: holding.quantity)
+        } catch {
+            sellErrorMessage = error.localizedDescription
+            showSellError = true
+        }
     }
     
     var body: some View {
         VStack(spacing: 12) {
             HStack {
-                NavigationLink(destination: CoinDetailView(coin: coin, coinService: coinService, portfolioViewModel: portfolioViewModel, watchlistViewModel: watchlistViewModel)) {
-                    HStack(spacing: 12) {
-                        KFImage(URL(string: holding.imageUrl))
-                            .placeholder {
-                                Circle()
-                                    .fill(.gray.opacity(0.3))
-                                    .frame(width: 28, height: 28)
-                                    .overlay {
-                                        Text(holding.coinSymbol.prefix(1).uppercased())
-                                            .font(.caption)
-                                            .fontWeight(.medium)
-                                            .foregroundColor(.primary)
-                                    }
-                            }
-                            .retry(maxCount: 3, interval: .seconds(1))
-                            .fade(duration: 0.25)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 28, height: 28)
-                        
-                        Text(holding.coinSymbol.uppercased())
-                            .font(.headline)
-                            .fontWeight(.medium)
-                            .foregroundColor(.primary)
+                if let liveCoin = coinService.coin(id: holding.coinId) {
+                    NavigationLink(destination: CoinDetailView(coin: liveCoin, coinService: coinService, portfolioViewModel: portfolioViewModel, watchlistViewModel: watchlistViewModel)) {
+                        coinLabel
                     }
+                    .buttonStyle(.plain)
+                } else {
+                    coinLabel
                 }
-                .buttonStyle(.plain)
                 Spacer()
                 
                 Button(action: {
@@ -178,12 +166,15 @@ struct CurrentHoldingsRowView: View {
             Button("Cancel", role: .cancel) { }
             Button("Sell All", role: .destructive) {
                 HapticFeedback.impact(.heavy)
-                Task {
-                    await portfolioViewModel.removeFromPortfolio(holding)
-                }
+                Task { await sellAll() }
             }
         } message: {
             Text("This will sell all \(holding.quantity.asQuantityString()) \(holding.coinSymbol.uppercased()) from your portfolio for \(currentValue.asCurrencyString()).")
+        }
+        .alert("Couldn't sell", isPresented: $showSellError) {
+            Button("OK") { }
+        } message: {
+            Text(sellErrorMessage)
         }
     }
 }
