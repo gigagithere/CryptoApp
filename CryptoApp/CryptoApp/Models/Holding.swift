@@ -18,25 +18,18 @@ struct Holding: Codable, Identifiable {
     var totalInvested: Decimal
     let imageUrl: String
     
-    // CALCULATED PROPERTIES - Not stored in Firestore, computed with current market prices
-    var currentValue: Decimal {
-        quantity * averagePurchasePrice
-    }
-    
-    // Calculate current value using live market price
+    // Not stored in Firestore: computed from a live market price
     func currentValue(currentPrice: Decimal) -> Decimal {
-        return quantity * currentPrice
+        quantity * currentPrice
     }
-    
-    // Calculate profit/loss using live market price
+
     func profitLoss(currentPrice: Decimal) -> Decimal {
-        return currentValue(currentPrice: currentPrice) - totalInvested
+        currentValue(currentPrice: currentPrice) - totalInvested
     }
-    
-    // Calculate profit/loss percentage using live market price
+
     func profitLossPercentage(currentPrice: Decimal) -> Decimal {
         guard totalInvested > 0 else { return 0 }
-        return ((currentValue(currentPrice: currentPrice) - totalInvested) / totalInvested) * 100
+        return (profitLoss(currentPrice: currentPrice) / totalInvested) * 100
     }
     
     init(coinId: String, coinSymbol: String, quantity: Decimal, purchasePrice: Decimal, date: Date, imageUrl: String) {

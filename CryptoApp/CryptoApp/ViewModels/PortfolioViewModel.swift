@@ -9,34 +9,8 @@ import Foundation
 import os
 
 @MainActor
-protocol PortfolioViewModelProtocol: Observable {
-    var holdings: [Holding] { get }
-    var transactions: [Transaction] { get }
-    var isLoading: Bool { get }
-    var errorMessage: String? { get }
-
-    func loadPortfolioData() async
-    func clearLocalData()
-    func clearError()
-    /// Buys `quantity` of a coin at its current market price. Throws a `PortfolioError` on failure.
-    func buy(coinId: String, quantity: Decimal) async throws
-    /// Sells `quantity` of a coin at its current market price. Throws a `PortfolioError` on failure.
-    func sell(coinId: String, quantity: Decimal) async throws
-    func getCurrentPrice(for coinId: String) -> Decimal?
-    func getTotalHolding(for coinId: String) -> Decimal
-
-    func totalPortfolioValue() -> Decimal
-    func totalInvestment() -> Decimal
-    func totalProfitLoss() -> Decimal
-    func totalProfitLossPercentage() -> Decimal
-
-    var holdingsCount: Int { get }
-    var transactionCount: Int { get }
-}
-
-@MainActor
 @Observable
-final class PortfolioViewModel: PortfolioViewModelProtocol {
+final class PortfolioViewModel {
     // STATE - What the UI displays
     private(set) var holdings: [Holding] = []
     private(set) var transactions: [Transaction] = []
@@ -51,13 +25,13 @@ final class PortfolioViewModel: PortfolioViewModelProtocol {
 
     // DEPENDENCIES - Services this ViewModel needs
     private let firestoreService: PortfolioFirestoreServiceProtocol
-    private let coinService: CoinServiceProtocol
+    private let coinService: CoinService
     private let currentUserID: @MainActor () -> String?
     private static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "CryptoApp", category: "Portfolio")
 
     // INITIALIZATION - `currentUserID` is a closure so tests don't need a signed-in Firebase user
     init(firestoreService: PortfolioFirestoreServiceProtocol,
-         coinService: CoinServiceProtocol,
+         coinService: CoinService,
          currentUserID: @escaping @MainActor () -> String?) {
         self.firestoreService = firestoreService
         self.coinService = coinService
@@ -66,7 +40,7 @@ final class PortfolioViewModel: PortfolioViewModelProtocol {
 
     convenience init(firestoreService: PortfolioFirestoreServiceProtocol = PortfolioFirestoreService(),
                      authService: AuthService,
-                     coinService: CoinServiceProtocol) {
+                     coinService: CoinService) {
         self.init(firestoreService: firestoreService,
                   coinService: coinService,
                   currentUserID: { authService.userSession?.uid })
@@ -114,6 +88,11 @@ final class PortfolioViewModel: PortfolioViewModelProtocol {
     /// Get current price for a specific coin
     func getCurrentPrice(for coinId: String) -> Decimal? {
         coinService.coin(id: coinId).map { Decimal(price: $0.currentPrice) }
+    }
+
+    /// The live price of a held coin; falls back to the average buy price when no market price is known.
+    func currentPrice(for holding: Holding) -> Decimal {
+        getCurrentPrice(for: holding.coinId) ?? holding.averagePurchasePrice
     }
 
     // BUY - The price is read from the live market data at the moment of the trade
@@ -177,8 +156,7 @@ final class PortfolioViewModel: PortfolioViewModelProtocol {
     // PORTFOLIO CALCULATIONS - Using live market prices
     func totalPortfolioValue() -> Decimal {
         holdings.reduce(0) { total, holding in
-            let currentPrice = getCurrentPrice(for: holding.coinId) ?? holding.averagePurchasePrice
-            return total + holding.currentValue(currentPrice: currentPrice)
+            total + holding.currentValue(currentPrice: currentPrice(for: holding))
         }
     }
 
@@ -199,12 +177,16 @@ final class PortfolioViewModel: PortfolioViewModelProtocol {
         return ((totalPortfolioValue() - investment) / investment) * 100
     }
 
-    var holdingsCount: Int {
-        holdings.count
-    }
+    /// Each holding's share of the portfolio value, largest first.
+    func distribution() -> [DistributionData] {
+        let values = holdings
+            .map { (symbol: $0.coinSymbol.uppercased(), value: $0.currentValue(currentPrice: currentPrice(for: $0)).doubleValue) }
+            .sorted { $0.value > $1.value }
+        let total = values.reduce(0) { $0 + $1.value }
 
-    var transactionCount: Int {
-        transactions.count
+        return values.map {
+            DistributionData(coinSymbol: $0.symbol, value: $0.value, percentage: total > 0 ? $0.value / total * 100 : 0)
+        }
     }
 
     // MARK: - Private

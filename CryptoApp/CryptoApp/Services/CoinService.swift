@@ -10,25 +10,8 @@ import Observation
 import os
 
 @MainActor
-protocol CoinServiceProtocol: Observable {
-    var coins: [Coin] { get }
-    var isLoading: Bool { get }
-    var lastError: Error? { get }
-    /// When fresh (non-cached) prices were last received.
-    var lastUpdated: Date? { get }
-    /// True when the list on screen came from the offline backup because the network failed.
-    var isShowingCachedData: Bool { get }
-
-    func fetchCoinsIfNeeded() async throws
-    func forceRefresh() async throws
-    func coin(id: String) -> Coin?
-    /// Loads prices for coins that aren't in the top list (e.g. holdings that dropped out of it).
-    func loadMissingCoins(ids: [String]) async
-}
-
-@MainActor
 @Observable
-final class CoinService: CoinServiceProtocol {
+final class CoinService {
     private(set) var coins: [Coin] = [] {
         didSet {
             coinsByID = Dictionary(coins.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
@@ -122,54 +105,5 @@ final class CoinService: CoinServiceProtocol {
             }
             throw error
         }
-    }
-}
-
-// Preview data only - real code uses CoinService
-@MainActor
-@Observable
-final class MockCoinService: CoinServiceProtocol {
-    var coins: [Coin] = [
-        Coin(
-            id: "bitcoin",
-            symbol: "BTC",
-            name: "Bitcoin",
-            image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
-            currentPrice: 45000,
-            marketCap: nil,
-            marketCapRank: 1,
-            fullyDilutedValuation: nil,
-            totalVolume: nil,
-            high24H: nil,
-            low24H: nil,
-            priceChange24H: 0,
-            priceChangePercentage24H: 0,
-            marketCapChange24H: nil,
-            marketCapChangePercentage24H: nil,
-            circulatingSupply: nil,
-            totalSupply: nil,
-            maxSupply: nil,
-            ath: nil,
-            athChangePercentage: 1.2,
-            athDate: nil,
-            atl: nil,
-            atlChangePercentage: nil,
-            atlDate: nil,
-            lastUpdated: nil,
-            sparklineIn7D: nil
-        )
-    ]
-
-    var isLoading: Bool = false
-    var lastError: Error? = nil
-    var lastUpdated: Date? = nil
-    var isShowingCachedData: Bool = false
-
-    func fetchCoinsIfNeeded() async throws {}
-    func forceRefresh() async throws {}
-    func loadMissingCoins(ids: [String]) async {}
-
-    func coin(id: String) -> Coin? {
-        coins.first { $0.id == id }
     }
 }

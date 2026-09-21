@@ -9,26 +9,11 @@ import Foundation
 import FirebaseFirestore
 import os
 
-// Model
-struct Watchlist: Codable, Identifiable {
-    let id: String // coinId
-    let coinId: String
-    let dateAdded: Date
-    
-    init(coinId: String, dateAdded: Date = Date.now) {
-        self.id = coinId
-        self.coinId = coinId
-        self.dateAdded = dateAdded
-    }
-}
-
 // PROTOCOL
 protocol WatchlistFirestoreServiceProtocol {
     func loadWatchedCoins(userId: String) async throws -> Set<String>
     func addToWatchlist(userId: String, coinId: String) async throws
     func removeFromWatchlist(userId: String, coinId: String) async throws
-    func isWatched(userId: String, coinId: String) async throws -> Bool
-    func clearWatchlist(userId: String) async throws
 }
 
 // WATCHLIST FIRESTORE SERVICE - Handles all watchlist/favorites data operations
@@ -74,28 +59,5 @@ final class WatchlistFirestoreService: WatchlistFirestoreServiceProtocol {
             .collection("watchlist")
             .document(coinId)
             .delete()
-    }
-    
-    // CHECK IF WATCHED - See if a coin is in user's favorites
-    func isWatched(userId: String, coinId: String) async throws -> Bool {
-        let document = try await db.collection("users")
-            .document(userId)
-            .collection("watchlist")
-            .document(coinId)
-            .getDocument()
-        
-        return document.exists
-    }
-    
-    // CLEAR WATCHLIST - Remove all favorite coins
-    func clearWatchlist(userId: String) async throws {
-        let snapshot = try await db.collection("users")
-            .document(userId)
-            .collection("watchlist")
-            .getDocuments()
-        
-        for document in snapshot.documents {
-            try await document.reference.delete()
-        }
     }
 }

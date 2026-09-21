@@ -14,8 +14,6 @@ final class AuthService {
 
     private(set) var userSession: FirebaseAuth.User?
 
-    static let shared = AuthService()
-
     @ObservationIgnored private var authStateHandle: AuthStateDidChangeListenerHandle?
 
     init() {

@@ -23,12 +23,6 @@ final class AuthFormModel {
     /// Shown under the form; cleared on the next attempt or when switching mode.
     private(set) var errorMessage: String?
 
-    private let authService: AuthService
-
-    init(authService: AuthService? = nil) {
-        self.authService = authService ?? .shared
-    }
-
     var isLogin: Bool {
         mode == .login
     }
@@ -46,7 +40,7 @@ final class AuthFormModel {
         errorMessage = nil
     }
 
-    func submit() async {
+    func submit(using authService: AuthService) async {
         guard canSubmit else { return }
 
         isSubmitting = true

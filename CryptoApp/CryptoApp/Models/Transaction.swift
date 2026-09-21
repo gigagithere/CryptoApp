@@ -16,18 +16,12 @@ struct Transaction: Codable, Identifiable {
     let type: TransactionType
     let date: Date
     let imageUrl: String
-    
-    // CALCULATED PROPERTIES
+
     var totalValue: Decimal {
         quantity * price
     }
-    
-    // USD value of transaction at time it occurred
-    var usdValue: Decimal {
-        quantity * price
-    }
-    
-    init(coinId: String, coinSymbol: String, quantity: Decimal, price: Decimal, type: TransactionType, date: Date = Date(), imageUrl: String) {
+
+    init(coinId: String, coinSymbol: String, quantity: Decimal, price: Decimal, type: TransactionType, date: Date = .now, imageUrl: String) {
         self.id = UUID()
         self.coinId = coinId
         self.coinSymbol = coinSymbol
@@ -37,15 +31,15 @@ struct Transaction: Codable, Identifiable {
         self.date = date
         self.imageUrl = imageUrl
     }
-    
-    // FIFO HELPER - Check if this transaction occurred before another (for FIFO selling)
-    func isBefore(_ otherTransaction: Transaction) -> Bool {
-        return self.date < otherTransaction.date
+
+    /// What this trade would be worth (buy) or would have saved you (sell) at today's price.
+    func profitLoss(currentPrice: Decimal) -> Decimal {
+        let currentValue = quantity * currentPrice
+        return type == .buy ? currentValue - totalValue : totalValue - currentValue
     }
-}
 
-
-enum TransactionType: String, Codable {
-    case buy = "BUY"
-    case sell = "SELL"
+    func profitLossPercentage(currentPrice: Decimal) -> Decimal {
+        guard totalValue > 0 else { return 0 }
+        return (profitLoss(currentPrice: currentPrice) / totalValue) * 100
+    }
 }

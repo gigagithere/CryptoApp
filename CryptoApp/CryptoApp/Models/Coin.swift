@@ -59,10 +59,6 @@ struct Coin: Codable, Identifiable, Equatable {
     }
 }
 
-struct SparklineIn7D: Codable, Equatable {
-    let price: [Double]?
-}
-
 // Defined in an extension so the memberwise initializer stays available.
 // CoinGecko occasionally returns null for these fields (e.g. brand-new listings),
 // which would otherwise make decoding of the whole coin list fail.
