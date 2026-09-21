@@ -1,2 +1,15 @@
+# macOS
 .DS_Store
-CryptoApp/CryptoApp.xcodeproj/project.xcworkspace/xcuserdata/bartoszmrugala.xcuserdatad/UserInterfaceState.xcuserstate
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Claude Code local settings
+.claude/settings.local.json
