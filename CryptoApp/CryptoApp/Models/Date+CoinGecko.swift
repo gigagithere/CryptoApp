@@ -1,5 +1,5 @@
 //
-//  Date.swift
+//  Date+CoinGecko.swift
 //  CryptoApp
 //
 //  Created by Bartosz Mrugała on 18/03/2025.
@@ -12,13 +12,5 @@ extension Date {
     static func fromCoinGecko(_ string: String) -> Date? {
         (try? Date(string, strategy: Date.ISO8601FormatStyle(includingFractionalSeconds: true)))
             ?? (try? Date(string, strategy: Date.ISO8601FormatStyle()))
-    }
-    
-    init(coinGeckoString: String) {
-        self = Date.fromCoinGecko(coinGeckoString) ?? .now
-    }
-    
-    func asShortDateString() -> String {
-        formatted(date: .numeric, time: .omitted)
     }
 }

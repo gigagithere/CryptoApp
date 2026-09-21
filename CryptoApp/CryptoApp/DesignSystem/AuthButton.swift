@@ -11,8 +11,8 @@ import SwiftUI
 
 struct AuthButton: View {
     let text: String
-    let backgroundColor: Color?
-    let foregroundColor: Color?
+    let backgroundColor: Color
+    let foregroundColor: Color
     let action: () -> Void
     
     var body: some View {
@@ -24,7 +24,7 @@ struct AuthButton: View {
             .padding()
             .frame(maxWidth: .infinity)
             .background(backgroundColor)
-            .foregroundColor(foregroundColor)
+            .foregroundStyle(foregroundColor)
             .clipShape(.capsule)
         }
     }

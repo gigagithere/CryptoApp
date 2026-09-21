@@ -15,42 +15,39 @@ struct PortfolioSummaryView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            // Total Value
             VStack(spacing: 4) {
                 Text("Total Portfolio Value")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 
-                Text(totalValue.asCurrencyString())
+                Text(totalValue, format: .usd)
                     .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
+                    .bold()
             }
             
-            // Profit/Loss
             VStack(spacing: 4) {
                 HStack(spacing: 8) {
                     Image(systemName: profitLoss >= 0 ? "arrow.up" : "arrow.down")
                         .font(.caption)
-                    Text("\(profitLoss.asCurrencyString()) (\(profitLossPercentage.asPercentageString()))")
+                    Text("\(profitLoss, format: .usd) (\(profitLossPercentage / 100, format: .percentChange))")
                         .font(.headline)
                         .fontWeight(.semibold)
                 }
-                .foregroundColor(profitLoss >= 0 ? .green : .red)
+                .foregroundStyle(profitLoss >= 0 ? .green : .red)
                 
-                Text("Total Invested: \(totalInvestment.asCurrencyString())")
+                Text("Total Invested: \(totalInvestment, format: .usd)")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         }
         .frame(maxWidth: .infinity)
         .padding()
         .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .clipShape(.rect(cornerRadius: 16))
         .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }
 
-#Preview() {
-    PortfolioSummaryView(totalValue: Decimal(20), totalInvestment: Decimal(200), profitLoss: Decimal(2), profitLossPercentage: Decimal(12))
+#Preview {
+    PortfolioSummaryView(totalValue: 20, totalInvestment: 200, profitLoss: 2, profitLossPercentage: 12)
 }

@@ -20,19 +20,19 @@ struct TopMoversView: View {
             Text("Top Movers")
                 .font(.headline)
             
-            ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView(.horizontal) {
                 LazyHStack {
                     ForEach(topMovers) { coin in
-                        NavigationLink(destination: CoinDetailView(coinID: coin.id)){
+                        NavigationLink(value: Route.coin(id: coin.id)) {
                             TopMoversItemView(coin: coin)
                         }
                         .buttonStyle(.plain)
                     }
                 }
-                
+                .scrollTargetLayout()
             }
+            .scrollIndicators(.hidden)
             .frame(height: 150)
-            .scrollTargetLayout()
             .contentMargins(.horizontal, 35, for: .scrollContent)
             .scrollTargetBehavior(.viewAligned)
         }
@@ -42,6 +42,7 @@ struct TopMoversView: View {
 #Preview {
     NavigationStack {
         TopMoversView()
+            .routeDestinations()
     }
     .previewEnvironment()
 }

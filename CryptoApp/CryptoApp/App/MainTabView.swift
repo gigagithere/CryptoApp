@@ -5,69 +5,32 @@
 
 import SwiftUI
 
-// MARK: - Main Tab View
-/// Custom tab bar with animated transitions
+/// The three tabs. Each has its own `NavigationStack`, so switching tabs keeps
+/// search text, sorting, scroll position and pushed screens.
 struct MainTabView: View {
-    @Environment(CoinService.self) private var coinService
-    @State private var selectedTab: AppTab = .home
-    
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                ZStack {
-                    switch selectedTab {
-                    case .home:
-                        HomeView()
-                    case .portfolio:
-                        PortfolioView()
-                    case .profile:
-                        ProfileView()
-                    }
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Divider()
-            
-            VStack {
-                HStack {
-                    ForEach(AppTab.allCases, id: \.self) { tab in
-                        Button(action: {
-                            withAnimation(
-                                .spring(
-                                    response: 0.4,
-                                    dampingFraction: 0.5,
-                                    blendDuration: 0.3
-                                )
-                            ) {
-                                selectedTab = tab
-                            }
-                        }) {
-                            VStack {
-                                Image(systemName: tab.icon)
-                                    .font(.system(size: selectedTab == tab ? 26 : 24))
-                                    .foregroundColor(selectedTab == tab ? .customDarkBlue : .gray)
-                                    .scaleEffect(selectedTab == tab ? 1.1 : 1.0)
-                                Text(tab.rawValue)
-                                    .font(selectedTab == tab ? .footnote : .caption)
-                                    .foregroundColor(selectedTab == tab ? .customDarkBlue : .gray)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                    }
+        TabView {
+            Tab("Home", systemImage: "house.fill") {
+                NavigationStack {
+                    HomeView()
+                        .routeDestinations()
                 }
             }
-            .frame(height: 48)
-            .padding(.top, 8)
-            .background(
-                Color(.gray)
-                    .opacity(0.1)
-                    .ignoresSafeArea(edges: .bottom)
-            )
+
+            Tab("Portfolio", systemImage: "bitcoinsign.circle.fill") {
+                NavigationStack {
+                    PortfolioView()
+                        .routeDestinations()
+                }
+            }
+
+            Tab("Profile", systemImage: "person.crop.circle") {
+                NavigationStack {
+                    ProfileView()
+                }
             }
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
-        .refreshable {
-            try? await coinService.forceRefresh() // an error is already stored in coinService.lastError
-        }
+        .tint(.customDarkBlue)
     }
 }
 

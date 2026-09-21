@@ -10,55 +10,47 @@ import SwiftUI
 struct ChartLegend: View {
     let data: [DistributionData]
     let maxItems: Int
-    let colorForCoin: (String) -> Color
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             ForEach(data.prefix(maxItems), id: \.coinSymbol) { item in
-                legendItem(for: item)
+                VStack(spacing: 6) {
+                    HStack(spacing: 12) {
+                        Circle()
+                            .fill(Color.coin(item.coinSymbol))
+                            .frame(width: 14, height: 14)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(item.coinSymbol)
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+
+                            Text(item.percentage / 100, format: .percentChange)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Spacer()
+
+                        Text(item.value, format: .usd)
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                    }
+
+                    ProgressView(value: item.percentage, total: 100)
+                        .tint(Color.coin(item.coinSymbol))
+                }
+                .padding(.vertical, 3)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
-    private func legendItem(for item: DistributionData) -> some View {
-        VStack(spacing: 6) {
-            HStack(spacing: 12) {
-                Circle()
-                    .fill(colorForCoin(item.coinSymbol))
-                    .frame(width: 14, height: 14)
+}
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(item.coinSymbol)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-
-                    Text("\(String(format: "%.2f", item.percentage))%")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-
-                Spacer()
-
-                Text(Decimal(item.value).asCurrencyString())
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-            }
-
-            // Progress Bar
-            GeometryReader { geometry in
-                HStack {
-                    Rectangle()
-                        .fill(colorForCoin(item.coinSymbol))
-                        .frame(width: geometry.size.width * (item.percentage / 100))
-                        .frame(height: 3)
-                        .clipShape(Capsule())
-
-                    Spacer(minLength: 0)
-                }
-            }
-            .frame(height: 3)
-        }
-        .padding(.vertical, 3)
-    }
+#Preview {
+    ChartLegend(data: [
+        DistributionData(coinSymbol: "BTC", value: 3000, percentage: 60),
+        DistributionData(coinSymbol: "ETH", value: 2000, percentage: 40)
+    ], maxItems: 3)
+    .padding()
 }

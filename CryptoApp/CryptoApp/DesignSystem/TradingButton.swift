@@ -25,8 +25,8 @@ struct TradingButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: 50)
             .background(type.color)
-            .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .foregroundStyle(.white)
+            .clipShape(.rect(cornerRadius: 12))
         }
         .buttonStyle(.plain)
     }

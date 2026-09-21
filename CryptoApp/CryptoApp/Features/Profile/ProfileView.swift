@@ -29,7 +29,7 @@ struct ProfileView: View {
                 VStack(spacing: 16) {
                     Image(systemName: "person.circle.fill")
                         .font(.system(size: 60))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(width: 110, height: 110)
                         .background(
                             LinearGradient(
@@ -52,7 +52,7 @@ struct ProfileView: View {
                         Text("SETTINGS")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                         Spacer()
                     }
 
@@ -61,7 +61,7 @@ struct ProfileView: View {
                     }
                     .padding(12)
                     .background(Color(.secondarySystemBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipShape(.rect(cornerRadius: 12))
                 }
 
                 // Logout
@@ -75,15 +75,15 @@ struct ProfileView: View {
                 } label: {
                     HStack {
                         Image(systemName: "arrow.uturn.backward")
-                            .foregroundColor(.red)
+                            .foregroundStyle(.red)
                         Text("Logout")
-                            .foregroundColor(.red)
+                            .foregroundStyle(.red)
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.red.opacity(0.08))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .clipShape(.rect(cornerRadius: 12))
                 }
             }
             .padding(20)

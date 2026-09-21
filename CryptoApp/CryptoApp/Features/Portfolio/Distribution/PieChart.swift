@@ -2,49 +2,29 @@
 //  PieChart.swift
 //  CryptoApp
 //
-//  Reusable pie chart component
-//
 
 import SwiftUI
+import Charts
 
+/// A pie of the portfolio distribution, one colored slice per coin.
 struct PieChart: View {
     let data: [DistributionData]
     let size: CGFloat
-    
+
     var body: some View {
-        ZStack {
-            ForEach(Array(data.enumerated()), id: \.offset) { index, item in
-                PieSlice(
-                    startAngle: .degrees(startAngleForIndex(index)),
-                    endAngle: .degrees(endAngleForIndex(index))
-                )
-                .fill(Color.coin(item.coinSymbol))
+        Chart(data, id: \.coinSymbol) { item in
+            SectorMark(angle: .value("Value", item.value))
+                .foregroundStyle(Color.coin(item.coinSymbol))
                 .opacity(0.8)
-            }
         }
+        .chartLegend(.hidden)
         .frame(width: size, height: size)
-        .fixedSize()
     }
-    
-    private func startAngleForIndex(_ index: Int) -> Double {
-        let totalValue = data.reduce(0) { $0 + $1.value }
-        var cumulativeAngle: Double = 0
-        
-        for i in 0..<index {
-            cumulativeAngle += (data[i].value / totalValue) * 360
-        }
-        
-        return cumulativeAngle
-    }
-    
-    private func endAngleForIndex(_ index: Int) -> Double {
-        let totalValue = data.reduce(0) { $0 + $1.value }
-        var cumulativeAngle: Double = 0
-        
-        for i in 0...index {
-            cumulativeAngle += (data[i].value / totalValue) * 360
-        }
-        
-        return cumulativeAngle
-    }
+}
+
+#Preview {
+    PieChart(data: [
+        DistributionData(coinSymbol: "BTC", value: 3000, percentage: 60),
+        DistributionData(coinSymbol: "ETH", value: 2000, percentage: 40)
+    ], size: 100)
 }

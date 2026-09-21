@@ -1,205 +1,110 @@
 //
-//  ChartView.swift
+//  CoinDetailChartView.swift
 //  CryptoApp
 //
-//  📈INTERACTIVE 7-DAY PRICE CHART 
-//  Custom chart component with touch interaction and gradient fill
-//  Displays sparkline data from CoinGecko API
+//  Interactive 7-day price chart built from CoinGecko's sparkline data.
 //
 //  Created by Bartosz Mrugała on 18/03/2025.
 //
 
 import SwiftUI
+import Charts
 
-// MARK: - Interactive Chart Component
-
-/// 📈 Interactive 7-day price chart with touch selection and animated rendering
 struct CoinDetailChartView: View {
-    private let data: [Double]
-    private let maxY: Double
-    private let minY: Double
-    private let lineColor: Color
-    private let startingDate: Date
-    private let endingDate: Date
+    private struct Point: Identifiable {
+        let date: Date
+        let price: Double
+        var id: Date { date }
+    }
 
-    @State private var percentage: CGFloat = 0
-    @State private var selectedValue: Double? = nil
+    private let points: [Point]
+    private let lineColor: Color
+    /// Fitted to the data, so a week of small moves isn't squashed against a zero baseline
+    private let yDomain: ClosedRange<Double>
+
+    /// The date under the user's finger while dragging on the chart
+    @State private var selectedDate: Date?
 
     init(coin: Coin) {
-        data = coin.sparklineIn7D?.price ?? []
-        maxY = data.max() ?? 0
-        minY = data.min() ?? 0
+        let prices = coin.sparklineIn7D?.price ?? []
+        let week: TimeInterval = 7 * 24 * 60 * 60
+        let end = coin.lastUpdated.flatMap(Date.fromCoinGecko) ?? .now
+        let step = prices.count > 1 ? week / Double(prices.count - 1) : 0
 
-        let priceChange = (data.last ?? 0) - (data.first ?? 0)
-        lineColor = priceChange >= 0 ? Color.green : Color.red
-
-        if let lastUpdated = coin.lastUpdated, !lastUpdated.isEmpty {
-            endingDate = Date(coinGeckoString: lastUpdated)
-        } else {
-            endingDate = Date()
+        // CoinGecko gives one price per hour and no timestamps: spread them evenly over the week
+        points = prices.enumerated().map { index, price in
+            Point(date: end.addingTimeInterval(-week + Double(index) * step), price: price)
         }
-        startingDate = endingDate.addingTimeInterval(-7 * 24 * 60 * 60)
+        lineColor = (prices.last ?? 0) >= (prices.first ?? 0) ? .green : .red
+
+        let low = prices.min() ?? 0
+        let high = prices.max() ?? 1
+        let padding = high > low ? (high - low) * 0.05 : max(abs(high) * 0.01, 0.01) // flat data still needs a range
+        yDomain = (low - padding)...(high + padding)
+    }
+
+    /// The point closest to the finger
+    private var selectedPoint: Point? {
+        guard let selectedDate else { return nil }
+        return points.min { abs($0.date.timeIntervalSince(selectedDate)) < abs($1.date.timeIntervalSince(selectedDate)) }
     }
 
     var body: some View {
-        VStack {
-            if data.isEmpty {
-                Text("No data available")
-                    .frame(height: 200)
-            } else {
-                chartView
-                    .frame(height: 200)
-                    .background(chartBackground)
-                    .overlay(chartYAxis.padding(.horizontal, 4), alignment: .leading)
-            }
-            chartDateLabels
-                .padding(.horizontal, 4)
-        }
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        .onAppear {
-                    percentage = 1.0
-        }
-    }
-}
-
-// MARK: - Chart Rendering
-
-extension CoinDetailChartView {
-    /// 🎨 Main chart rendering with interactive touch gestures
-    private var chartView: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Create chart line path
-                let linePath = Path { path in
-                    for index in data.indices {
-                        let xPosition = geometry.size.width * CGFloat(index) / CGFloat(data.count - 1)
-                        let yAxisRange = maxY - minY
-                        let yPosition = (1 - CGFloat((data[index] - minY) / yAxisRange)) * geometry.size.height
-                        if index == 0 {
-                            path.move(to: CGPoint(x: xPosition, y: yPosition))
-                        } else {
-                            path.addLine(to: CGPoint(x: xPosition, y: yPosition))
-                        }
-                    }
-                }
-                
-                // Draw chart line with animation
-                linePath
-                    .trim(from: 0, to: percentage)
-                    .stroke(lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                
-                // Create gradient fill area under chart
-                let fillPath = Path { path in
-                    // Draw same path as line
-                    for index in data.indices {
-                        let xPosition = geometry.size.width * CGFloat(index) / CGFloat(data.count - 1)
-                        let yAxisRange = maxY - minY
-                        let yPosition = (1 - CGFloat((data[index] - minY) / yAxisRange)) * geometry.size.height
-                        if index == 0 {
-                            path.move(to: CGPoint(x: xPosition, y: yPosition))
-                        } else {
-                            path.addLine(to: CGPoint(x: xPosition, y: yPosition))
-                        }
-                    }
-                    // Close path to bottom edge for gradient fill
-                    path.addLine(to: CGPoint(x: geometry.size.width, y: geometry.size.height))
-                    path.addLine(to: CGPoint(x: 0, y: geometry.size.height))
-                    path.closeSubpath()
-                }
-                
-                // Fill with gradient from top to bottom
-                fillPath
-                    .trim(from: 0, to: percentage)
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: [lineColor.opacity(0.3), lineColor.opacity(0.0)]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                
-                // Interactive touch selection overlay
-                if let selectedValue = selectedValue {
-                    if let index = data.firstIndex(of: selectedValue) {
-                        let xPosition = geometry.size.width * CGFloat(index) / CGFloat(data.count - 1)
-                        let yAxisRange = maxY - minY
-                        let yPosition = (1 - CGFloat((data[index] - minY) / yAxisRange)) * geometry.size.height
-                        
-                        Path { path in
-                            path.move(to: CGPoint(x: xPosition, y: 0))
-                            path.addLine(to: CGPoint(x: xPosition, y: geometry.size.height))
-                        }
-                        .stroke(Color.gray, lineWidth: 1)
-                        
-                        Text(String(format: "%.2f", selectedValue))
-                            .padding(5)
-                            .background(Color.black.opacity(0.7))
-                            .foregroundColor(.white)
-                            .cornerRadius(5)
-                            .position(x: xPosition, y: yPosition)
-                    }
-                }
-            }
-            .contentShape(Rectangle())
-            .gesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { value in
-                        let xValue = value.location.x
-                        let computedIndex = Int((xValue / geometry.size.width) * CGFloat(data.count))
-                        if computedIndex >= 0 && computedIndex < data.count {
-                            selectedValue = data[computedIndex]
-                        }
-                    }
-                    .onEnded { _ in
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            withAnimation {
-                                selectedValue = nil
-                            }
-                        }
-                    }
-            )
-        }
-    }
-
-    private var chartBackground: some View {
-        VStack {
-            Divider()
-            Spacer()
-            Divider()
-            Spacer()
-            Divider()
-        }
-    }
-
-    private var chartYAxis: some View {
-        VStack {
-            Text(formatYAxisValue(maxY))
-            Spacer()
-            Text(formatYAxisValue((maxY + minY) / 2))
-            Spacer()
-            Text(formatYAxisValue(minY))
-        }
-    }
-    
-    private func formatYAxisValue(_ value: Double) -> String {
-        if value >= 1_000_000 {
-            return String(format: "%.1fM", value / 1_000_000)
-        } else if value >= 1_000 {
-            return String(format: "%.1fK", value / 1_000)
-        } else if value >= 1 {
-            return String(format: "%.2f", value)
+        if points.count < 2 {
+            Text("No data available")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .frame(height: 200)
         } else {
-            return String(format: "%.4f", value)
+            chart
         }
     }
 
-    private var chartDateLabels: some View {
-        HStack {
-            Text(startingDate.asShortDateString())
-            Spacer()
-            Text(endingDate.asShortDateString())
+    private var chart: some View {
+        Chart {
+            ForEach(points) { point in
+                AreaMark(x: .value("Date", point.date),
+                         yStart: .value("Base", yDomain.lowerBound),
+                         yEnd: .value("Price", point.price))
+                    .foregroundStyle(.linearGradient(colors: [lineColor.opacity(0.3), lineColor.opacity(0)],
+                                                     startPoint: .top, endPoint: .bottom))
+                LineMark(x: .value("Date", point.date), y: .value("Price", point.price))
+                    .foregroundStyle(lineColor)
+                    .lineStyle(StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+            }
+
+            if let selectedPoint {
+                RuleMark(x: .value("Date", selectedPoint.date))
+                    .foregroundStyle(.gray)
+                    .lineStyle(StrokeStyle(lineWidth: 1))
+                    .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
+                        Text(selectedPoint.price, format: .usd)
+                            .font(.caption)
+                            .padding(5)
+                            .background(.regularMaterial, in: .rect(cornerRadius: 5))
+                    }
+            }
         }
+        .chartYScale(domain: yDomain)
+        .chartXSelection(value: $selectedDate)
+        .chartXAxis {
+            AxisMarks(values: .automatic(desiredCount: 3)) {
+                AxisGridLine()
+                AxisValueLabel(format: .dateTime.day().month(.abbreviated))
+            }
+        }
+        .chartYAxis {
+            AxisMarks(position: .leading, values: .automatic(desiredCount: 3)) { value in
+                AxisGridLine()
+                AxisValueLabel {
+                    if let price = value.as(Double.self) {
+                        Text(price, format: .number.notation(.compactName).precision(.significantDigits(3)))
+                    }
+                }
+            }
+        }
+        .frame(height: 200)
+        .padding(.horizontal, 4)
     }
 }
 

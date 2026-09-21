@@ -18,4 +18,9 @@ extension Decimal {
         }
         self = Decimal(string: "\(price)", locale: Locale(identifier: "en_US_POSIX")) ?? Decimal(price)
     }
+
+    /// For chart APIs that only take `Double`. Don't use it for money maths.
+    var doubleValue: Double {
+        (self as NSDecimalNumber).doubleValue
+    }
 }

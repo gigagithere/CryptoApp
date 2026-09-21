@@ -15,7 +15,7 @@ extension View {
 
     func secondaryText() -> some View {
         font(.caption)
-            .foregroundColor(.secondary)
+            .foregroundStyle(.secondary)
     }
 
     func headerText() -> some View {

@@ -18,9 +18,15 @@ final class PortfolioViewModel {
     /// Error from loading portfolio data. Trades report their errors by throwing instead.
     private(set) var lastError: PortfolioError?
 
-    // Helper for UI error display
+    // Helpers for UI error display
     var errorMessage: String? {
         lastError?.localizedDescription
+    }
+
+    /// Two-way flag for `.alert(isPresented:)`: true while there is an error, dismissing clears it.
+    var showsError: Bool {
+        get { lastError != nil }
+        set { if !newValue { lastError = nil } }
     }
 
     // DEPENDENCIES - Services this ViewModel needs
@@ -78,10 +84,6 @@ final class PortfolioViewModel {
     func clearLocalData() {
         holdings = []
         transactions = []
-        lastError = nil
-    }
-
-    func clearError() {
         lastError = nil
     }
 

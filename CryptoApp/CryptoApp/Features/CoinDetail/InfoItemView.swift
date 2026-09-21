@@ -20,7 +20,7 @@ struct InfoItemView: View {
             Text(value)
                 .font(.headline)
                 .fontWeight(.semibold)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .lineLimit(1)
             
             if let footnote = footnote {
@@ -32,7 +32,7 @@ struct InfoItemView: View {
         .padding(.vertical, 8)
         .padding(.horizontal, 12)
         .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(.rect(cornerRadius: 8))
     }
 }
 
