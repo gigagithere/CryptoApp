@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Pick an available iOS Simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available | grep -m1 "iPhone" | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}')
+          if [ -z "$UDID" ]; then
+            echo "No available iPhone simulator found" >&2
+            xcrun simctl list devices available
+            exit 1
+          fi
+          echo "Using simulator $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve Swift Package dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project CryptoApp/CryptoApp.xcodeproj \
+            -scheme CryptoApp
+
+      - name: Build
+        run: |
+          xcodebuild build \
+            -project CryptoApp/CryptoApp.xcodeproj \
+            -scheme CryptoApp \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -skipMacroValidation \
+            CODE_SIGNING_ALLOWED=NO
+
+      # Unit tests use a mock coin repository / Firestore service; the UI test launches with
+      # `-uiTesting`, which runs on in-memory sample data (see App/SampleData.swift). Neither
+      # needs network access or the real GoogleService-Info.plist.
+      - name: Test
+        run: |
+          xcodebuild test \
+            -project CryptoApp/CryptoApp.xcodeproj \
+            -scheme CryptoApp \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -parallel-testing-enabled NO \
+            -skipMacroValidation \
+            CODE_SIGNING_ALLOWED=NO

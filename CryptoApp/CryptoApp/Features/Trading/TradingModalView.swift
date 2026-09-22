@@ -145,7 +145,7 @@ struct TradingModalView: View {
                 .controlSize(.large)
                 .tint(trade.type.color)
                 .disabled(!trade.canSubmit)
-                .accessibilityInputLabels([trade.type.title, "Confirm"])
+                .accessibilityInputLabels([trade.type.title, String(localized: "Confirm")])
                 .padding(.horizontal)
                 .padding(.vertical, Spacing.s)
                 .background(.bar)
@@ -166,7 +166,8 @@ struct TradingModalView: View {
         .alert("Trade Executed", isPresented: $showConfirmation) {
             Button("OK") { dismiss() }
         } message: {
-            Text("Successfully \(trade.type.title.lowercased()) \(trade.quantityValue, format: .quantity) \(symbol) for \(trade.total(at: price), format: .usdAmount)")
+            // Past tense ("bought"/"sold"), not `trade.type.title.lowercased()` ("buy"/"sell"): the trade already happened.
+            Text("Successfully \(trade.type.pastTenseVerb) \(trade.quantityValue, format: .quantity) \(symbol) for \(trade.total(at: price), format: .usdAmount)")
         }
         .alert("Error", isPresented: $showError) {
             Button("OK") { }

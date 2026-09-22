@@ -34,7 +34,7 @@ extension Coin {
                      value: (circulatingSupply ?? 0).formatted(.compact),
                      footnote: symbol.uppercased()),
             InfoItem(title: "Max Supply",
-                     value: maxSupply?.formatted(.compact) ?? "No Limit",
+                     value: maxSupply?.formatted(.compact) ?? String(localized: "No Limit", comment: "Max Supply value when a coin has no cap"),
                      footnote: maxSupply != nil ? symbol.uppercased() : nil)
         ]
     }
@@ -43,10 +43,10 @@ extension Coin {
         [
             InfoItem(title: "24h High",
                      value: (high24H ?? 0).formatted(.usd),
-                     footnote: "Daily Peak"),
+                     footnote: String(localized: "Daily Peak")),
             InfoItem(title: "24h Low",
                      value: (low24H ?? 0).formatted(.usd),
-                     footnote: "Daily Low"),
+                     footnote: String(localized: "Daily Low")),
             InfoItem(title: "Price Change",
                      value: priceChange24H.formatted(.usdChange),
                      footnote: (priceChangePercentage24H / 100).formatted(.percentChangeSigned)),

@@ -18,21 +18,21 @@ nonisolated enum WatchlistError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .userNotAuthenticated:
-            return "Please sign in to manage your watchlist"
+            return String(localized: "Please sign in to manage your watchlist")
         case .coinAlreadyWatched:
-            return "This coin is already in your watchlist"
+            return String(localized: "This coin is already in your watchlist")
         case .coinNotInWatchlist:
-            return "This coin is not in your watchlist"
+            return String(localized: "This coin is not in your watchlist")
         case .firestoreSaveFailed:
-            return "Failed to save watchlist data"
+            return String(localized: "Failed to save watchlist data")
         case .firestoreLoadFailed:
-            return "Failed to load watchlist data"
+            return String(localized: "Failed to load watchlist data")
         case .networkError:
-            return "Network error. Please check your connection"
+            return String(localized: "Network error. Please check your connection")
         case .invalidData:
-            return "Invalid watchlist data format"
+            return String(localized: "Invalid watchlist data format")
         case .unknown(let message):
-            return "Watchlist error: \(message)"
+            return String(localized: "Watchlist error: \(message)")
         }
     }
 }

@@ -22,29 +22,29 @@ nonisolated enum PortfolioError: Error, LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .userNotAuthenticated:
-            return "Please sign in to manage your portfolio"
+            return String(localized: "Please sign in to manage your portfolio")
         case .invalidQuantity:
-            return "Please enter a valid quantity"
+            return String(localized: "Please enter a valid quantity")
         case .insufficientHoldings:
-            return "You don't have enough coins to sell"
+            return String(localized: "You don't have enough coins to sell")
         case .coinNotFound:
-            return "Coin not found in your portfolio"
+            return String(localized: "Coin not found in your portfolio")
         case .firestoreSaveFailed:
-            return "Failed to save portfolio data"
+            return String(localized: "Failed to save portfolio data")
         case .firestoreLoadFailed:
-            return "Failed to load portfolio data"
+            return String(localized: "Failed to load portfolio data")
         case .invalidData:
-            return "Invalid portfolio data format"
+            return String(localized: "Invalid portfolio data format")
         case .networkError:
-            return "Network error. Please check your connection"
+            return String(localized: "Network error. Please check your connection")
         case .holdingNotFound:
-            return "Holding not found in portfolio"
+            return String(localized: "Holding not found in portfolio")
         case .transactionFailed:
-            return "Transaction failed. Please try again"
+            return String(localized: "Transaction failed. Please try again")
         case .priceUnavailable:
-            return "The current price isn't available. Pull to refresh and try again"
+            return String(localized: "The current price isn't available. Pull to refresh and try again")
         case .unknown(let message):
-            return "Portfolio error: \(message)"
+            return String(localized: "Portfolio error: \(message)")
         }
     }
 }

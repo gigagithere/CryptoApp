@@ -18,7 +18,7 @@ struct SortMenu: View {
                         option = sortOption
                         order = .descending // the usual best default for every option
                     } label: {
-                        Label(sortOption.rawValue, systemImage: sortOption.iconName)
+                        Label(sortOption.title, systemImage: sortOption.iconName)
                     }
                 }
             }
@@ -29,7 +29,7 @@ struct SortMenu: View {
                         Button {
                             order = sortOrder
                         } label: {
-                            Label(sortOrder.rawValue, systemImage: sortOrder == .ascending ? "arrow.up" : "arrow.down")
+                            Label(sortOrder.title, systemImage: sortOrder == .ascending ? "arrow.up" : "arrow.down")
                         }
                     }
                 }

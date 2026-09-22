@@ -67,8 +67,8 @@ struct SingleRowView: View {
                 }
                 .contentShape(.rect)
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(coin.name), \(coin.symbol.uppercased()), rank \(coin.marketCapRank)")
-                .accessibilityValue("\(coin.currentPrice.formatted(.usd)), \(isUp ? "up" : "down") \((abs(coin.priceChangePercentage24H) / 100).formatted(.percentChange)) in 24 hours")
+                .accessibilityLabel(Text("\(coin.name), \(coin.symbol.uppercased()), rank \(coin.marketCapRank)"))
+                .accessibilityValue(Text("\(coin.currentPrice.formatted(.usd)), \(isUp ? String(localized: "up") : String(localized: "down")) \((abs(coin.priceChangePercentage24H) / 100).formatted(.percentChange)) in 24 hours"))
             }
             .buttonStyle(.plain)
         }

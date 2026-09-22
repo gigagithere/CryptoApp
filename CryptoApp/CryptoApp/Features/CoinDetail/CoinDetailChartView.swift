@@ -120,7 +120,7 @@ struct CoinDetailChartView: View {
         .frame(height: 200)
         .padding(.horizontal, Spacing.xs)
         .accessibilityLabel("7 day price chart")
-        .accessibilityValue("From \((points.first?.price ?? 0).formatted(.usd)) to \((points.last?.price ?? 0).formatted(.usd)), low \(yDomain.lowerBound.formatted(.usd)), high \(yDomain.upperBound.formatted(.usd))")
+        .accessibilityValue(Text("From \((points.first?.price ?? 0).formatted(.usd)) to \((points.last?.price ?? 0).formatted(.usd)), low \(yDomain.lowerBound.formatted(.usd)), high \(yDomain.upperBound.formatted(.usd))"))
     }
 }
 

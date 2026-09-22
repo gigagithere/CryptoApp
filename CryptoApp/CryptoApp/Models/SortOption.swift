@@ -5,14 +5,26 @@
 //  Created by Bartosz Mrugała on 19/03/2025.
 //
 
-import Foundation
+import SwiftUI
 
+// The raw values are stable identifiers (not shown on screen), so they stay in English;
+// `title` below is what's actually displayed and it is what gets localized.
 enum SortOption: String, CaseIterable {
     case marketCap = "Market Cap"
     case price = "Price"
     case change = "24h Change"
     case volume = "Volume"
     case watchlist = "Favorites"
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .marketCap: "Market Cap"
+        case .price: "Price"
+        case .change: "24h Change"
+        case .volume: "Volume"
+        case .watchlist: "Favorites"
+        }
+    }
 
     var iconName: String {
         switch self {
@@ -33,11 +45,11 @@ enum SortOption: String, CaseIterable {
         self == .watchlist ? "star" : "magnifyingglass"
     }
 
-    var emptyStateTitle: String {
+    var emptyStateTitle: LocalizedStringKey {
         self == .watchlist ? "No Favorites Yet" : "No Coins Found"
     }
 
-    var emptyStateMessage: String {
+    var emptyStateMessage: LocalizedStringKey {
         self == .watchlist
             ? "Tap the star on any coin to add it to your favorites"
             : "Try adjusting your search or sort criteria"

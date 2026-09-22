@@ -47,7 +47,7 @@ struct TopMoversItemView: View {
                 .strokeBorder(.separator)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(coin.symbol.uppercased()), \(coin.currentPrice.formatted(.usd))")
+        .accessibilityLabel(Text("\(coin.symbol.uppercased()), \(coin.currentPrice.formatted(.usd))"))
         .accessibilityValue((coin.priceChangePercentage24H / 100).formatted(.percentChangeSigned))
         .scrollTransition(.animated, axis: .horizontal) { content, phase in
             content

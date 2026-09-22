@@ -15,7 +15,9 @@ final class CryptoAppUITests: XCTestCase {
     override func setUp() async throws {
         continueAfterFailure = false
         app = XCUIApplication()
-        app.launchArguments = ["-uiTesting"]
+        // Pin the locale: this test asserts on English strings, and the app is now localized
+        // (Localizable.xcstrings, PL+EN) — without this it fails on a Polish-locale simulator.
+        app.launchArguments = ["-uiTesting", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launch()
     }
 

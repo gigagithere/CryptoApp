@@ -53,10 +53,10 @@ struct PortfolioView: View {
                         
                         VStack(spacing: Spacing.l) {
                             PortfolioLinkRow(title: "Current Holdings",
-                                             subtitle: "\(portfolio.holdings.count) holdings",
+                                             subtitle: "\(portfolio.holdings.count) holding",
                                              route: .holdings)
                             PortfolioLinkRow(title: "Transaction History",
-                                             subtitle: "\(portfolio.transactions.count) transactions",
+                                             subtitle: "\(portfolio.transactions.count) transaction",
                                              route: .transactions)
                         }
                     }

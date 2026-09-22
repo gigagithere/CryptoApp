@@ -7,8 +7,8 @@ import SwiftUI
 
 /// A tappable card on the portfolio screen that opens a detail page.
 struct PortfolioLinkRow: View {
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     let route: Route
 
     var body: some View {

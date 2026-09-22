@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InfoItemView: View {
-    let title: String
+    let title: LocalizedStringKey
     let value: String
     let footnote: String?
     

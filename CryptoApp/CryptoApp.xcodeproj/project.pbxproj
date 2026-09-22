@@ -29,6 +29,7 @@
 		15A734672C7C7640009CE641 /* CryptoAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A734662C7C7640009CE641 /* CryptoAppApp.swift */; };
 		15A7346B2C7C7642009CE641 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A7346A2C7C7642009CE641 /* Assets.xcassets */; };
 		15A7346E2C7C7643009CE641 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A7346D2C7C7643009CE641 /* Preview Assets.xcassets */; };
+		BCE5FF0E4E80C16760D05404 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D5359DBB7D381F2AD1859226 /* Localizable.xcstrings */; };
 		15A734822C7C7643009CE641 /* CryptoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A734812C7C7643009CE641 /* CryptoAppUITests.swift */; };
 		15A734842C7C7643009CE641 /* CryptoAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A734832C7C7643009CE641 /* CryptoAppUITestsLaunchTests.swift */; };
 		15C9E3672C7CE98700AC05B1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 15C9E3662C7CE98700AC05B1 /* Kingfisher */; };
@@ -149,6 +150,7 @@
 		15A734662C7C7640009CE641 /* CryptoAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAppApp.swift; sourceTree = "<group>"; };
 		15A7346A2C7C7642009CE641 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15A7346D2C7C7643009CE641 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		D5359DBB7D381F2AD1859226 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		15A734732C7C7643009CE641 /* CryptoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A7347D2C7C7643009CE641 /* CryptoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A734812C7C7643009CE641 /* CryptoAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoAppUITests.swift; sourceTree = "<group>"; };
@@ -348,6 +350,7 @@
 				1550B37E2E3F7297006C9A54 /* ViewModels */,
 				15EFB2F32D4A0B6600EDEE1B /* Info.plist */,
 				15A551F72D0DD72400A2AF67 /* GoogleService-Info.plist */,
+				D5359DBB7D381F2AD1859226 /* Localizable.xcstrings */,
 				15A734902C7C76AB009CE641 /* App */,
 				15A7346A2C7C7642009CE641 /* Assets.xcassets */,
 				15A7346C2C7C7643009CE641 /* Preview Content */,
@@ -629,6 +632,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				pl,
 				Base,
 			);
 			mainGroup = 15A7345A2C7C7640009CE641;
@@ -655,6 +659,7 @@
 				15A7346E2C7C7643009CE641 /* Preview Assets.xcassets in Resources */,
 				15A7346B2C7C7642009CE641 /* Assets.xcassets in Resources */,
 				15A551F82D0DD72400A2AF67 /* GoogleService-Info.plist in Resources */,
+				BCE5FF0E4E80C16760D05404 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@ import SwiftUI
 
 /// A titled block of statistics, laid out in two columns.
 struct InfoSectionView: View {
-    let title: String
+    let title: LocalizedStringKey
     let items: [InfoItem]
 
     var body: some View {
@@ -24,7 +24,8 @@ struct InfoSectionView: View {
             Grid(horizontalSpacing: 15, verticalSpacing: 15) {
                 ForEach(rows.indices, id: \.self) { index in
                     GridRow {
-                        ForEach(rows[index]) { item in
+                        // Identified by value, not title: two tiles in a row never show the same value.
+                        ForEach(rows[index], id: \.value) { item in
                             InfoItemView(title: item.title, value: item.value, footnote: item.footnote)
                         }
                     }

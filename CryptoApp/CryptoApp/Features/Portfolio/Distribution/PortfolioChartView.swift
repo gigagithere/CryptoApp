@@ -28,7 +28,7 @@ struct PortfolioChartView: View {
                     
                     Spacer()
                     
-                    Text("\(chartData.count) coins")
+                    Text("\(chartData.count) coin")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, Spacing.s)
@@ -82,7 +82,7 @@ struct PortfolioChartView: View {
                                 Spacer()
                                 
                                 LabeledValue(title: "Diversification", alignment: .trailing) {
-                                    Text("\(chartData.count) different coins")
+                                    Text("\(chartData.count) different coin")
                                         .font(.subheadline)
                                 }
                             }
@@ -90,7 +90,7 @@ struct PortfolioChartView: View {
                         }
                         .transition(.slide)
                     } else if chartData.count > 3 {
-                        Text("+\(chartData.count - 3) more coins")
+                        Text("+\(chartData.count - 3) more coin")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .frame(maxWidth: .infinity, alignment: .leading)

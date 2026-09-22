@@ -1,0 +1,35 @@
+rules_version = '2';
+
+// CryptoApp stores everything per signed-in user under users/{userId}:
+// holdings (current positions), transactions (buy/sell history) and watchlist (favorites).
+// Nobody but that user may read or write their own data, and nothing else in the
+// database is reachable at all.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /holdings/{coinId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /transactions/{transactionId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /watchlist/{coinId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Deny everything not explicitly allowed above.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

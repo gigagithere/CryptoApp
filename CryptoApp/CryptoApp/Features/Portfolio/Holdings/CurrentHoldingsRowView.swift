@@ -48,8 +48,8 @@ struct CurrentHoldingsRowView: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(!hasLivePrice)
-                .accessibilityLabel("Sell \(holding.coinSymbol.uppercased())")
-                .accessibilityInputLabels(["Sell", "Sell \(holding.coinSymbol.uppercased())"])
+                .accessibilityLabel(Text("Sell \(holding.coinSymbol.uppercased())"))
+                .accessibilityInputLabels([String(localized: "Sell"), String(localized: "Sell \(holding.coinSymbol.uppercased())")])
             }
             
             HStack {

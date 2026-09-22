@@ -3,13 +3,11 @@
 //  CryptoApp
 //
 
-import Foundation
+import SwiftUI
 
 /// One statistic on the coin detail screen.
-struct InfoItem: Identifiable {
-    let title: String
+struct InfoItem {
+    let title: LocalizedStringKey
     let value: String
     var footnote: String?
-
-    var id: String { title }
 }
