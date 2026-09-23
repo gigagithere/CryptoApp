@@ -19,10 +19,35 @@ jobs:
         with:
           xcode-version: latest-stable
 
+      # Picks an iPhone on the *newest* available runtime, not just the first match: a runner
+      # image can carry several iOS runtimes side by side, and CryptoApp needs iOS 26+.
       - name: Pick an available iOS Simulator
         id: sim
         run: |
-          UDID=$(xcrun simctl list devices available | grep -m1 "iPhone" | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}')
+          UDID=$(xcrun simctl list devices available --json | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+
+          def ios_version(runtime_key):
+              # e.g. "com.apple.CoreSimulator.SimRuntime.iOS-26-0" -> (26, 0)
+              if "SimRuntime.iOS" not in runtime_key:
+                  return None
+              parts = runtime_key.rsplit("iOS-", 1)[1].split("-")
+              return tuple(int(p) for p in parts)
+
+          best = None  # (version tuple, udid)
+          for runtime_key, entries in devices.items():
+              version = ios_version(runtime_key)
+              if version is None:
+                  continue
+              for d in entries:
+                  if "iPhone" in d["name"]:
+                      if best is None or version > best[0]:
+                          best = (version, d["udid"])
+          if best is None:
+              sys.exit(1)
+          print(best[1])
+          ')
           if [ -z "$UDID" ]; then
             echo "No available iPhone simulator found" >&2
             xcrun simctl list devices available

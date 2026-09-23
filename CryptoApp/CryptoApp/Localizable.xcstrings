@@ -317,6 +317,40 @@
         }
       }
     },
+    "24h High": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24h High"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Najwyższa 24h"
+          }
+        }
+      }
+    },
+    "24h Low": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24h Low"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Najniższa 24h"
+          }
+        }
+      }
+    },
     "7 day price chart": {
       "comment": "Accessibility label",
       "localizations": {
@@ -330,6 +364,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wykres ceny z 7 dni"
+          }
+        }
+      }
+    },
+    "ATH": {
+      "comment": "Coin stat title: all-time high, kept as the common crypto abbreviation",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ATH"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ATH"
+          }
+        }
+      }
+    },
+    "ATL": {
+      "comment": "Coin stat title: all-time low, kept as the common crypto abbreviation",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ATL"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ATL"
           }
         }
       }
@@ -400,6 +468,23 @@
         }
       }
     },
+    "An account with this email already exists": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An account with this email already exists"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto z tym adresem e-mail już istnieje"
+          }
+        }
+      }
+    },
     "App logo": {
       "comment": "Accessibility label",
       "localizations": {
@@ -447,6 +532,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rosnąco"
+          }
+        }
+      }
+    },
+    "Authentication error: %@": {
+      "comment": "AuthError.unknown fallback",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentication error: %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Błąd uwierzytelniania: %@"
           }
         }
       }
@@ -550,6 +652,23 @@
         }
       }
     },
+    "Circulating Supply": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Circulating Supply"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podaż w obiegu"
+          }
+        }
+      }
+    },
     "Coin not found": {
       "localizations": {
         "en": {
@@ -562,6 +681,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nie znaleziono kryptowaluty"
+          }
+        }
+      }
+    },
+    "Coin not found in your portfolio": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coin not found in your portfolio"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie znaleziono kryptowaluty w portfelu"
           }
         }
       }
@@ -886,6 +1022,91 @@
         }
       }
     },
+    "Failed to load portfolio data": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to load portfolio data"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało się wczytać danych portfela"
+          }
+        }
+      }
+    },
+    "Failed to load watchlist data": {
+      "comment": "Watchlist error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to load watchlist data"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało się wczytać listy obserwowanych"
+          }
+        }
+      }
+    },
+    "Failed to save portfolio data": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to save portfolio data"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało się zapisać danych portfela"
+          }
+        }
+      }
+    },
+    "Failed to save watchlist data": {
+      "comment": "Watchlist error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to save watchlist data"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało się zapisać listy obserwowanych"
+          }
+        }
+      }
+    },
+    "Failed to sign out. Please try again": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to sign out. Please try again"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie udało się wylogować. Spróbuj ponownie"
+          }
+        }
+      }
+    },
     "Favorite": {
       "comment": "Accessibility input label",
       "localizations": {
@@ -937,6 +1158,23 @@
         }
       }
     },
+    "Fully Diluted Valuation": {
+      "comment": "Coin stat title (FDV)",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fully Diluted Valuation"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wycena po pełnym rozproszeniu"
+          }
+        }
+      }
+    },
     "Hides details": {
       "comment": "Accessibility hint, expanded transaction row",
       "localizations": {
@@ -950,6 +1188,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ukrywa szczegóły"
+          }
+        }
+      }
+    },
+    "Holding not found in portfolio": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Holding not found in portfolio"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie znaleziono pozycji w portfelu"
+          }
+        }
+      }
+    },
+    "Invalid email or password": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid email or password"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieprawidłowy e-mail lub hasło"
+          }
+        }
+      }
+    },
+    "Invalid portfolio data format": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid portfolio data format"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieprawidłowy format danych portfela"
+          }
+        }
+      }
+    },
+    "Invalid watchlist data format": {
+      "comment": "Watchlist error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid watchlist data format"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieprawidłowy format danych listy obserwowanych"
           }
         }
       }
@@ -1120,6 +1426,40 @@
         }
       }
     },
+    "Market Cap Change": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Market Cap Change"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zmiana kapitalizacji"
+          }
+        }
+      }
+    },
+    "Market Capitalization": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Market Capitalization"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapitalizacja rynkowa"
+          }
+        }
+      }
+    },
     "Market Statistics": {
       "comment": "Coin detail section title",
       "localizations": {
@@ -1166,6 +1506,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Maks."
+          }
+        }
+      }
+    },
+    "Max Supply": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max Supply"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maksymalna podaż"
+          }
+        }
+      }
+    },
+    "Network connection error. Please try again": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network connection error. Please try again"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Błąd połączenia sieciowego. Spróbuj ponownie"
+          }
+        }
+      }
+    },
+    "Network error. Please check your connection": {
+      "comment": "Portfolio/Watchlist error, shared text",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network error. Please check your connection"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Błąd sieci. Sprawdź swoje połączenie"
           }
         }
       }
@@ -1247,6 +1638,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Brak transakcji"
+          }
+        }
+      }
+    },
+    "No account found with this email": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No account found with this email"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie znaleziono konta z tym adresem e-mail"
           }
         }
       }
@@ -1385,6 +1793,57 @@
         }
       }
     },
+    "Password should be at least 6 characters": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Password should be at least 6 characters"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hasło powinno mieć co najmniej 6 znaków"
+          }
+        }
+      }
+    },
+    "Please enter a valid email address": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please enter a valid email address"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podaj prawidłowy adres e-mail"
+          }
+        }
+      }
+    },
+    "Please enter a valid quantity": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please enter a valid quantity"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Podaj prawidłową ilość"
+          }
+        }
+      }
+    },
     "Please log in to continue": {
       "localizations": {
         "en": {
@@ -1397,6 +1856,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zaloguj się, aby kontynuować"
+          }
+        }
+      }
+    },
+    "Please sign in to continue": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please sign in to continue"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaloguj się, aby kontynuować"
+          }
+        }
+      }
+    },
+    "Please sign in to manage your portfolio": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please sign in to manage your portfolio"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaloguj się, aby zarządzać portfelem"
+          }
+        }
+      }
+    },
+    "Please sign in to manage your watchlist": {
+      "comment": "Watchlist error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please sign in to manage your watchlist"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaloguj się, aby zarządzać obserwowanymi"
           }
         }
       }
@@ -1467,6 +1977,23 @@
         }
       }
     },
+    "Portfolio error: %@": {
+      "comment": "PortfolioError.unknown fallback",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portfolio error: %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Błąd portfela: %@"
+          }
+        }
+      }
+    },
     "Price": {
       "comment": "Sort option",
       "localizations": {
@@ -1480,6 +2007,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cena"
+          }
+        }
+      }
+    },
+    "Price Change": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Price Change"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zmiana ceny"
           }
         }
       }
@@ -1548,6 +2092,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ilość"
+          }
+        }
+      }
+    },
+    "Rank": {
+      "comment": "Coin stat title",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rank"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ranking"
           }
         }
       }
@@ -1955,6 +2516,74 @@
         }
       }
     },
+    "The current price isn't available. Pull to refresh and try again": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The current price isn't available. Pull to refresh and try again"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktualna cena jest niedostępna. Odśwież i spróbuj ponownie"
+          }
+        }
+      }
+    },
+    "This coin is already in your watchlist": {
+      "comment": "Watchlist error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This coin is already in your watchlist"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta kryptowaluta jest już obserwowana"
+          }
+        }
+      }
+    },
+    "This coin is not in your watchlist": {
+      "comment": "Watchlist error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This coin is not in your watchlist"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta kryptowaluta nie jest obserwowana"
+          }
+        }
+      }
+    },
+    "Too many attempts. Please try again later": {
+      "comment": "Auth error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many attempts. Please try again later"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za dużo prób. Spróbuj ponownie później"
+          }
+        }
+      }
+    },
     "Top Movers": {
       "comment": "Section title: coins with the biggest 24h change",
       "localizations": {
@@ -2138,6 +2767,23 @@
         }
       }
     },
+    "Transaction failed. Please try again": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transaction failed. Please try again"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transakcja nie powiodła się. Spróbuj ponownie"
+          }
+        }
+      }
+    },
     "Try Again": {
       "localizations": {
         "en": {
@@ -2199,6 +2845,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Wolumen"
+          }
+        }
+      }
+    },
+    "Watchlist error: %@": {
+      "comment": "WatchlistError.unknown fallback",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Watchlist error: %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Błąd listy obserwowanych: %@"
+          }
+        }
+      }
+    },
+    "You don't have enough coins to sell": {
+      "comment": "Portfolio error",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You don't have enough coins to sell"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nie masz wystarczającej liczby monet, aby sprzedać"
           }
         }
       }

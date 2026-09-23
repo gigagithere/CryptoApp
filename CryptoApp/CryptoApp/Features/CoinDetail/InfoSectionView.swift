@@ -24,8 +24,10 @@ struct InfoSectionView: View {
             Grid(horizontalSpacing: 15, verticalSpacing: 15) {
                 ForEach(rows.indices, id: \.self) { index in
                     GridRow {
-                        // Identified by value, not title: two tiles in a row never show the same value.
-                        ForEach(rows[index], id: \.value) { item in
+                        // Identified by position, not content: two tiles can show the same value
+                        // (e.g. Circulating Supply == Max Supply for a fully-circulating coin).
+                        ForEach(rows[index].indices, id: \.self) { itemIndex in
+                            let item = rows[index][itemIndex]
                             InfoItemView(title: item.title, value: item.value, footnote: item.footnote)
                         }
                     }
